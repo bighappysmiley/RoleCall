@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+/** Black Ops–style geometric R path, viewBox 0 0 128 128 */
+const R_PATH =
+  "M28.46-14.43L22.80-14.43L22.80-23.74L34.84-23.74L34.84-38.50L22.80-38.50L22.80-48.10L41.11-48.10L50.75-38.50L50.75-24.07L43.28-16.60L52.38 0L35.27 0L28.46-14.43M20.26 0L4.24 0L4.24-48.10L20.26-48.10";
+
+const R_TRANSFORM = "translate(35.69 88.05)";
+
 export function RoleCallMark({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -10,30 +16,7 @@ export function RoleCallMark({ className = "" }: { className?: string }) {
       aria-hidden
     >
       <rect width="128" height="128" rx="14" fill="#1d4ed8" />
-      <g
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path
-          d="M 78 34 C 98 42 110 58 110 76 C 110 94 98 110 78 118"
-          strokeWidth="8"
-        />
-        <path
-          d="M 70 44 C 84 50 93 61 93 76 C 93 91 84 102 70 108"
-          strokeWidth="8"
-        />
-        <path
-          d="M 62 54 C 70 58 76 66 76 76 C 76 86 70 94 62 98"
-          strokeWidth="8"
-        />
-      </g>
-      <circle cx="42" cy="48" r="12" fill="#fff" />
-      <path
-        d="M 20 92 C 20 74 30 66 42 66 C 54 66 64 74 64 92 Z"
-        fill="#fff"
-      />
+      <path transform={R_TRANSFORM} d={R_PATH} fill="#fff" />
     </svg>
   );
 }
