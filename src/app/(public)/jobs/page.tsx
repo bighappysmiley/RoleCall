@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { JobCard } from "@/components/jobs/job-card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { db } from "@/lib/db";
 import { companies, jobs } from "@/lib/db/schema";
@@ -126,7 +128,7 @@ export default async function JobsPage({
       </form>
 
       <p className="mt-4 font-mono-data text-xs text-[var(--muted)]">
-        {ranked.length} roles
+        {ranked.length} {ranked.length === 1 ? "role" : "roles"}
       </p>
 
       <div className="mt-4 grid gap-3">
@@ -135,10 +137,21 @@ export default async function JobsPage({
         ))}
         {ranked.length === 0 ? (
           <div className="border border-[var(--line)] bg-[var(--fog)] p-8 text-center">
-            <p className="font-display text-lg">No roles match</p>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              Clear filters or browse all companies.
+            <p className="font-display text-lg">
+              {q || location || remote || employmentType
+                ? "No roles match"
+                : "No open roles yet"}
             </p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              {q || location || remote || employmentType
+                ? "Try clearing filters or searching something broader."
+                : "Employers can publish jobs from their dashboard."}
+            </p>
+            {!(q || location || remote || employmentType) ? (
+              <Link href="/signup" className="mt-5 inline-block">
+                <Button>Hire on RoleCall</Button>
+              </Link>
+            ) : null}
           </div>
         ) : null}
       </div>

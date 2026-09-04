@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { eq } from "drizzle-orm";
+import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { companies, jobs } from "@/lib/db/schema";
 
@@ -29,23 +30,36 @@ export default async function CompaniesPage() {
       <p className="mt-2 text-[var(--muted)]">
         Public company profiles with open roles.
       </p>
-      <div className="mt-8 grid gap-3 md:grid-cols-2">
-        {rows.map((c) => (
-          <Link
-            key={c.id}
-            href={`/companies/${c.slug}`}
-            className="border border-[var(--line)] bg-[var(--paper)] p-5 hover:bg-[var(--fog)]"
-          >
-            <h2 className="font-display text-xl font-medium">{c.name}</h2>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              {c.tagline || c.industry || "Company profile"}
-            </p>
-            <p className="mt-4 font-mono-data text-xs text-[var(--muted)]">
-              {countMap.get(c.id) || 0} open roles
-            </p>
+
+      {rows.length === 0 ? (
+        <div className="mt-8 border border-[var(--line)] bg-[var(--fog)] p-8 text-center">
+          <p className="font-display text-lg">No companies yet</p>
+          <p className="mt-2 text-sm text-[var(--muted)]">
+            Be the first to create an employer account and publish roles.
+          </p>
+          <Link href="/signup" className="mt-5 inline-block">
+            <Button>Create employer account</Button>
           </Link>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="mt-8 grid gap-3 md:grid-cols-2">
+          {rows.map((c) => (
+            <Link
+              key={c.id}
+              href={`/companies/${c.slug}`}
+              className="border border-[var(--line)] bg-[var(--paper)] p-5 hover:bg-[var(--fog)]"
+            >
+              <h2 className="font-display text-xl font-medium">{c.name}</h2>
+              <p className="mt-1 text-sm text-[var(--muted)]">
+                {c.tagline || c.industry || "Company profile"}
+              </p>
+              <p className="mt-4 font-mono-data text-xs text-[var(--muted)]">
+                {countMap.get(c.id) || 0} open roles
+              </p>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
