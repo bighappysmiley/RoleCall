@@ -6,8 +6,8 @@ Then **Deploys → Trigger deploy**.
 
 | Call it this | Copy it from here |
 | --- | --- |
-| DATABASE_URL | Neon → Connect → pooled (the one with `-pooler` in the host) |
-| DATABASE_URL_UNPOOLED | Neon → Connect → direct (the one without `-pooler`) |
+| DATABASE_URL | Neon → Connect → turn **Connection pooling** ON → copy the connection string |
+| DATABASE_URL_UNPOOLED | Neon → Connect → turn **Connection pooling** OFF → copy the connection string |
 | NEON_AUTH_BASE_URL | Neon → Auth → URL (ends with `/neondb/auth`) |
 | NEON_AUTH_COOKIE_SECRET | Neon → Auth → cookie secret |
 | NEXT_PUBLIC_SITE_URL | Type this: `https://rolecallats.netlify.app` |
