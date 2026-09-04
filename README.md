@@ -43,7 +43,7 @@ Sign-in on `https://*.netlify.app` is already allowed in Neon Auth, so Google / 
    - **Build command:** `npm run build`
    - **Publish directory:** `.next`
    - Production branch: **main**
-3. Add the environment variables from the table above.
+3. Add the variables in [ENV.md](ENV.md).
 4. **Deploys → Trigger deploy → Deploy site**.
 
 After it is live:
