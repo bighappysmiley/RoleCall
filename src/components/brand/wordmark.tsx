@@ -2,9 +2,9 @@ import Link from "next/link";
 
 /** Black Ops–style geometric R path, viewBox 0 0 128 128 */
 const R_PATH =
-  "M28.46-14.43L22.80-14.43L22.80-23.74L34.84-23.74L34.84-38.50L22.80-38.50L22.80-48.10L41.11-48.10L50.75-38.50L50.75-24.07L43.28-16.60L52.38 0L35.27 0L28.46-14.43M20.26 0L4.24 0L4.24-48.10L20.26-48.10";
+  "M38.27-19.40L30.66-19.40L30.66-31.93L46.85-31.93L46.85-51.77L30.66-51.77L30.66-64.69L55.28-64.69L68.25-51.77L68.25-32.37L58.21-22.33L70.44 0L47.43 0L38.27-19.40M27.25 0L5.70 0L5.70-64.69L27.25-64.69";
 
-const R_TRANSFORM = "translate(35.69 88.05)";
+const R_TRANSFORM = "translate(25.93 96.35)";
 
 export function RoleCallMark({ className = "" }: { className?: string }) {
   return (
