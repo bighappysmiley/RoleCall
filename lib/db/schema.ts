@@ -281,16 +281,33 @@ export const applicationNotes = pgTable("application_notes", {
     .defaultNow(),
 });
 
-export const adCreditLedger = pgTable("ad_credit_ledger", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  companyId: uuid("company_id")
-    .notNull()
-    .references(() => companies.id, { onDelete: "cascade" }),
-  deltaCents: integer("delta_cents").notNull(),
-  reason: ledgerReasonEnum("reason").notNull(),
-  jobId: uuid("job_id").references(() => jobs.id, { onDelete: "set null" }),
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
-  createdAt: timestamp("created_at", { withTimezone: true })
+export const adCreditLedger = pgTable(
+  "ad_credit_ledger",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    deltaCents: integer("delta_cents").notNull(),
+    reason: ledgerReasonEnum("reason").notNull(),
+    jobId: uuid("job_id").references(() => jobs.id, { onDelete: "set null" }),
+    stripePaymentIntentId: text("stripe_payment_intent_id"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    unique("ad_credit_ledger_payment_intent_uidx").on(
+      table.stripePaymentIntentId,
+    ),
+    index("ad_credit_ledger_company_idx").on(table.companyId),
+  ],
+);
+
+export const stripeEvents = pgTable("stripe_events", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(),
+  processedAt: timestamp("processed_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
 });

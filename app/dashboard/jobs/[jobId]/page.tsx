@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { JobForm } from "@/components/job-form";
+import { PromoteJobForm } from "@/components/promote-job-form";
 import { DeleteJobForm } from "@/components/delete-forms";
 import { Button } from "@/components/ui/button";
 import { requireEmployerCompany } from "@/lib/dashboard";
+import { isPast } from "@/lib/form";
 import { canManageJobs } from "@/lib/permissions";
 import { getJobById } from "@/lib/queries";
 
@@ -50,6 +52,15 @@ export default async function EditJobPage({
         </div>
       </div>
       <JobForm companyId={company.id} job={job} readOnly={!canWrite} />
+      {canWrite ? (
+        <PromoteJobForm
+          jobId={job.id}
+          balanceCents={company.adCreditBalanceCents}
+          promotedUntil={job.promotedUntil}
+          published={job.status === "published"}
+          active={Boolean(job.promotedUntil) && !isPast(job.promotedUntil)}
+        />
+      ) : null}
       {canWrite ? <DeleteJobForm jobId={job.id} /> : null}
     </div>
   );

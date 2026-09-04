@@ -56,6 +56,11 @@ function mapCompany(row: typeof companies.$inferSelect): CompanyRecord {
     socialLinks: row.socialLinks ?? {},
     isVerified: row.isVerified,
     subscriptionTier: row.subscriptionTier,
+    stripeCustomerId: row.stripeCustomerId,
+    stripeSubscriptionId: row.stripeSubscriptionId,
+    subscriptionStatus: row.subscriptionStatus,
+    currentPeriodEnd: row.currentPeriodEnd,
+    adCreditBalanceCents: row.adCreditBalanceCents,
     overrideTier: row.overrideTier,
     overrideBoost: row.overrideBoost,
   };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadDashboardContext } from "@/lib/dashboard";
-import { formatStage } from "@/lib/format";
+import { formatCents, formatStage } from "@/lib/format";
 import { companyPlan } from "@/lib/plans";
 import { countPublishedJobs, countSeats, listCandidateApplications, listSavedJobs } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -172,8 +172,11 @@ export default async function DashboardPage() {
           </h2>
           <p className="mt-2 font-heading text-2xl">{plan.name}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Billing comes later. Limits are already enforced.
+            {formatCents(company.adCreditBalanceCents)} in ad credits
           </p>
+          <Button className="mt-4" size="sm" variant="outline" asChild>
+            <Link href="/dashboard/billing">Billing</Link>
+          </Button>
         </section>
       </div>
       {memberships.length > 1 ? (

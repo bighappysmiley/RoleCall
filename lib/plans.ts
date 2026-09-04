@@ -103,6 +103,22 @@ export const AD_CREDIT_PACKS = [
   { label: "$100", cents: 10000 },
 ] as const;
 
+export const PROMOTION_PACKS = [
+  { label: "7 days", days: 7, cents: 1000 },
+  { label: "21 days", days: 21, cents: 2500 },
+  { label: "70 days", days: 70, cents: 10000 },
+] as const;
+
+export type PaidPlanId = "pro" | "pro_plus";
+
+export function creditPackForCents(cents: number) {
+  return AD_CREDIT_PACKS.find((pack) => pack.cents === cents) ?? null;
+}
+
+export function promotionForCents(cents: number) {
+  return PROMOTION_PACKS.find((pack) => pack.cents === cents) ?? null;
+}
+
 export function effectiveTier(
   subscriptionTier: SubscriptionTier,
   overrideTier: SubscriptionTier | null,

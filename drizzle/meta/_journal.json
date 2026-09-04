@@ -15,6 +15,13 @@
       "when": 1788486437562,
       "tag": "0001_light_maximus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788522939057,
+      "tag": "0002_parched_mongoose",
+      "breakpoints": true
     }
   ]
 }

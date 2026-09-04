@@ -121,3 +121,21 @@ export function formatPostedAt(date: Date | null): string {
 export function formatRole(role: MemberRole): string {
   return role.charAt(0).toUpperCase() + role.slice(1);
 }
+
+export function formatCents(cents: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(cents / 100);
+}
+
+export function formatShortDate(date: Date | null): string {
+  if (!date) {
+    return "—";
+  }
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}

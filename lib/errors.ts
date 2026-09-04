@@ -24,6 +24,26 @@ export function isPlanLimitError(error: unknown): error is PlanLimitError {
   return error instanceof PlanLimitError;
 }
 
+export class InsufficientCreditsError extends Error {
+  readonly code = "INSUFFICIENT_CREDITS";
+
+  constructor(message: string) {
+    super(message);
+    this.name = "InsufficientCreditsError";
+  }
+}
+
+export class StripeNotConfiguredError extends Error {
+  readonly code = "STRIPE_NOT_CONFIGURED";
+
+  constructor(
+    message = "Stripe test keys are not in .env.local yet. Billing checkout cannot run until they are added.",
+  ) {
+    super(message);
+    this.name = "StripeNotConfiguredError";
+  }
+}
+
 export function toActionError(error: unknown): { error: string } {
   if (error instanceof PlanLimitError || error instanceof Error) {
     return { error: error.message };

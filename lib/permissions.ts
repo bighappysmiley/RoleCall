@@ -83,6 +83,10 @@ export function canEditCompany(access: CompanyAccess): boolean {
   return can(access, "company.write");
 }
 
+export function canManageBilling(access: CompanyAccess): boolean {
+  return canEditCompany(access);
+}
+
 export function canDeleteCompany(access: CompanyAccess): boolean {
   return can(access, "company.delete");
 }

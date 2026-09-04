@@ -92,6 +92,11 @@ export type CompanyRecord = {
   socialLinks: CompanySocialLinks;
   isVerified: boolean;
   subscriptionTier: SubscriptionTier;
+  stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
+  subscriptionStatus: string | null;
+  currentPeriodEnd: Date | null;
+  adCreditBalanceCents: number;
   overrideTier: SubscriptionTier | null;
   overrideBoost: boolean;
 };

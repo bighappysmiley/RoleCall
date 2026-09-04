@@ -3,7 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { requireEmployerCompany } from "@/lib/dashboard";
-import { formatJobStatus } from "@/lib/format";
+import { isPast } from "@/lib/form";
+import { formatJobStatus, formatShortDate } from "@/lib/format";
 import { canManageJobs } from "@/lib/permissions";
 import { companyPlan } from "@/lib/plans";
 import { countPublishedJobs, listCompanyJobRecords } from "@/lib/queries";
@@ -68,6 +69,9 @@ export default async function DashboardJobsPage() {
                   {formatJobStatus(job.status).toUpperCase()}
                   {job.applicationCount
                     ? ` · ${job.applicationCount} APPS`
+                    : ""}
+                  {job.promotedUntil && !isPast(job.promotedUntil)
+                    ? ` · PROMOTED UNTIL ${formatShortDate(job.promotedUntil).toUpperCase()}`
                     : ""}
                 </p>
               </div>

@@ -112,6 +112,21 @@ export const jobBoardFilterSchema = z.object({
   location: z.string().trim().max(120).optional(),
 });
 
+export const checkoutPlanSchema = z.object({
+  companyId: z.string().uuid(),
+  tier: z.enum(["pro", "pro_plus"]),
+});
+
+export const checkoutCreditsSchema = z.object({
+  companyId: z.string().uuid(),
+  packCents: z.coerce.number().int().positive(),
+});
+
+export const promoteJobSchema = z.object({
+  jobId: z.string().uuid(),
+  packCents: z.coerce.number().int().positive(),
+});
+
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
