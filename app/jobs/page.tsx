@@ -52,7 +52,9 @@ export default async function JobsPage({
       </div>
       {jobs.length === 0 ? (
         <p className="border border-line bg-fog px-4 py-6 text-sm text-muted-foreground">
-          No published roles match those filters yet.
+          {filters.q || filters.type || filters.workplace || filters.location
+            ? "No published roles match those filters."
+            : "No published roles yet."}
         </p>
       ) : (
         <div className="grid gap-3">
