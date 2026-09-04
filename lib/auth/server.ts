@@ -17,7 +17,7 @@ export function getAuth(): NeonAuth {
   const secret = process.env.NEON_AUTH_COOKIE_SECRET;
   if (!baseUrl || !secret) {
     throw new Error(
-      "Neon Auth is not configured. Add NEON_AUTH_BASE_URL and NEON_AUTH_COOKIE_SECRET to .env.local.",
+      "Neon Auth is not configured. Add NEON_AUTH_BASE_URL and NEON_AUTH_COOKIE_SECRET in Netlify → Environment variables.",
     );
   }
 

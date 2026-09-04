@@ -62,7 +62,7 @@ export async function startPlanCheckoutAction(
   if (!isStripeConfigured()) {
     return {
       error:
-        "Add STRIPE_SECRET_KEY to .env.local (Stripe test mode is free) to start checkout.",
+        "Add STRIPE_SECRET_KEY in Netlify → Environment variables (Stripe test mode is free) to start checkout.",
     };
   }
   let url = "";
@@ -121,7 +121,7 @@ export async function startCreditCheckoutAction(
   if (!isStripeConfigured()) {
     return {
       error:
-        "Add STRIPE_SECRET_KEY to .env.local (Stripe test mode is free) to buy credits.",
+        "Add STRIPE_SECRET_KEY in Netlify → Environment variables (Stripe test mode is free) to buy credits.",
     };
   }
   let url = "";
@@ -167,7 +167,7 @@ export async function startBillingPortalAction(
   if (!isStripeConfigured()) {
     return {
       error:
-        "Add STRIPE_SECRET_KEY to .env.local (Stripe test mode is free) to open the billing portal.",
+        "Add STRIPE_SECRET_KEY in Netlify → Environment variables (Stripe test mode is free) to open the billing portal.",
     };
   }
   let url = "";

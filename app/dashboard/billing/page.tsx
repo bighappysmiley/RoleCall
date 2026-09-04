@@ -103,9 +103,9 @@ export default async function BillingPage({
         <>
           {!stripeReady ? (
             <p className="mt-6 border border-line bg-fog px-4 py-3 font-mono text-[11px] tracking-wide text-muted-foreground">
-              Add <span className="text-ink">STRIPE_SECRET_KEY</span> to{" "}
-              <span className="text-ink">.env.local</span> to turn on checkout.
-              Use Stripe test mode (free). Optional:{" "}
+              Add <span className="text-ink">STRIPE_SECRET_KEY</span> in{" "}
+              <span className="text-ink">Netlify → Environment variables</span>{" "}
+              to turn on checkout. Use Stripe test mode (free). Optional:{" "}
               <span className="text-ink">STRIPE_WEBHOOK_SECRET</span> for live
               webhook updates.
             </p>

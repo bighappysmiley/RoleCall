@@ -21,7 +21,7 @@ export default async function SignupPage({
       <p className="mt-2 mb-6 text-sm text-muted-foreground">
         {configured
           ? "Then choose whether you are hiring or looking."
-          : "Add Neon Auth keys to .env.local to turn this on."}
+          : "Add Neon Auth keys in Netlify → Environment variables to turn this on."}
       </p>
       <div className="flex flex-col gap-4">
         <GoogleButton callbackURL={next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding"} />

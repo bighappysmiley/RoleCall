@@ -18,7 +18,9 @@ export function getDb() {
 export function requireDb() {
   const db = getDb();
   if (!db) {
-    throw new Error("Database is not connected. Add DATABASE_URL to .env.local.");
+    throw new Error(
+      "Database is not connected. Add DATABASE_URL in Netlify → Environment variables.",
+    );
   }
   return db;
 }
