@@ -8,21 +8,13 @@ Hiring platform by **BigHappySmiley**. Phase 1 foundation: public job board, aut
 2. **Netlify** Free account — you deploy the site in the browser (Cloud agents cannot use Netlify MCP)
 3. This GitHub repo
 
-## Environment variables
+## Environment
 
-Copy `.env.example` to `.env.local` (already filled on the agent machine). For **Netlify → Site configuration → Environment variables**, set:
+Committed [`.env`](.env) holds the Neon Free keys so you do **not** paste them into the Netlify UI. The same values are also in [`netlify.toml`](netlify.toml) for build + runtime.
 
-| Variable | Purpose |
-|---|---|
-| `DATABASE_URL` | Neon pooled Postgres URL |
-| `NEON_AUTH_BASE_URL` | Managed Better Auth URL |
-| `NEON_AUTH_COOKIE_SECRET` | Long random secret (32+ chars) |
-| `AWS_ENDPOINT_URL_S3` | Neon object storage endpoint |
-| `AWS_REGION` | `us-east-2` |
-| `AWS_ACCESS_KEY_ID` | Neon storage credential |
-| `AWS_SECRET_ACCESS_KEY` | Neon storage credential |
+Keep [`.env.local`](.env.local) for personal overrides only (gitignored).
 
-Never commit `.env.local`.
+To redeploy after a pull: Netlify → **Deploys** → **Trigger deploy** → **Clear cache and deploy site**. No env form filling required.
 
 ## Local commands (Apple Silicon / Mac)
 
@@ -39,25 +31,13 @@ Open [http://localhost:3000](http://localhost:3000).
 
 1. Log in at [netlify.com](https://www.netlify.com) (Free plan)
 2. **Add new site → Import an existing project → GitHub**
-3. Choose `bighappysmiley/RoleCall` and the branch from the Phase 1 PR
-4. **Before or after the first deploy**, open **Site configuration → Environment variables** and add **every** key below. Scope each one to **Builds** and **Functions** (not “runtime only”).
-5. Trigger **Clear cache and deploy site** after saving variables
+3. Choose `bighappysmiley/RoleCall` and branch `cursor/rolecall-phase-1-8941`
+4. Deploy — env vars come from `.env` / `netlify.toml` (no manual paste)
+5. If a deploy was already failing: **Deploys → Trigger deploy → Clear cache and deploy site**
 6. Copy your `https://….netlify.app` URL
 7. In Neon → RoleCall → Auth → add that URL as a trusted domain / redirect host
 
-### Required Netlify env vars
-
-| Variable | Notes |
-|---|---|
-| `DATABASE_URL` | Neon pooled Postgres URL |
-| `NEON_AUTH_BASE_URL` | From Neon Auth configuration |
-| `NEON_AUTH_COOKIE_SECRET` | 32+ characters (`openssl rand -base64 32`) — **required at build time** |
-| `AWS_ENDPOINT_URL_S3` | Neon storage endpoint |
-| `AWS_REGION` | `us-east-2` |
-| `AWS_ACCESS_KEY_ID` | Neon storage credential |
-| `AWS_SECRET_ACCESS_KEY` | Neon storage credential |
-
-If the build says `Missing required config: cookies.secret`, `NEON_AUTH_COOKIE_SECRET` is missing or not available to **Builds**.
+If you ever see `Missing required config: cookies.secret`, clear cache and redeploy so the latest `netlify.toml` is used.
 
 ## What’s in Phase 1
 
