@@ -7,13 +7,13 @@ import { formatRole } from "@/lib/format";
 import { canManageTeam } from "@/lib/permissions";
 import { companyPlan } from "@/lib/plans";
 import { countSeats, listCompanyMembers } from "@/lib/queries";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = { title: "Team" };
 export const dynamic = "force-dynamic";
 
 function inviteUrl(token: string): string {
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  return `${site.replace(/\/$/, "")}/invite/${token}`;
+  return `${getSiteUrl()}/invite/${token}`;
 }
 
 export default async function TeamPage() {

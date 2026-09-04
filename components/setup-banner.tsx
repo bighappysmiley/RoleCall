@@ -17,7 +17,7 @@ export function SetupBanner() {
   return (
     <div className="border-b border-line bg-fog px-4 py-2 text-center font-mono text-[11px] tracking-wide text-muted-foreground">
       This is not connected to Neon yet. Add the keys in{" "}
-      <span className="text-ink">Vercel → Settings → Environment Variables</span>
+      <span className="text-ink">Netlify → Environment variables</span>
       {" "}(or <span className="text-ink">.env.local</span> on your Mac) to turn on{" "}
       {missing.join(" and ")}.
     </div>

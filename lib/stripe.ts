@@ -2,17 +2,12 @@ import Stripe from "stripe";
 import { StripeNotConfiguredError } from "@/lib/errors";
 import { getPlan, type PaidPlanId } from "@/lib/plans";
 
+export { getSiteUrl } from "@/lib/site-url";
+
 let cached: Stripe | null = null;
 
 export function isStripeConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY);
-}
-
-export function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
-    /\/$/,
-    "",
-  );
 }
 
 export function getStripe(): Stripe {

@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+
+# Same daily job as vercel.json. Netlify does not read Vercel cron config.
+[functions."expire-promotions"]
+  schedule = "0 8 * * *"

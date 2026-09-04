@@ -21,6 +21,7 @@ import {
 } from "@/lib/queries";
 import { errorMessage } from "@/lib/errors";
 import { formString, safeNextPath } from "@/lib/form";
+import { getSiteUrl } from "@/lib/site-url";
 
 export async function signUpAction(
   _prev: ActionState,
@@ -103,7 +104,7 @@ export async function requestPasswordResetAction(
     return { error: parsed.error.issues[0]?.message ?? "Enter a valid email." };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const { error } = await auth.requestPasswordReset({
     email: parsed.data.email,
     redirectTo: `${siteUrl}/update-password`,

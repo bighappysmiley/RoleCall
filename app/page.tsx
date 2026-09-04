@@ -42,7 +42,7 @@ export default async function HomePage() {
             </div>
             <div>
               <dt className="text-muted-foreground">HOST</dt>
-              <dd className="mt-1 text-sm text-ink">Vercel Hobby</dd>
+              <dd className="mt-1 text-sm text-ink">Netlify</dd>
             </div>
           </dl>
         </div>

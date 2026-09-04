@@ -15,6 +15,7 @@ import { errorMessage } from "@/lib/errors";
 import { formString } from "@/lib/form";
 import { assertSeatLimit, companyPlan } from "@/lib/plans";
 import { canManageTeam } from "@/lib/permissions";
+import { getSiteUrl } from "@/lib/site-url";
 import {
   acceptInvite,
   countSeats,
@@ -25,8 +26,7 @@ import {
 } from "@/lib/queries";
 
 function inviteUrl(token: string): string {
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  return `${site.replace(/\/$/, "")}/invite/${token}`;
+  return `${getSiteUrl()}/invite/${token}`;
 }
 
 export async function inviteMemberAction(

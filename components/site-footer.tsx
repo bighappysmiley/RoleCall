@@ -22,7 +22,7 @@ export function SiteFooter() {
           <Link href="/pricing" className="hover:text-ink">
             PRICING
           </Link>
-          <span>FREE TIER · NEON · VERCEL</span>
+          <span>FREE TIER · NEON · NETLIFY</span>
         </div>
       </div>
     </footer>
