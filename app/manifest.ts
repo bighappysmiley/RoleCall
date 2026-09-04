@@ -4,12 +4,11 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "RoleCall",
     short_name: "RoleCall",
-    description: "Hire talent. Find work.",
+    description: "A hiring board by BigHappySmiley. Placement is labeled.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f4f6f9",
+    background_color: "#ffffff",
     theme_color: "#1d4ed8",
-    orientation: "portrait-primary",
     icons: [
       {
         src: "/icons/icon-192.png",
