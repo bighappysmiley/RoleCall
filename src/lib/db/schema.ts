@@ -41,7 +41,7 @@ export const jobStatusEnum = pgEnum("job_status", [
   "paused",
   "closed",
 ]);
-export const promotionTierEnum = pgEnum("promotion_tiers", [
+export const promotionTierEnum = pgEnum("promotion_tier", [
   "none",
   "credits",
   "tier",
@@ -54,7 +54,7 @@ export const applicationStageEnum = pgEnum("application_stage", [
   "hired",
   "rejected",
 ]);
-export const subscriptionTierEnum = pgEnum("subscription_tiers", [
+export const subscriptionTierEnum = pgEnum("subscription_tier", [
   "free",
   "pro",
   "pro_plus",
@@ -180,7 +180,6 @@ export const jobs = pgTable(
     promotionSpendCents: integer("promotion_spend_cents").notNull().default(0),
     viewCount: integer("view_count").notNull().default(0),
     applicationCount: integer("application_count").notNull().default(0),
-    searchVector: text("search_vector"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

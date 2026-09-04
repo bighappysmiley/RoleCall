@@ -138,16 +138,13 @@ export async function requestPasswordResetAction(
       });
       if (error) return { error: error.message || "Could not send reset email" };
     } else {
-      return {
-        error:
-          "Password reset is enabled in Neon Auth. Check your email if an account exists.",
-      };
+      return null;
     }
   } catch {
     return { error: "Could not send reset email. Try again in a moment." };
   }
 
-  return { error: undefined };
+  return null;
 }
 
 export async function signOutAction() {

@@ -88,11 +88,11 @@ export default async function JobDetailPage({
       <div className="mt-10 border border-[var(--line)] bg-[var(--fog)] p-5">
         <p className="font-display text-lg">Ready to apply?</p>
         <p className="mt-1 text-sm text-[var(--muted)]">
-          Sign in as a candidate to apply with your profile resume.
+          Create a candidate account or log in to send your application.
         </p>
         <div className="mt-4 flex gap-3">
           <Link href="/signup">
-            <Button>Sign up to apply</Button>
+            <Button>Apply with RoleCall</Button>
           </Link>
           <Link href="/login">
             <Button variant="secondary">Log in</Button>

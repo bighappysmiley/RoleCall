@@ -11,8 +11,8 @@ export default function PricingPage() {
         Pricing
       </h1>
       <p className="mt-2 max-w-2xl text-[var(--muted)]">
-        Limits are enforced when you publish jobs or invite teammates. Checkout
-        is not enabled yet — plans are informational for Phase 1.
+        Start free. Upgrade when you need more open roles, seats, or stronger
+        placement in search.
       </p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -39,17 +39,17 @@ export default function PricingPage() {
                   </span>
                 </li>
                 <li>
-                  Ranking:{" "}
+                  Search ranking:{" "}
                   <span className="font-mono-data text-[var(--ink)]">
                     {key === "free"
-                      ? "1.0×"
+                      ? "Standard"
                       : key === "pro"
-                        ? "1.5×"
-                        : "2.5×"}
+                        ? "Boosted"
+                        : "Featured"}
                   </span>
                 </li>
                 {(key === "pro_plus" || key === "enterprise") && (
-                  <li>Featured placement rail</li>
+                  <li>Pinned above organic results</li>
                 )}
               </ul>
             </div>
@@ -58,12 +58,12 @@ export default function PricingPage() {
       </div>
 
       <div className="mt-10 border border-[var(--line)] bg-[var(--fog)] p-6">
-        <p className="font-display text-lg">Hiring on RoleCall?</p>
+        <p className="font-display text-lg">Ready to hire?</p>
         <p className="mt-1 text-sm text-[var(--muted)]">
-          Create an employer account to open your dashboard.
+          Create an employer account and open your company dashboard.
         </p>
         <Link href="/signup" className="mt-4 inline-block">
-          <Button>Sign up as employer</Button>
+          <Button>Create employer account</Button>
         </Link>
       </div>
     </div>

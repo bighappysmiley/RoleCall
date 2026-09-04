@@ -26,11 +26,15 @@ export default async function DashboardPage() {
   let jobCount = 0;
   let appCount = 0;
   if (companyIds.length) {
-    const jobRows = await db.select({ id: jobs.id, companyId: jobs.companyId }).from(jobs);
+    const jobRows = await db
+      .select({ id: jobs.id, companyId: jobs.companyId })
+      .from(jobs);
     const companyJobs = jobRows.filter((j) => companyIds.includes(j.companyId));
     jobCount = companyJobs.length;
     if (companyJobs.length) {
-      const apps = await db.select({ id: applications.id, jobId: applications.jobId }).from(applications);
+      const apps = await db
+        .select({ id: applications.id, jobId: applications.jobId })
+        .from(applications);
       const jobIdSet = new Set(companyJobs.map((j) => j.id));
       appCount = apps.filter((a) => jobIdSet.has(a.jobId)).length;
     }
@@ -39,11 +43,10 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="font-display text-3xl font-medium tracking-tight">
-        Employer dashboard
+        Dashboard
       </h1>
       <p className="mt-2 text-[var(--muted)]">
-        Overview for {current.profile.fullName}. Job editor and kanban arrive in
-        Phase 2.
+        Welcome back, {current.profile.fullName}.
       </p>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -65,13 +68,12 @@ export default async function DashboardPage() {
         <h2 className="font-display text-xl font-medium">Your companies</h2>
         {memberships.length === 0 ? (
           <div className="mt-4 border border-[var(--line)] bg-[var(--paper)] p-6">
-            <p className="font-display text-lg">No company yet</p>
+            <p className="font-display text-lg">Create your company profile</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              Phase 2 adds company creation. Until then, browse the public board
-              seeded with sample employers.
+              Set up your company to post roles and review applicants.
             </p>
-            <Link href="/jobs" className="mt-4 inline-block">
-              <Button variant="secondary">Browse jobs</Button>
+            <Link href="/companies" className="mt-4 inline-block">
+              <Button variant="secondary">Browse companies</Button>
             </Link>
           </div>
         ) : (
@@ -84,7 +86,7 @@ export default async function DashboardPage() {
                 <div>
                   <p className="font-display text-lg">{company.name}</p>
                   <p className="font-mono-data text-xs text-[var(--muted)]">
-                    {role} · {company.subscriptionTier}
+                    {role}
                   </p>
                 </div>
                 <Link

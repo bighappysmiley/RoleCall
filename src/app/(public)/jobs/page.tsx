@@ -90,7 +90,7 @@ export default async function JobsPage({
           Job board
         </h1>
         <p className="text-[var(--muted)]">
-          Search open roles. Paid placement shows a signal rail.
+          Search by keyword, location, and work type.
         </p>
       </div>
 

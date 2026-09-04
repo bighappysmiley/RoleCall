@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
+import Link from "next/link";
 import { getCurrentProfile } from "@/actions/auth";
 import { updateProfileAction } from "@/actions/profile";
 import { Button } from "@/components/ui/button";
@@ -35,27 +36,35 @@ export default async function ProfilePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="font-display text-3xl font-medium tracking-tight">
-        Candidate profile
+        Your profile
       </h1>
       <p className="mt-2 text-[var(--muted)]">
-        Keep this current so one-click apply works in Phase 2.
+        Keep this up to date so employers see who you are.
       </p>
 
-      <form action={updateProfileAction} className="mt-8 space-y-4 border border-[var(--line)] p-5">
+      <form
+        action={updateProfileAction}
+        className="mt-8 space-y-4 border border-[var(--line)] p-5"
+      >
         <div className="space-y-1.5">
           <Label htmlFor="fullName">Full name</Label>
           <Input id="fullName" name="fullName" defaultValue={p.fullName} required />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="headline">Headline</Label>
-          <Input id="headline" name="headline" defaultValue={p.headline ?? ""} />
+          <Input
+            id="headline"
+            name="headline"
+            defaultValue={p.headline ?? ""}
+            placeholder="e.g. Product designer in Chicago"
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="location">Location</Label>
           <Input id="location" name="location" defaultValue={p.location ?? ""} />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="bio">Bio</Label>
+          <Label htmlFor="bio">About you</Label>
           <textarea
             id="bio"
             name="bio"
@@ -70,10 +79,14 @@ export default async function ProfilePage() {
       <section className="mt-10">
         <h2 className="font-display text-xl font-medium">Applications</h2>
         {apps.length === 0 ? (
-          <p className="mt-3 text-sm text-[var(--muted)]">
-            No applications yet. Browse the board and apply when Phase 2 opens
-            the apply flow — for now you can explore roles.
-          </p>
+          <div className="mt-3 border border-[var(--line)] bg-[var(--fog)] p-5">
+            <p className="text-sm text-[var(--muted)]">
+              You haven&apos;t applied to any roles yet.
+            </p>
+            <Link href="/jobs" className="mt-4 inline-block">
+              <Button variant="secondary">Browse open roles</Button>
+            </Link>
+          </div>
         ) : (
           <ul className="mt-4 space-y-2">
             {apps.map((a) => (
@@ -82,7 +95,12 @@ export default async function ProfilePage() {
                 className="flex items-center justify-between border border-[var(--line)] px-4 py-3"
               >
                 <div>
-                  <p className="font-medium">{a.jobTitle}</p>
+                  <Link
+                    href={`/jobs/${a.companySlug}/${a.jobSlug}`}
+                    className="font-medium hover:underline"
+                  >
+                    {a.jobTitle}
+                  </Link>
                   <p className="text-sm text-[var(--muted)]">{a.companyName}</p>
                 </div>
                 <span className="font-mono-data text-xs uppercase tracking-wide text-[var(--muted)]">
