@@ -1,25 +1,29 @@
 # ENV
 
-**Netlify → rolecallats → Environment variables**  
-Neon copies: **https://console.neon.tech → RoleCall**  
-Then **Deploys → Trigger deploy**.
+**Netlify → rolecallats → Environment variables → Add a variable**  
+Neon: **console.neon.tech → RoleCall**  
+Tick **Contains secret values** only when Secret is Yes.  
+Fill **all three** scopes. Then **Deploys → Trigger deploy**.
 
-If Netlify asks “Contains secret values”, use the Secret column.
+| Call it this | Secret? | Production | Deploy Previews | Branch deploys |
+| --- | --- | --- | --- | --- |
+| DATABASE_URL | Yes | Connect → **Connection pooling** ON → copy | Same as Production | Same as Production |
+| DATABASE_URL_UNPOOLED | Yes | Connect → **Connection pooling** OFF → copy | Same as Production | Same as Production |
+| NEON_AUTH_BASE_URL | No | Auth → URL | Same as Production | Same as Production |
+| NEON_AUTH_COOKIE_SECRET | Yes | Auth → cookie secret | Same as Production | Same as Production |
+| NEXT_PUBLIC_SITE_URL | No | `https://rolecallats.netlify.app` | `https://rolecallats.netlify.app` | `https://rolecallats.netlify.app` |
+| CRON_SECRET | Yes | Make up a long random password | Same password | Same password |
+| STRIPE_SECRET_KEY | Yes | Stripe **test** secret. Or skip this row. | Same as Production | Same as Production |
+| STRIPE_WEBHOOK_SECRET | Yes | Stripe webhook signing secret. Or skip this row. | Same as Production | Same as Production |
 
-| Call it this | Copy it from here | Secret? |
-| --- | --- | --- |
-| DATABASE_URL | Connect → **Connection pooling** ON → copy | Yes |
-| DATABASE_URL_UNPOOLED | Connect → **Connection pooling** OFF → copy | Yes |
-| NEON_AUTH_BASE_URL | Auth → URL | No |
-| NEON_AUTH_COOKIE_SECRET | Auth → cookie secret | Yes |
-| NEXT_PUBLIC_SITE_URL | Type `https://rolecallats.netlify.app` | No |
-| CRON_SECRET | Make up a long random password | Yes |
-| STRIPE_SECRET_KEY | Stripe → Developers → API keys → **test** secret. Skip if no checkout. | Yes |
-| STRIPE_WEBHOOK_SECRET | Stripe → Developers → Webhooks → signing secret. Skip if no checkout. | Yes |
+Do **not** add `NEXT_PUBLIC_ROLECALL_PREVIEW` on rolecallats.
 
-**Preview site** (Netlify → **rolecall-preview**): same list, except these two.
+---
 
-| Call it this | Copy it from here | Secret? |
-| --- | --- | --- |
-| NEXT_PUBLIC_SITE_URL | Type `https://rolecall-preview.netlify.app` | No |
-| NEXT_PUBLIC_ROLECALL_PREVIEW | Type `true` | No |
+**Preview site** — Netlify → **rolecall-preview** → Environment variables  
+Same rows as above, except these two. Still fill all three scopes.
+
+| Call it this | Secret? | Production | Deploy Previews | Branch deploys |
+| --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_SITE_URL | No | `https://rolecall-preview.netlify.app` | `https://rolecall-preview.netlify.app` | `https://rolecall-preview.netlify.app` |
+| NEXT_PUBLIC_ROLECALL_PREVIEW | No | `true` | `true` | `true` |
