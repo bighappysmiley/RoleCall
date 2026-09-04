@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { inviteMemberAction, removeMemberAction } from "@/lib/actions/team";
 import type { ActionState } from "@/lib/auth/state";
 import { CopyLink } from "@/components/copy-link";
+import { RefreshOnSuccess } from "@/components/refresh-on-success";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +31,7 @@ export function InviteForm({
 
   return (
     <form action={formAction} className="grid max-w-xl gap-3 sm:grid-cols-[1fr_9rem_auto]">
+      <RefreshOnSuccess state={state} />
       <input type="hidden" name="companyId" value={companyId} />
       <div className="grid gap-1.5">
         <Label htmlFor="email">Email</Label>

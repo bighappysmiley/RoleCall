@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { createCompanyAction, updateCompanyAction } from "@/lib/actions/companies";
 import type { ActionState } from "@/lib/auth/state";
 import { Button } from "@/components/ui/button";
+import { RefreshOnSuccess } from "@/components/refresh-on-success";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,7 +26,12 @@ export function CompanyForm({
   );
 
   return (
-    <form action={formAction} className="flex max-w-2xl flex-col gap-4">
+    <form
+      key={company ? `${company.id}-${company.slug}` : "new"}
+      action={formAction}
+      className="flex max-w-2xl flex-col gap-4"
+    >
+      <RefreshOnSuccess state={state} />
       {company ? <input type="hidden" name="companyId" value={company.id} /> : null}
       <div className="grid gap-1.5">
         <Label htmlFor="name">Company name</Label>

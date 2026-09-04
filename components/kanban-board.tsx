@@ -8,6 +8,7 @@ import {
 import { formatStage } from "@/lib/format";
 import { APPLICATION_STAGES, type ApplicationStage } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { RefreshOnSuccess } from "@/components/refresh-on-success";
 import { Textarea } from "@/components/ui/textarea";
 
 export type PipelineCard = {
@@ -56,7 +57,7 @@ export function KanbanBoard({
                   ) : (
                     <p className="mt-2 text-sm text-muted-foreground">No cover note.</p>
                   )}
-                  {canMove ? <StageForm card={card} /> : null}
+                  {canMove ? <StageForm key={`${card.id}-${card.stage}`} card={card} /> : null}
                   <details className="mt-3">
                     <summary className="cursor-pointer font-mono text-[10px] tracking-wider text-muted-foreground">
                       NOTES ({card.notes.length})
@@ -88,6 +89,7 @@ function StageForm({ card }: { card: PipelineCard }) {
 
   return (
     <form action={formAction} className="mt-3 flex items-center gap-2">
+      <RefreshOnSuccess state={state} />
       <input type="hidden" name="applicationId" value={card.id} />
       <select
         name="stage"
@@ -118,6 +120,7 @@ function NoteForm({ applicationId }: { applicationId: string }) {
 
   return (
     <form action={formAction} className="mt-3 grid gap-2">
+      <RefreshOnSuccess state={state} />
       <input type="hidden" name="applicationId" value={applicationId} />
       <Textarea name="body" rows={3} placeholder="Private hiring note" />
       {state && "error" in state ? (

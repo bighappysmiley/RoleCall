@@ -12,6 +12,7 @@ import {
 } from "@/lib/types";
 import { formatEmployment, formatJobStatus, formatWorkplace } from "@/lib/format";
 import { Button } from "@/components/ui/button";
+import { RefreshOnSuccess } from "@/components/refresh-on-success";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,7 +33,12 @@ export function JobForm({
   );
 
   return (
-    <form action={formAction} className="flex max-w-2xl flex-col gap-4">
+    <form
+      key={job ? `${job.id}-${job.status}` : "new"}
+      action={formAction}
+      className="flex max-w-2xl flex-col gap-4"
+    >
+      <RefreshOnSuccess state={state} />
       <input type="hidden" name="companyId" value={companyId} />
       {job ? <input type="hidden" name="jobId" value={job.id} /> : null}
       <div className="grid gap-1.5">
@@ -164,6 +170,9 @@ export function JobForm({
               </option>
             ))}
           </select>
+          <p className="text-xs text-muted-foreground">
+            Published listings count toward the plan limit and appear on the public board.
+          </p>
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
