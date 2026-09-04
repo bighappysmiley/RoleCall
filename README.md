@@ -10,11 +10,9 @@ Hiring platform by **BigHappySmiley**. Phase 1 foundation: public job board, aut
 
 ## Environment
 
-Committed [`.env`](.env) holds the Neon Free keys so you do **not** paste them into the Netlify UI. The same values are also in [`netlify.toml`](netlify.toml) for build + runtime.
+Values live in [`src/lib/env.ts`](src/lib/env.ts) so Netlify does **not** need dashboard env vars. Optional overrides: committed [`.env`](.env) or local `.env.local`.
 
-Keep [`.env.local`](.env.local) for personal overrides only (gitignored).
-
-To redeploy after a pull: Netlify → **Deploys** → **Trigger deploy** → **Clear cache and deploy site**. No env form filling required.
+Redeploy: Netlify → **Deploys** → **Trigger deploy** → **Clear cache and deploy site**.
 
 ## Local commands (Apple Silicon / Mac)
 
