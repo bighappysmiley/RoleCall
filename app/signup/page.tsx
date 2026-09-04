@@ -3,11 +3,17 @@ import Link from "next/link";
 import { AuthForm, GoogleButton } from "@/components/auth-form";
 import { signUpAction } from "@/lib/auth/actions";
 import { isAuthConfigured } from "@/lib/auth/server";
+import { safeNextPath } from "@/lib/form";
 
 export const metadata: Metadata = { title: "Create account" };
 
-export default async function SignupPage() {
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
   const configured = isAuthConfigured();
+  const next = safeNextPath((await searchParams).next);
 
   return (
     <div className="mx-auto w-full max-w-sm px-4 py-16">
@@ -18,7 +24,7 @@ export default async function SignupPage() {
           : "Add Neon Auth keys to .env.local to turn this on."}
       </p>
       <div className="flex flex-col gap-4">
-        <GoogleButton callbackURL="/onboarding" />
+        <GoogleButton callbackURL={next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding"} />
         <div className="flex items-center gap-3 font-mono text-[10px] tracking-wider text-muted-foreground">
           <span className="h-px flex-1 bg-line" />
           OR
@@ -29,10 +35,14 @@ export default async function SignupPage() {
           submitLabel="Create account"
           pendingLabel="Creating…"
           includeName
+          next={next}
         />
         <p className="text-center text-sm text-muted-foreground">
           Already here?{" "}
-          <Link href="/login" className="text-primary hover:underline">
+          <Link
+            href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"}
+            className="text-primary hover:underline"
+          >
             Sign in
           </Link>
         </p>

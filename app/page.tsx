@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { listPublishedJobs } from "@/lib/queries";
 
 export default async function HomePage() {
-  const jobs = (await listPublishedJobs()).slice(0, 6);
+  const allJobs = await listPublishedJobs();
+  const jobs = allJobs.slice(0, 6);
 
   return (
     <div>
@@ -33,7 +34,7 @@ export default async function HomePage() {
           <dl className="grid grid-cols-3 gap-3 border border-line bg-fog p-4 font-mono text-[11px] tracking-wide">
             <div>
               <dt className="text-muted-foreground">BOARD</dt>
-              <dd className="mt-1 text-sm text-ink">12 demo roles</dd>
+              <dd className="mt-1 text-sm text-ink">{allJobs.length} open</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">PLANS</dt>

@@ -1,4 +1,10 @@
-import type { EmploymentType, WorkplaceType } from "@/lib/types";
+import type {
+  ApplicationStage,
+  EmploymentType,
+  JobStatus,
+  MemberRole,
+  WorkplaceType,
+} from "@/lib/types";
 
 const EMPLOYMENT_LABELS: Record<EmploymentType, string> = {
   full_time: "Full-time",
@@ -19,6 +25,30 @@ export function formatEmployment(type: EmploymentType): string {
 
 export function formatWorkplace(type: WorkplaceType): string {
   return WORKPLACE_LABELS[type];
+}
+
+const STAGE_LABELS: Record<ApplicationStage, string> = {
+  applied: "Applied",
+  screening: "Screening",
+  interview: "Interview",
+  offer: "Offer",
+  hired: "Hired",
+  rejected: "Rejected",
+};
+
+const JOB_STATUS_LABELS: Record<JobStatus, string> = {
+  draft: "Draft",
+  published: "Published",
+  paused: "Paused",
+  closed: "Closed",
+};
+
+export function formatStage(stage: ApplicationStage): string {
+  return STAGE_LABELS[stage];
+}
+
+export function formatJobStatus(status: JobStatus): string {
+  return JOB_STATUS_LABELS[status];
 }
 
 export function formatSalary(options: {
@@ -86,4 +116,8 @@ export function formatPostedAt(date: Date | null): string {
     month: "short",
     day: "numeric",
   });
+}
+
+export function formatRole(role: MemberRole): string {
+  return role.charAt(0).toUpperCase() + role.slice(1);
 }

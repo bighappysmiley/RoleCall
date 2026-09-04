@@ -30,7 +30,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { companySlug, jobSlug } = await params;
   const job = await getJobBySlugs(companySlug, jobSlug);
-  if (!job) {
+  if (!job || job.status !== "published") {
     return { title: "Job" };
   }
   return { title: `${job.title} at ${job.company.name}` };
@@ -42,12 +42,12 @@ export default async function JobDetailPage({
   params: Promise<Params>;
 }) {
   const { companySlug, jobSlug } = await params;
-  const job = await getJobBySlugs(companySlug, jobSlug);
+  const session = await getOptionalSession();
+  const job = await getJobBySlugs(companySlug, jobSlug, session?.user?.id);
   if (!job) {
     notFound();
   }
 
-  const session = await getOptionalSession();
   const profile = session?.user
     ? await ensureProfile({
         id: session.user.id,
@@ -57,7 +57,9 @@ export default async function JobDetailPage({
       })
     : null;
 
-  await recordJobView(job.id, session?.user?.id);
+  if (job.status === "published") {
+    await recordJobView(job.id, session?.user?.id);
+  }
 
   const applied = session?.user
     ? Boolean(await getExistingApplication(job.id, session.user.id))
@@ -137,6 +139,11 @@ export default async function JobDetailPage({
                 </Link>
               </Button>
             </>
+          ) : job.status !== "published" ? (
+            <p className="text-sm text-muted-foreground">
+              This listing is not public. Candidates cannot apply until it is
+              published.
+            </p>
           ) : profile?.accountType !== "candidate" ? (
             <p className="text-sm text-muted-foreground">
               Applications are for candidate accounts. Switch during onboarding

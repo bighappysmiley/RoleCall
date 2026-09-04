@@ -24,6 +24,44 @@ export type ApplicationStage =
 
 export type MemberRole = "owner" | "admin" | "recruiter" | "viewer";
 
+export type MemberStatus = "active" | "invited" | "removed";
+
+export const APPLICATION_STAGES: ApplicationStage[] = [
+  "applied",
+  "screening",
+  "interview",
+  "offer",
+  "hired",
+  "rejected",
+];
+
+export const EMPLOYMENT_TYPES: EmploymentType[] = [
+  "full_time",
+  "part_time",
+  "contract",
+  "internship",
+];
+
+export const WORKPLACE_TYPES: WorkplaceType[] = [
+  "remote",
+  "hybrid",
+  "onsite",
+];
+
+export const JOB_STATUSES: JobStatus[] = [
+  "draft",
+  "published",
+  "paused",
+  "closed",
+];
+
+export type JobBoardFilters = {
+  q?: string;
+  type?: EmploymentType;
+  workplace?: WorkplaceType;
+  location?: string;
+};
+
 export type ProfileLinks = {
   website?: string;
   linkedin?: string;

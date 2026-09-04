@@ -15,8 +15,8 @@ export default function PricingPage() {
       </p>
       <h1 className="mt-2 font-heading text-4xl">Pricing</h1>
       <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-        Limits are enforced on the server when billing ships. Checkout is test
-        mode only, later. You can sign up for free today.
+        Job and seat limits are already enforced. Checkout and upgrades come
+        later. You can sign up for free today.
       </p>
       <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {PLANS.map((plan) => (

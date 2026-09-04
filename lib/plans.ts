@@ -1,3 +1,4 @@
+import { PlanLimitError } from "@/lib/errors";
 import type { SubscriptionTier } from "@/lib/types";
 
 export type PlanDefinition = {
@@ -107,4 +108,69 @@ export function effectiveTier(
   overrideTier: SubscriptionTier | null,
 ): SubscriptionTier {
   return overrideTier ?? subscriptionTier;
+}
+
+const TIER_ORDER: SubscriptionTier[] = ["free", "pro", "pro_plus", "enterprise"];
+
+export function getPlan(tier: SubscriptionTier): PlanDefinition {
+  const plan = PLANS.find((item) => item.id === tier);
+  if (!plan) {
+    return PLANS[0];
+  }
+  return plan;
+}
+
+export function nextPlan(tier: SubscriptionTier): PlanDefinition | null {
+  const index = TIER_ORDER.indexOf(tier);
+  if (index < 0 || index === TIER_ORDER.length - 1) {
+    return null;
+  }
+  return getPlan(TIER_ORDER[index + 1]);
+}
+
+export function companyPlan(
+  subscriptionTier: SubscriptionTier,
+  overrideTier: SubscriptionTier | null,
+): PlanDefinition {
+  return getPlan(effectiveTier(subscriptionTier, overrideTier));
+}
+
+function limitMessage(
+  plan: PlanDefinition,
+  kind: "active jobs" | "team seats",
+  limit: number,
+): string {
+  const upgrade = nextPlan(plan.id);
+  if (!upgrade) {
+    return `Your ${plan.name} plan allows ${limit} ${kind}.`;
+  }
+  const nextLimit = kind === "active jobs" ? upgrade.activeJobs : upgrade.seats;
+  const nextText = nextLimit === "unlimited" ? "unlimited" : String(nextLimit);
+  return `Your ${plan.name} plan allows ${limit} ${kind}. Upgrade to ${upgrade.name} for ${nextText}.`;
+}
+
+export function assertJobLimit(plan: PlanDefinition, publishedCount: number) {
+  if (plan.activeJobs === "unlimited") {
+    return;
+  }
+  if (publishedCount >= plan.activeJobs) {
+    throw new PlanLimitError(limitMessage(plan, "active jobs", plan.activeJobs), {
+      limitName: "active jobs",
+      currentPlan: plan.name,
+      nextPlan: nextPlan(plan.id)?.name ?? null,
+    });
+  }
+}
+
+export function assertSeatLimit(plan: PlanDefinition, seatCount: number) {
+  if (plan.seats === "unlimited") {
+    return;
+  }
+  if (seatCount >= plan.seats) {
+    throw new PlanLimitError(limitMessage(plan, "team seats", plan.seats), {
+      limitName: "team seats",
+      currentPlan: plan.name,
+      nextPlan: nextPlan(plan.id)?.name ?? null,
+    });
+  }
 }

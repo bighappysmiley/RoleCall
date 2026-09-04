@@ -18,8 +18,8 @@ export function ApplyForm({
 
   if (alreadyApplied || (state && "success" in state)) {
     return (
-      <p className="border border-line bg-fog px-4 py-3 text-sm">
-        Application on file. You will see status changes here later.
+            <p className="border border-line bg-fog px-4 py-3 text-sm">
+        Application on file. Watch status from your dashboard.
       </p>
     );
   }

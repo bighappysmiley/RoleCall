@@ -19,11 +19,8 @@ import {
   toggleSavedJob,
   updateProfile,
 } from "@/lib/queries";
-
-function formString(formData: FormData, key: string): string {
-  const value = formData.get(key);
-  return typeof value === "string" ? value : "";
-}
+import { errorMessage } from "@/lib/errors";
+import { formString, safeNextPath } from "@/lib/form";
 
 export async function signUpAction(
   _prev: ActionState,
@@ -52,7 +49,8 @@ export async function signUpAction(
     });
   }
 
-  redirect("/onboarding");
+  const next = safeNextPath(formString(formData, "next"));
+  redirect(next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding");
 }
 
 export async function signInAction(
@@ -73,16 +71,20 @@ export async function signInAction(
   }
 
   const session = await getOptionalSession();
-  if (session?.user) {
-    await ensureProfile({
-      id: session.user.id,
-      name: session.user.name,
-      email: session.user.email,
-      image: session.user.image,
-    });
-  }
+  const profile = session?.user
+    ? await ensureProfile({
+        id: session.user.id,
+        name: session.user.name,
+        email: session.user.email,
+        image: session.user.image,
+      })
+    : null;
 
-  redirect("/dashboard");
+  const next = safeNextPath(formString(formData, "next"));
+  if (!profile?.accountType) {
+    redirect(next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding");
+  }
+  redirect(next ?? "/dashboard");
 }
 
 export async function signOutAction() {
@@ -158,7 +160,8 @@ export async function completeOnboardingAction(
     image: session.user.image,
   });
   await setAccountType(session.user.id, parsed.data.accountType);
-  redirect("/dashboard");
+  const next = safeNextPath(formString(formData, "next"));
+  redirect(next ?? "/dashboard");
 }
 
 export async function updateProfileAction(
@@ -225,11 +228,15 @@ export async function applyToJobAction(
     return { error: "Switch to a candidate account to apply." };
   }
 
-  await applyToJob({
-    jobId: parsed.data.jobId,
-    candidateId: session.user.id,
-    coverLetter: parsed.data.coverLetter ?? "",
-  });
+  try {
+    await applyToJob({
+      jobId: parsed.data.jobId,
+      candidateId: session.user.id,
+      coverLetter: parsed.data.coverLetter ?? "",
+    });
+  } catch (error) {
+    return { error: errorMessage(error, "Could not submit the application.") };
+  }
   return { success: "Application sent." };
 }
 

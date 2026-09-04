@@ -28,16 +28,19 @@ export function AuthForm({
   submitLabel,
   pendingLabel,
   includeName = false,
+  next,
 }: {
   action: (prev: ActionState, formData: FormData) => Promise<ActionState>;
   submitLabel: string;
   pendingLabel: string;
   includeName?: boolean;
+  next?: string;
 }) {
   const [state, formAction, pending] = useActionState(action, null);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       {includeName ? (
         <div className="grid gap-1.5">
           <Label htmlFor="name">Name</Label>

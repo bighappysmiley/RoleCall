@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export function OnboardingForm() {
+export function OnboardingForm({ next }: { next?: string }) {
   const [state, formAction, pending] = useActionState(
     completeOnboardingAction,
     null,
@@ -21,6 +21,7 @@ export function OnboardingForm() {
 
   return (
     <form action={formAction} className="grid gap-4 sm:grid-cols-2">
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <button
         type="submit"
         name="accountType"
@@ -42,8 +43,8 @@ export function OnboardingForm() {
       >
         <span className="font-heading text-xl">I am hiring</span>
         <p className="mt-2 text-sm text-muted-foreground">
-          Company workspace, job posts, and the pipeline come next.
-        </p>
+        Company workspace, job posts, and the pipeline.
+      </p>
       </button>
       {state && "error" in state ? (
         <p className="text-sm text-destructive sm:col-span-2">{state.error}</p>

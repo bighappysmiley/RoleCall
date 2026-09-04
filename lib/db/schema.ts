@@ -166,9 +166,9 @@ export const companyMembers = pgTable(
     companyId: uuid("company_id")
       .notNull()
       .references(() => companies.id, { onDelete: "cascade" }),
-    userId: uuid("user_id")
-      .notNull()
-      .references(() => profiles.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").references(() => profiles.id, {
+      onDelete: "cascade",
+    }),
     role: memberRoleEnum("role").notNull().default("viewer"),
     status: memberStatusEnum("status").notNull().default("invited"),
     invitedEmail: text("invited_email"),
@@ -183,6 +183,7 @@ export const companyMembers = pgTable(
       table.companyId,
       table.userId,
     ),
+    unique("company_members_invite_token_uidx").on(table.inviteToken),
     index("company_members_user_idx").on(table.userId),
   ],
 );

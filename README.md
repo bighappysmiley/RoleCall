@@ -2,16 +2,18 @@
 
 RoleCall is a hiring website by **BigHappySmiley**. Companies post jobs. People apply. Paid listings are labeled so the board stays honest.
 
-This first version is the public board plus sign-in. You can browse jobs without connecting anything. Sign-in, the dashboard, and saving a profile need a free Neon database, which is already created for this project.
+This version is the public board plus the hiring workspace: company profile, jobs, applicant pipeline, and team invites. Sign-in, saving a profile, posting, applying, and invites need a free Neon database, which is already created for this project. Browse still works without one (demo jobs).
 
 ## What you can click today
 
-- Home, Jobs, Companies, Pricing — work even offline (demo jobs)
+- Home, Jobs (search and filters), Companies, Pricing — work even offline (demo jobs)
 - Sign up / Sign in / Google / forgot password — need Neon Auth keys
 - Onboarding (hiring vs looking), Dashboard, Profile — need Neon keys
-- Apply and save a job — need Neon keys and a seeded database
+- Employers: create a company, post/edit jobs, publish, pipeline (kanban), invite teammates with a copyable link
+- Candidates: apply, save jobs, track application status
+- Free plan limits: 2 published jobs and 2 team seats (active + pending invites). The site names the next plan if you hit a limit.
 
-Job posting, the hiring pipeline, billing, custom domains, and email come later. Say **continue** when you want the next phase.
+Billing, custom careers domains, platform admin screens, and email delivery come later. Invite someone by copying the link — there is no email send yet.
 
 ## One-time setup (Mac)
 
@@ -60,9 +62,10 @@ Open http://localhost:3000
 ## Useful commands
 
 ```bash
-npm run dev      # local site
-npm run seed     # 3 companies, 12 jobs
-npm run build    # production check
+npm run dev         # local site
+npm run seed        # 3 companies, 12 jobs
+npm run db:migrate  # apply database changes
+npm run build       # production check
 ```
 
 ## Free-tier notes

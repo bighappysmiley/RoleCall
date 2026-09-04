@@ -1,13 +1,34 @@
 import type { Metadata } from "next";
 import { JobCard } from "@/components/job-card";
+import { JobsFilter } from "@/components/jobs-filter";
+import { jobBoardFilterSchema } from "@/lib/auth/schemas";
 import { listPublishedJobs } from "@/lib/queries";
+import type { JobBoardFilters } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Jobs",
 };
 
-export default async function JobsPage() {
-  const jobs = await listPublishedJobs();
+function firstParam(value: string | string[] | undefined): string | undefined {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const trimmed = raw?.trim();
+  return trimmed || undefined;
+}
+
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const parsed = jobBoardFilterSchema.safeParse({
+    q: firstParam(params.q),
+    type: firstParam(params.type),
+    workplace: firstParam(params.workplace),
+    location: firstParam(params.location),
+  });
+  const filters: JobBoardFilters = parsed.success ? parsed.data : {};
+  const jobs = await listPublishedJobs(filters);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -19,18 +40,27 @@ export default async function JobsPage() {
           <h1 className="mt-2 font-heading text-4xl">Jobs</h1>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             Featured sits at the top, then credit-promoted, then the rest.
-            Search and filters come in the next build.
+            Search and filters rank the board — they do not hide paid labels.
           </p>
         </div>
         <p className="font-mono text-[11px] tracking-wide text-muted-foreground">
           {jobs.length} OPEN
         </p>
       </div>
-      <div className="grid gap-3">
-        {jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
+      <div className="mb-6">
+        <JobsFilter filters={filters} />
       </div>
+      {jobs.length === 0 ? (
+        <p className="border border-line bg-fog px-4 py-6 text-sm text-muted-foreground">
+          No published roles match those filters yet.
+        </p>
+      ) : (
+        <div className="grid gap-3">
+          {jobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

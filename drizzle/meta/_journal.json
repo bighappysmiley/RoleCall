@@ -8,6 +8,13 @@
       "when": 1788439297959,
       "tag": "0000_eager_black_cat",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788486437562,
+      "tag": "0001_light_maximus",
+      "breakpoints": true
     }
   ]
 }

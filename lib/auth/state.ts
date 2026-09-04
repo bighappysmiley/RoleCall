@@ -1,1 +1,4 @@
-export type ActionState = { error: string } | { success: string } | null;
+export type ActionState =
+  | { error: string }
+  | { success: string; inviteUrl?: string }
+  | null;
