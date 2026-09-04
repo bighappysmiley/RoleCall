@@ -13,6 +13,7 @@ import {
 } from "@/lib/db/schema";
 import { rankJobs } from "@/lib/ranking";
 import { uniqueSlug } from "@/lib/slug";
+import { requireUuid } from "@/lib/form";
 import type {
   AccountType,
   ApplicationStage,
@@ -702,8 +703,15 @@ export async function updateCompany(companyId: string, input: CompanyWriteInput)
 }
 
 export async function deleteCompany(companyId: string) {
+  const id = requireUuid(companyId, "company");
   const db = requireDb();
-  await db.delete(companies).where(eq(companies.id, companyId));
+  const [removed] = await db
+    .delete(companies)
+    .where(eq(companies.id, id))
+    .returning({ id: companies.id });
+  if (!removed) {
+    throw new Error("Company not found.");
+  }
 }
 
 export type JobWriteInput = {
@@ -813,8 +821,15 @@ export async function updateJob(jobId: string, input: JobWriteInput) {
 }
 
 export async function deleteJob(jobId: string) {
+  const id = requireUuid(jobId, "job");
   const db = requireDb();
-  await db.delete(jobs).where(eq(jobs.id, jobId));
+  const [removed] = await db
+    .delete(jobs)
+    .where(eq(jobs.id, id))
+    .returning({ id: jobs.id });
+  if (!removed) {
+    throw new Error("Job not found.");
+  }
 }
 
 export async function listCompanyMembers(companyId: string) {

@@ -51,6 +51,17 @@ export function safeNextPath(value: string | undefined | null): string | undefin
   return value;
 }
 
+export function requireUuid(value: string, label = "id"): string {
+  if (
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+      value,
+    )
+  ) {
+    throw new Error(`That ${label} is not valid.`);
+  }
+  return value;
+}
+
 export function parseOptionalYear(value: string): number | null {
   const trimmed = value.trim();
   if (!trimmed) {

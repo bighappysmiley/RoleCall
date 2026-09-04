@@ -5,6 +5,7 @@ import {
   canViewCompany,
   type CompanyAccess,
 } from "@/lib/permissions";
+import { requireUuid } from "@/lib/form";
 import {
   ensureProfile,
   getActiveMembership,
@@ -95,17 +96,23 @@ export async function loadDashboardContext() {
 }
 
 export async function requireCompanyAccess(companyId: string) {
+  let id: string;
+  try {
+    id = requireUuid(companyId, "company");
+  } catch {
+    redirect("/dashboard");
+  }
   const { user, profile } = await requireOnboardedUser();
-  const membership = await getActiveMembership(user.id, companyId);
+  const membership = await getActiveMembership(user.id, id);
   const access: CompanyAccess = {
-    companyId,
+    companyId: id,
     isPlatformAdmin: profile.isPlatformAdmin,
     role: membership?.role ?? null,
   };
   if (!canViewCompany(access)) {
     redirect("/dashboard");
   }
-  const company = await getCompanyById(companyId);
+  const company = await getCompanyById(id);
   if (!company) {
     redirect("/dashboard");
   }
