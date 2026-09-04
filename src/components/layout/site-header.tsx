@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/brand/wordmark";
+import { Button } from "@/components/ui/button";
 import { signOutAction } from "@/actions/auth";
 
 type Props = {
@@ -9,12 +10,12 @@ type Props = {
 
 export function SiteHeader({ userName, accountType }: Props) {
   return (
-    <header className="border-b border-[var(--line)] bg-[var(--paper)]">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4">
+    <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--paper)]">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-8 px-4">
         <Wordmark />
-        <nav className="flex items-center gap-4 text-sm text-[var(--muted)]">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--muted)] md:flex">
           <Link href="/jobs" className="hover:text-[var(--ink)]">
-            Jobs
+            Find work
           </Link>
           <Link href="/companies" className="hover:text-[var(--ink)]">
             Companies
@@ -23,46 +24,32 @@ export function SiteHeader({ userName, accountType }: Props) {
             Pricing
           </Link>
         </nav>
-        <div className="ml-auto flex items-center gap-3 text-sm">
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
           {userName ? (
             <>
-              <span className="hidden text-[var(--muted)] sm:inline">
+              <span className="hidden text-sm text-[var(--muted)] sm:inline">
                 {userName}
               </span>
-              {accountType === "employer" ? (
-                <Link
-                  href="/dashboard"
-                  className="text-[var(--primary)] hover:underline"
-                >
-                  Dashboard
-                </Link>
-              ) : (
-                <Link
-                  href="/profile"
-                  className="text-[var(--primary)] hover:underline"
-                >
-                  Profile
-                </Link>
-              )}
+              <Link href={accountType === "employer" ? "/dashboard" : "/profile"}>
+                <Button variant="secondary" size="sm">
+                  {accountType === "employer" ? "Dashboard" : "Profile"}
+                </Button>
+              </Link>
               <form action={signOutAction}>
-                <button
-                  type="submit"
-                  className="text-[var(--muted)] hover:text-[var(--ink)]"
-                >
-                  Sign out
-                </button>
+                <Button type="submit" variant="ghost" size="sm">
+                  Log out
+                </Button>
               </form>
             </>
           ) : (
             <>
-              <Link href="/login" className="hover:text-[var(--ink)]">
-                Log in
+              <Link href="/login" className="hidden sm:inline">
+                <Button variant="ghost" size="sm">
+                  Log in
+                </Button>
               </Link>
-              <Link
-                href="/signup"
-                className="bg-[var(--primary)] px-3 py-1.5 text-white"
-              >
-                Sign up
+              <Link href="/signup">
+                <Button size="sm">Sign up</Button>
               </Link>
             </>
           )}

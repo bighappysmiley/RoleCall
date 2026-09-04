@@ -12,8 +12,13 @@ export const PLAN_LIMITS: Record<
   { activeJobs: number | null; seats: number | null; label: string; priceLabel: string }
 > = {
   free: { activeJobs: 2, seats: 2, label: "Free", priceLabel: "$0" },
-  pro: { activeJobs: 10, seats: 5, label: "Pro", priceLabel: "$49/mo" },
-  pro_plus: { activeJobs: 40, seats: 15, label: "Pro Plus", priceLabel: "$149/mo" },
+  pro: { activeJobs: 10, seats: 5, label: "Post a job", priceLabel: "$49/mo" },
+  pro_plus: {
+    activeJobs: 40,
+    seats: 15,
+    label: "Hiring Suite",
+    priceLabel: "$149/mo",
+  },
   enterprise: {
     activeJobs: null,
     seats: null,
@@ -49,9 +54,9 @@ export function limitErrorMessage(
   const current = limits.seats ?? "unlimited";
   const next =
     tiers === "free"
-      ? `Upgrade to Pro for ${PLAN_LIMITS.pro.seats}.`
+      ? `Upgrade to ${PLAN_LIMITS.pro.label} for ${PLAN_LIMITS.pro.seats}.`
       : tiers === "pro"
-        ? `Upgrade to Pro Plus for ${PLAN_LIMITS.pro_plus.seats}.`
-        : "Contact sales for Enterprise.";
+        ? `Upgrade to ${PLAN_LIMITS.pro_plus.label} for ${PLAN_LIMITS.pro_plus.seats}.`
+        : "Contact us for Enterprise.";
   return `${limits.label} plan includes ${current} team members. ${next}`;
 }

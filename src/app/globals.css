@@ -1,44 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #111418;
+  --ink: #0d0c22;
   --paper: #ffffff;
-  --fog: #f4f5f7;
-  --line: #e3e6ea;
-  --primary: #1f6feb;
-  --signal: #f0b429;
-  --muted: #5c6570;
-  --danger: #c62828;
-  --background: var(--paper);
-  --foreground: var(--ink);
-}
-
-.dark {
-  --ink: #f2f4f7;
-  --paper: #0f1216;
-  --fog: #171b21;
-  --line: #2a313a;
-  --primary: #4c8dff;
-  --signal: #f0b429;
-  --muted: #9aa3ad;
-  --danger: #ff6b6b;
-  --background: var(--paper);
+  --canvas: #f8f7f4;
+  --fog: #f3f2ef;
+  --line: #e7e7e9;
+  --muted: #6e6d7a;
+  --primary: #ea4c89;
+  --primary-hover: #f082ac;
+  --primary-soft: #fce8ef;
+  --signal: #ea4c89;
+  --danger: #e54b4b;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgba(13, 12, 34, 0.04), 0 4px 16px rgba(13, 12, 34, 0.04);
+  --shadow-lift: 0 8px 28px rgba(13, 12, 34, 0.08);
+  --background: var(--canvas);
   --foreground: var(--ink);
 }
 
 @theme inline {
   --color-ink: var(--ink);
   --color-paper: var(--paper);
+  --color-canvas: var(--canvas);
   --color-fog: var(--fog);
   --color-line: var(--line);
+  --color-muted: var(--muted);
   --color-primary: var(--primary);
   --color-signal: var(--signal);
-  --color-muted: var(--muted);
   --color-danger: var(--danger);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-display: var(--font-instrument);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-jakarta);
   --font-mono: var(--font-jetbrains);
 }
 
@@ -46,10 +41,11 @@
   border-color: var(--line);
 }
 
+html,
 body {
-  background: var(--paper);
+  background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-display {
@@ -61,53 +57,78 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.hairline {
+.surface-card {
+  background: var(--paper);
   border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-.promotion-rail {
-  position: relative;
+.surface-card-lift:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
 }
 
-.promotion-rail::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-}
-
-.promotion-rail[data-placement="pro"]::before {
-  background: var(--signal);
-}
-
-.promotion-rail[data-placement="promoted"]::before {
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--signal) 0 6px,
-    transparent 6px 10px
-  );
-}
-
-.promotion-rail[data-placement="featured"]::before {
-  background: var(--signal);
-}
-
-.promotion-rail[data-placement="featured"] .placement-tab {
+.badge {
   display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  background: var(--fog);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
 }
 
-.placement-tab {
-  display: none;
+.badge-promoted {
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--line));
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.skill-chip {
+  display: inline-flex;
   align-items: center;
-  background: var(--signal);
-  color: #111418;
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  padding: 2px 6px;
-  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--fog);
+  border-radius: 8px;
+  padding: 5px 8px;
+}
+
+.hero-glow {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 20%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 15% 80%, color-mix(in srgb, #2d6a6a 10%, transparent), transparent 55%),
+    var(--canvas);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-fade-up {
+  animation: fade-up 0.55s ease-out both;
+}
+
+.anim-delay-1 {
+  animation-delay: 0.08s;
+}
+
+.anim-delay-2 {
+  animation-delay: 0.16s;
+}
+
+.anim-delay-3 {
+  animation-delay: 0.24s;
 }
 
 @media (prefers-reduced-motion: reduce) {

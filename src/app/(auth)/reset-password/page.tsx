@@ -19,38 +19,50 @@ export default function ResetPasswordPage() {
   const sent = state !== null && !state?.error;
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-12">
-      <h1 className="font-display text-3xl font-medium tracking-tight">
-        Reset password
-      </h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">
-        We&apos;ll email a reset link if that address has an account.
-      </p>
-
-      {sent ? (
-        <p className="mt-6 border border-[var(--line)] bg-[var(--fog)] p-4 text-sm">
-          Check your inbox for the next step.
+    <div className="hero-glow flex min-h-[70vh] items-center justify-center px-4 py-16">
+      <div className="surface-card w-full max-w-md p-8">
+        <h1 className="font-display text-3xl font-bold tracking-tight">
+          Reset password
+        </h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          Enter your email and we’ll send a link to choose a new password.
         </p>
-      ) : (
-        <form action={action} className="mt-6 space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" required />
-          </div>
-          {state?.error ? (
-            <p className="text-sm text-[var(--danger)]">{state.error}</p>
-          ) : null}
-          <Button type="submit" className="w-full" disabled={pending}>
-            {pending ? "Sending…" : "Send reset link"}
-          </Button>
-        </form>
-      )}
 
-      <p className="mt-6 text-sm">
-        <Link href="/login" className="text-[var(--primary)] hover:underline">
-          Back to log in
-        </Link>
-      </p>
+        {sent ? (
+          <p className="mt-8 rounded-[10px] bg-[var(--primary-soft)] px-4 py-3 text-sm text-[var(--ink)]">
+            If an account exists for that email, you’ll receive a reset link
+            shortly.
+          </p>
+        ) : (
+          <form action={action} className="mt-8 space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                required
+                autoComplete="email"
+              />
+            </div>
+            {state?.error ? (
+              <p className="text-sm text-[var(--danger)]">{state.error}</p>
+            ) : null}
+            <Button type="submit" className="w-full" disabled={pending}>
+              {pending ? "Sending…" : "Send reset link"}
+            </Button>
+          </form>
+        )}
+
+        <p className="mt-6 text-center text-sm text-[var(--muted)]">
+          <Link
+            href="/login"
+            className="font-semibold text-[var(--primary)] hover:underline"
+          >
+            Back to sign in
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

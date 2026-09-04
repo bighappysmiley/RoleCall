@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { companyMembers, companies, jobs, applications } from "@/lib/db/schema";
 import { redirect } from "next/navigation";
+import { colorFromString, initials } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -41,62 +42,83 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="font-display text-3xl font-medium tracking-tight">
+    <div className="mx-auto max-w-6xl px-4 py-10 md:py-12">
+      <h1 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
         Dashboard
       </h1>
       <p className="mt-2 text-[var(--muted)]">
         Welcome back, {current.profile.fullName}.
       </p>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-3">
-        <div className="border border-[var(--line)] bg-[var(--fog)] p-4">
-          <p className="font-mono-data text-xs text-[var(--muted)]">Companies</p>
-          <p className="mt-2 font-mono-data text-3xl">{memberships.length}</p>
-        </div>
-        <div className="border border-[var(--line)] bg-[var(--fog)] p-4">
-          <p className="font-mono-data text-xs text-[var(--muted)]">Jobs</p>
-          <p className="mt-2 font-mono-data text-3xl">{jobCount}</p>
-        </div>
-        <div className="border border-[var(--line)] bg-[var(--fog)] p-4">
-          <p className="font-mono-data text-xs text-[var(--muted)]">Applicants</p>
-          <p className="mt-2 font-mono-data text-3xl">{appCount}</p>
-        </div>
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        {[
+          { label: "Companies", value: memberships.length },
+          { label: "Jobs", value: jobCount },
+          { label: "Applicants", value: appCount },
+        ].map((stat) => (
+          <div key={stat.label} className="surface-card p-5">
+            <p className="text-sm text-[var(--muted)]">{stat.label}</p>
+            <p className="mt-2 font-display text-3xl font-semibold">{stat.value}</p>
+          </div>
+        ))}
       </div>
 
       <section className="mt-10">
-        <h2 className="font-display text-xl font-medium">Your companies</h2>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="font-display text-2xl font-semibold">Your companies</h2>
+          <Link href="/pricing">
+            <Button variant="secondary" size="sm">
+              View plans
+            </Button>
+          </Link>
+        </div>
         {memberships.length === 0 ? (
-          <div className="mt-4 border border-[var(--line)] bg-[var(--paper)] p-6">
-            <p className="font-display text-lg">Create your company profile</p>
-            <p className="mt-2 text-sm text-[var(--muted)]">
+          <div className="surface-card mt-4 px-6 py-12 text-center">
+            <p className="font-display text-xl font-semibold">
+              Create your company profile
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-sm text-[var(--muted)]">
               Set up your company to post roles and review applicants.
             </p>
-            <Link href="/companies" className="mt-4 inline-block">
+            <Link href="/companies" className="mt-5 inline-block">
               <Button variant="secondary">Browse companies</Button>
             </Link>
           </div>
         ) : (
-          <ul className="mt-4 grid gap-3">
-            {memberships.map(({ company, role }) => (
-              <li
-                key={company.id}
-                className="flex items-center justify-between border border-[var(--line)] p-4"
-              >
-                <div>
-                  <p className="font-display text-lg">{company.name}</p>
-                  <p className="font-mono-data text-xs text-[var(--muted)]">
-                    {role}
-                  </p>
-                </div>
-                <Link
-                  href={`/companies/${company.slug}`}
-                  className="text-sm text-[var(--primary)] hover:underline"
-                >
-                  View profile
-                </Link>
-              </li>
-            ))}
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+            {memberships.map(({ company, role }) => {
+              const tone = colorFromString(company.name);
+              return (
+                <li key={company.id} className="surface-card overflow-hidden">
+                  <div
+                    className="h-20"
+                    style={{
+                      background: `linear-gradient(135deg, ${tone}, color-mix(in srgb, ${tone} 50%, white))`,
+                    }}
+                  />
+                  <div className="relative px-5 pb-5">
+                    <div
+                      className="-mt-6 flex h-12 w-12 items-center justify-center rounded-[12px] border-[3px] border-[var(--paper)] text-sm font-semibold text-white"
+                      style={{ background: tone }}
+                    >
+                      {initials(company.name)}
+                    </div>
+                    <p className="mt-3 font-display text-lg font-semibold">
+                      {company.name}
+                    </p>
+                    <p className="text-sm capitalize text-[var(--muted)]">
+                      {role.replaceAll("_", " ")}
+                    </p>
+                    <Link
+                      href={`/companies/${company.slug}`}
+                      className="mt-3 inline-block text-sm font-medium text-[var(--primary)] hover:underline"
+                    >
+                      View profile
+                    </Link>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>

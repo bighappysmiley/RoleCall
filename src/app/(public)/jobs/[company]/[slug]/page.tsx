@@ -4,6 +4,13 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { companies, jobs } from "@/lib/db/schema";
 import { Button } from "@/components/ui/button";
+import {
+  colorFromString,
+  formatEmployment,
+  formatSalaryRange,
+  formatWorkplace,
+  initials,
+} from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -28,74 +35,100 @@ export default async function JobDetailPage({
   if (!row || row.job.status !== "published") notFound();
 
   const { job, company } = row;
+  const salary = job.showSalary
+    ? formatSalaryRange(job.salaryMin, job.salaryMax, job.salaryPeriod ?? "year")
+    : null;
+  const markColor = colorFromString(company.name);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <p className="font-mono-data text-xs text-[var(--muted)]">
-        <Link href={`/companies/${company.slug}`} className="hover:text-[var(--ink)]">
-          {company.name}
-        </Link>
-      </p>
-      <h1 className="mt-2 font-display text-4xl font-medium tracking-tight">
-        {job.title}
-      </h1>
-      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono-data text-xs text-[var(--muted)]">
-        <span>{job.location || "Flexible"}</span>
-        <span>{job.workplaceType}</span>
-        <span>{job.employmentType.replaceAll("_", " ")}</span>
-        {job.showSalary && (job.salaryMin || job.salaryMax) ? (
-          <span>
-            {job.salaryMin ? `$${job.salaryMin.toLocaleString()}` : "—"}
-            {" – "}
-            {job.salaryMax ? `$${job.salaryMax.toLocaleString()}` : "—"}
-          </span>
-        ) : null}
+    <div className="mx-auto max-w-3xl px-4 py-10 md:py-12">
+      <div className="surface-card overflow-hidden">
+        <div
+          className="h-32 w-full sm:h-40"
+          style={{
+            background: `linear-gradient(135deg, ${markColor} 0%, color-mix(in srgb, ${markColor} 50%, white) 100%)`,
+          }}
+        />
+        <div className="relative px-6 pb-8 pt-0 sm:px-8">
+          <div
+            className="-mt-10 flex h-20 w-20 items-center justify-center rounded-[20px] border-[4px] border-[var(--paper)] text-xl font-semibold text-white"
+            style={{ background: markColor }}
+          >
+            {initials(company.name)}
+          </div>
+          <Link
+            href={`/companies/${company.slug}`}
+            className="mt-4 inline-block text-sm font-medium text-[var(--primary)] hover:underline"
+          >
+            {company.name}
+          </Link>
+          <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight md:text-4xl">
+            {job.title}
+          </h1>
+          {salary ? (
+            <p className="mt-3 font-display text-2xl font-semibold">{salary}</p>
+          ) : null}
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            <span className="skill-chip">
+              {job.location || "Flexible location"}
+            </span>
+            <span className="skill-chip">
+              {formatWorkplace(job.workplaceType)}
+            </span>
+            <span className="skill-chip">
+              {formatEmployment(job.employmentType)}
+            </span>
+            {(job.skills ?? []).map((skill) => (
+              <span key={skill} className="skill-chip">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="mt-8 space-y-6 text-[15px] leading-relaxed">
+      <div className="mt-8 space-y-8">
         <section>
-          <h2 className="font-display text-xl font-medium">About the role</h2>
-          <p className="mt-2 whitespace-pre-wrap text-[var(--muted)]">
+          <h2 className="font-display text-2xl font-semibold">About the role</h2>
+          <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-[var(--muted)]">
             {job.description}
           </p>
         </section>
         {job.responsibilities ? (
           <section>
-            <h2 className="font-display text-xl font-medium">Responsibilities</h2>
-            <p className="mt-2 whitespace-pre-wrap text-[var(--muted)]">
+            <h2 className="font-display text-2xl font-semibold">
+              Responsibilities
+            </h2>
+            <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-[var(--muted)]">
               {job.responsibilities}
             </p>
           </section>
         ) : null}
         {job.requirements ? (
           <section>
-            <h2 className="font-display text-xl font-medium">Requirements</h2>
-            <p className="mt-2 whitespace-pre-wrap text-[var(--muted)]">
+            <h2 className="font-display text-2xl font-semibold">Requirements</h2>
+            <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-[var(--muted)]">
               {job.requirements}
-            </p>
-          </section>
-        ) : null}
-        {job.skills?.length ? (
-          <section>
-            <h2 className="font-display text-xl font-medium">Skills</h2>
-            <p className="mt-2 font-mono-data text-sm text-[var(--muted)]">
-              {job.skills.join(" · ")}
             </p>
           </section>
         ) : null}
       </div>
 
-      <div className="mt-10 border border-[var(--line)] bg-[var(--fog)] p-5">
-        <p className="font-display text-lg">Ready to apply?</p>
-        <p className="mt-1 text-sm text-[var(--muted)]">
-          Create a candidate account or log in to send your application.
-        </p>
-        <div className="mt-4 flex gap-3">
+      <div className="surface-card mt-10 p-6 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <p className="font-display text-xl font-semibold">Ready to apply?</p>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            Create an account to submit your application, or sign in if you
+            already have one.
+          </p>
+        </div>
+        <div className="mt-4 flex gap-3 sm:mt-0">
           <Link href="/signup">
-            <Button>Apply with RoleCall</Button>
+            <Button>Apply now</Button>
           </Link>
           <Link href="/login">
-            <Button variant="secondary">Log in</Button>
+            <Button variant="secondary">Sign in</Button>
           </Link>
         </div>
       </div>

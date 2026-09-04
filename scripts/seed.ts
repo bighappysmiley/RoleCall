@@ -1,7 +1,7 @@
 /**
- * Optional maintenance helper. Demo seed data is intentionally not included —
- * RoleCall starts empty for a clean public board.
+ * Optional maintenance helper. No sample companies or jobs are seeded —
+ * the public board stays empty until real employers publish roles.
  *
  * Run: npm run db:seed
  */
-console.log("No demo seed. Create an employer account and publish real jobs.");
+console.log("Nothing to seed. Sign up as an employer to post real jobs.");

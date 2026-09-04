@@ -26,7 +26,7 @@ export default async function JobsPage({
   const location = one(params.location)?.trim() || "";
   const remote = one(params.remote) === "1";
   const employmentType = one(params.type) || "";
-  const experience = one(params.experience) || "";
+  const hasFilters = Boolean(q || location || remote || employmentType);
 
   const filters = [eq(jobs.status, "published")];
   if (location) filters.push(ilike(jobs.location, `%${location}%`));
@@ -39,7 +39,6 @@ export default async function JobsPage({
   ) {
     filters.push(eq(jobs.employmentType, employmentType));
   }
-  if (experience) filters.push(ilike(jobs.experienceLevel, `%${experience}%`));
   if (q) {
     filters.push(
       or(
@@ -66,6 +65,7 @@ export default async function JobsPage({
       salaryMin: jobs.salaryMin,
       salaryMax: jobs.salaryMax,
       showSalary: jobs.showSalary,
+      salaryPeriod: jobs.salaryPeriod,
       companyName: companies.name,
       companySlug: companies.slug,
       subscriptionTier: companies.subscriptionTier,
@@ -86,75 +86,85 @@ export default async function JobsPage({
   );
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="flex flex-col gap-2 border-b border-[var(--line)] pb-6">
-        <h1 className="font-display text-3xl font-medium tracking-tight">
-          Job board
+    <div className="mx-auto max-w-6xl px-4 py-10 md:py-12">
+      <div className="max-w-2xl">
+        <h1 className="font-display text-4xl font-semibold tracking-tight">
+          Find your next role
         </h1>
-        <p className="text-[var(--muted)]">
-          Search by keyword, location, and work type.
+        <p className="mt-3 text-[var(--muted)]">
+          Search open positions by title, skill, location, or work style.
         </p>
       </div>
 
-      <form className="mt-6 grid gap-3 border border-[var(--line)] bg-[var(--fog)] p-4 md:grid-cols-6">
-        <Input
-          name="q"
-          placeholder="Keyword"
-          defaultValue={q}
-          className="md:col-span-2"
-        />
-        <Input name="location" placeholder="Location" defaultValue={location} />
-        <select
-          name="type"
-          defaultValue={employmentType}
-          className="h-10 border border-[var(--line)] bg-[var(--paper)] px-3 text-sm"
-        >
-          <option value="">Employment type</option>
-          <option value="full_time">Full time</option>
-          <option value="part_time">Part time</option>
-          <option value="contract">Contract</option>
-          <option value="internship">Internship</option>
-        </select>
-        <label className="flex items-center gap-2 text-sm">
+      <form className="surface-card mt-8 grid gap-3 p-4 md:grid-cols-12 md:items-end">
+        <div className="md:col-span-4">
+          <label className="mb-1.5 block text-xs font-medium text-[var(--muted)]">
+            Keyword
+          </label>
+          <Input name="q" placeholder="Role, skill, or company" defaultValue={q} />
+        </div>
+        <div className="md:col-span-3">
+          <label className="mb-1.5 block text-xs font-medium text-[var(--muted)]">
+            Location
+          </label>
+          <Input
+            name="location"
+            placeholder="City or region"
+            defaultValue={location}
+          />
+        </div>
+        <div className="md:col-span-2">
+          <label className="mb-1.5 block text-xs font-medium text-[var(--muted)]">
+            Type
+          </label>
+          <select
+            name="type"
+            defaultValue={employmentType}
+            className="flex h-11 w-full rounded-[10px] border border-[var(--line)] bg-[var(--paper)] px-3 text-sm"
+          >
+            <option value="">Any</option>
+            <option value="full_time">Full-time</option>
+            <option value="part_time">Part-time</option>
+            <option value="contract">Contract</option>
+            <option value="internship">Internship</option>
+          </select>
+        </div>
+        <label className="flex h-11 items-center gap-2 text-sm md:col-span-2">
           <input type="checkbox" name="remote" value="1" defaultChecked={remote} />
           Remote only
         </label>
-        <button
-          type="submit"
-          className="h-10 bg-[var(--primary)] px-4 text-sm text-white"
-        >
-          Filter
-        </button>
+        <Button type="submit" className="md:col-span-1">
+          Search
+        </Button>
       </form>
 
-      <p className="mt-4 font-mono-data text-xs text-[var(--muted)]">
+      <p className="mt-6 text-sm text-[var(--muted)]">
         {ranked.length} {ranked.length === 1 ? "role" : "roles"}
       </p>
 
-      <div className="mt-4 grid gap-3">
-        {ranked.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
-        {ranked.length === 0 ? (
-          <div className="border border-[var(--line)] bg-[var(--fog)] p-8 text-center">
-            <p className="font-display text-lg">
-              {q || location || remote || employmentType
-                ? "No roles match"
-                : "No open roles yet"}
-            </p>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              {q || location || remote || employmentType
-                ? "Try clearing filters or searching something broader."
-                : "Employers can publish jobs from their dashboard."}
-            </p>
-            {!(q || location || remote || employmentType) ? (
-              <Link href="/signup" className="mt-5 inline-block">
-                <Button>Hire on RoleCall</Button>
-              </Link>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
+      {ranked.length === 0 ? (
+        <div className="surface-card mt-4 px-6 py-14 text-center">
+          <p className="font-display text-2xl font-semibold">
+            {hasFilters ? "No roles match those filters" : "No open roles yet"}
+          </p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-[var(--muted)]">
+            {hasFilters
+              ? "Try a broader search or clear a filter."
+              : "When companies publish jobs, they’ll show up here."}
+          </p>
+          {!hasFilters ? (
+            <Link href="/signup?intent=employer" className="mt-6 inline-block">
+              <Button>Post a job</Button>
+            </Link>
+          ) : null}
+        </div>
+      ) : (
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {ranked.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

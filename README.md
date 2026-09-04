@@ -1,49 +1,28 @@
 # RoleCall
 
-Hiring platform by **BigHappySmiley**. Phase 1 foundation: public job board, auth, employer/candidate shells, Neon Free backend.
+Hiring marketplace for teams and talent. Browse open roles, explore companies, and post jobs.
 
-## What you need (all free for Phase 1)
+## Stack
 
-1. **Neon** project (already created: RoleCall in Ohio) — database, Managed Better Auth, object storage buckets
-2. **Netlify** Free account — you deploy the site in the browser (Cloud agents cannot use Netlify MCP)
-3. This GitHub repo
+- Next.js 15 (App Router) + Tailwind CSS
+- Neon Postgres + Neon Auth + Object Storage
+- Netlify hosting
 
-## Environment
-
-Values live in [`src/lib/env.ts`](src/lib/env.ts) so Netlify does **not** need dashboard env vars. Optional overrides: committed [`.env`](.env) or local `.env.local`.
-
-Redeploy: Netlify → **Deploys** → **Trigger deploy** → **Clear cache and deploy site**.
-
-## Local commands (Apple Silicon / Mac)
+## Local development
 
 ```bash
-cd rolecall
-npm install --legacy-peer-deps
-npm run db:seed
+npm install
+cp .env.example .env
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## Deploy
 
-## Deploy on Netlify (you do this)
+Push to `main`. Netlify builds with `@netlify/plugin-nextjs`. Live site: [rolecallats.netlify.app](https://rolecallats.netlify.app).
 
-1. Log in at [netlify.com](https://www.netlify.com) (Free plan)
-2. **Add new site → Import an existing project → GitHub**
-3. Choose `bighappysmiley/RoleCall` and branch `cursor/rolecall-phase-1-8941`
-4. Deploy — env vars come from `.env` / `netlify.toml` (no manual paste)
-5. If a deploy was already failing: **Deploys → Trigger deploy → Clear cache and deploy site**
-6. Copy your `https://….netlify.app` URL
-7. In Neon → RoleCall → Auth → add that URL as a trusted domain / redirect host
+## What’s live
 
-If you ever see `Missing required config: cookies.secret`, clear cache and redeploy so the latest `netlify.toml` is used.
-
-## What’s in Phase 1
-
-- Landing, `/jobs` (search + ranking), job detail, `/companies`, `/pricing`
-- Sign up (candidate / employer), log in, reset password request, sign out
-- Candidate `/profile`, employer `/dashboard`
-- Seeded companies and published jobs (including BigHappySmiley with enterprise overrides)
-
-## What’s next (say “continue”)
-
-Phase 2: company/job CRUD, apply flow, kanban pipeline, team invites.
+- Public job board and company directory
+- Sign up / log in (candidate or employer)
+- Candidate profile and employer dashboard shells
+- Hiring plans page (Free, Post a job, Hiring Suite)

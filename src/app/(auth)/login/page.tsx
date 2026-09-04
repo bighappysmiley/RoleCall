@@ -14,42 +14,56 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-12">
-      <h1 className="font-display text-3xl font-medium tracking-tight">
-        Log in
-      </h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">
-        Welcome back to RoleCall.
-      </p>
+    <div className="hero-glow flex min-h-[70vh] items-center justify-center px-4 py-16">
+      <div className="surface-card w-full max-w-md p-8">
+        <h1 className="font-display text-3xl font-bold tracking-tight">
+          Welcome back
+        </h1>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          Sign in to continue to RoleCall.
+        </p>
 
-      <form action={action} className="mt-6 space-y-4">
-        <div className="space-y-1.5">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" type="email" required />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" name="password" type="password" required />
-        </div>
-        {state?.error ? (
-          <p className="text-sm text-[var(--danger)]">{state.error}</p>
-        ) : null}
-        <Button type="submit" className="w-full" disabled={pending}>
-          {pending ? "Signing in…" : "Log in"}
-        </Button>
-      </form>
+        <form action={action} className="mt-8 space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" name="email" type="email" required autoComplete="email" />
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                href="/reset-password"
+                className="text-sm font-medium text-[var(--primary)] hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              required
+              autoComplete="current-password"
+            />
+          </div>
+          {state?.error ? (
+            <p className="text-sm text-[var(--danger)]">{state.error}</p>
+          ) : null}
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Signing in…" : "Sign in"}
+          </Button>
+        </form>
 
-      <p className="mt-4 text-sm">
-        <Link href="/reset-password" className="text-[var(--primary)] hover:underline">
-          Reset password
-        </Link>
-      </p>
-      <p className="mt-6 text-sm text-[var(--muted)]">
-        New here?{" "}
-        <Link href="/signup" className="text-[var(--primary)] hover:underline">
-          Create an account
-        </Link>
-      </p>
+        <p className="mt-6 text-center text-sm text-[var(--muted)]">
+          New here?{" "}
+          <Link
+            href="/signup"
+            className="font-semibold text-[var(--primary)] hover:underline"
+          >
+            Create an account
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

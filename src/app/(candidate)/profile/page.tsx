@@ -34,18 +34,15 @@ export default async function ProfilePage() {
   const p = current.profile;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="font-display text-3xl font-medium tracking-tight">
+    <div className="mx-auto max-w-3xl px-4 py-10 md:py-12">
+      <h1 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
         Your profile
       </h1>
       <p className="mt-2 text-[var(--muted)]">
         Keep this up to date so employers see who you are.
       </p>
 
-      <form
-        action={updateProfileAction}
-        className="mt-8 space-y-4 border border-[var(--line)] p-5"
-      >
+      <form action={updateProfileAction} className="surface-card mt-8 space-y-4 p-6 sm:p-8">
         <div className="space-y-1.5">
           <Label htmlFor="fullName">Full name</Label>
           <Input id="fullName" name="fullName" defaultValue={p.fullName} required />
@@ -70,16 +67,16 @@ export default async function ProfilePage() {
             name="bio"
             defaultValue={p.bio ?? ""}
             rows={4}
-            className="w-full border border-[var(--line)] bg-[var(--paper)] px-3 py-2 text-sm"
+            className="w-full rounded-[10px] border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2 text-sm"
           />
         </div>
         <Button type="submit">Save profile</Button>
       </form>
 
       <section className="mt-10">
-        <h2 className="font-display text-xl font-medium">Applications</h2>
+        <h2 className="font-display text-2xl font-semibold">Applications</h2>
         {apps.length === 0 ? (
-          <div className="mt-3 border border-[var(--line)] bg-[var(--fog)] p-5">
+          <div className="surface-card mt-4 px-6 py-10 text-center">
             <p className="text-sm text-[var(--muted)]">
               You haven&apos;t applied to any roles yet.
             </p>
@@ -88,24 +85,22 @@ export default async function ProfilePage() {
             </Link>
           </div>
         ) : (
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-4 space-y-3">
             {apps.map((a) => (
               <li
                 key={a.id}
-                className="flex items-center justify-between border border-[var(--line)] px-4 py-3"
+                className="surface-card flex items-center justify-between px-5 py-4"
               >
                 <div>
                   <Link
                     href={`/jobs/${a.companySlug}/${a.jobSlug}`}
-                    className="font-medium hover:underline"
+                    className="font-medium hover:text-[var(--primary)]"
                   >
                     {a.jobTitle}
                   </Link>
                   <p className="text-sm text-[var(--muted)]">{a.companyName}</p>
                 </div>
-                <span className="font-mono-data text-xs uppercase tracking-wide text-[var(--muted)]">
-                  {a.stage}
-                </span>
+                <span className="badge capitalize">{a.stage.replaceAll("_", " ")}</span>
               </li>
             ))}
           </ul>

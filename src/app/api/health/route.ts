@@ -4,6 +4,5 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     service: "rolecall",
-    phase: 1,
   });
 }

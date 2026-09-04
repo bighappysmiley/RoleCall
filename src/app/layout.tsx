@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Inter, JetBrains_Mono } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { getCurrentProfile } from "@/actions/auth";
@@ -11,9 +11,10 @@ const instrument = Instrument_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const jetbrains = JetBrains_Mono({
@@ -23,11 +24,11 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "RoleCall",
+    default: "RoleCall — Hire talent. Find work.",
     template: "%s · RoleCall",
   },
   description:
-    "A modern trade directory for hiring. Post jobs, manage applicants, browse openly.",
+    "Browse open roles and hire great people on RoleCall — the hiring marketplace for teams and talent.",
 };
 
 export const dynamic = "force-dynamic";
@@ -42,7 +43,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrument.variable} ${inter.variable} ${jetbrains.variable} flex min-h-screen flex-col antialiased`}
+        className={`${instrument.variable} ${jakarta.variable} ${jetbrains.variable} flex min-h-screen flex-col antialiased`}
       >
         <SiteHeader
           userName={current?.profile.fullName || current?.session.user.name}
