@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { PreviewBanner } from "@/components/preview-banner";
 import { SetupBanner } from "@/components/setup-banner";
 import "./globals.css";
 
@@ -64,6 +65,7 @@ export default function RootLayout({
       <body
         className={`${instrument.variable} ${inter.variable} ${jetbrains.variable} flex min-h-screen flex-col bg-paper text-ink`}
       >
+        <PreviewBanner />
         <SetupBanner />
         <SiteHeader />
         <main className="flex-1">{children}</main>

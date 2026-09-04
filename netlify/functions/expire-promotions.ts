@@ -4,6 +4,12 @@
  */
 export default async function expirePromotionsScheduled() {
   const site = siteUrl();
+  if (isPreviewHost(site)) {
+    return new Response(JSON.stringify({ ok: true, skipped: "preview" }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  }
   const secret = process.env.CRON_SECRET;
   if (!secret) {
     throw new Error(
@@ -39,3 +45,12 @@ function siteUrl(): string {
   }
   return raw.replace(/\/$/, "");
 }
+
+function isPreviewHost(url: string): boolean {
+  try {
+    return new URL(url).hostname.includes("preview");
+  } catch {
+    return false;
+  }
+}
+

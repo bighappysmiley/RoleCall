@@ -4,11 +4,38 @@ RoleCall is a hiring website by **BigHappySmiley**. Companies post jobs. People 
 
 Host this on **Netlify**, the same way as your other sites. Paste environment variables in the Netlify UI (or in `.env.local` on your Mac). You do not need Vercel.
 
+There are **two Netlify websites** for this repo:
+
+| Site | Who sees it | Git branch |
+| --- | --- | --- |
+| **rolecallats** (live) | Everyone | `main` |
+| **rolecall-preview** (preview) | You, first | `preview` |
+
+Updates go to **RoleCall Preview** first. The live board changes only after you publish to `main`.
+
 There is **no demo board**. If the database is not connected, the jobs list is empty. Fake companies such as Northwind Labs only appear if they were loaded into Neon with `npm run seed`.
 
-## Publish on Netlify (click by click)
+## RoleCall Preview (click by click)
 
-You already have GitHub and Netlify. Use the existing RoleCall site if you have one (for example `rolecallats.netlify.app`), or add a new site from this repo.
+This is a second Netlify site. Same GitHub repo. It does not replace `rolecallats`.
+
+1. Open [https://app.netlify.com](https://app.netlify.com) → **Add new site → Import an existing project**.
+2. Choose **GitHub** → **bighappysmiley/RoleCall**.
+3. **Site name:** `rolecall-preview` (the address will be `https://rolecall-preview.netlify.app`).
+4. **Production branch:** `preview` — not `main`.
+5. Build command `npm run build`, publish directory `.next`.
+6. Copy the same environment variables from **rolecallats**, then change only:
+   - `NEXT_PUBLIC_SITE_URL` = `https://rolecall-preview.netlify.app`
+   - `NEXT_PUBLIC_ROLECALL_PREVIEW` = `true`
+7. Deploy.
+
+You should see a yellow **Preview site** bar at the top. That bar must never appear on the live `rolecallats` site.
+
+Sign-in on `https://*.netlify.app` is already allowed in Neon Auth, so Google / email links work on the preview address too.
+
+## Publish the live site (rolecallats)
+
+You already have GitHub and Netlify. Use the existing RoleCall site (`rolecallats.netlify.app`).
 
 ### If the site already exists
 
@@ -38,7 +65,8 @@ Paste from your Mac’s `.env.local`. Do not put these values in Git or in chat.
 | `DATABASE_URL_UNPOOLED` | Neon direct URL |
 | `NEON_AUTH_BASE_URL` | Neon Auth URL (ends with `/neondb/auth`) |
 | `NEON_AUTH_COOKIE_SECRET` | Same cookie secret you already use locally |
-| `NEXT_PUBLIC_SITE_URL` | Your Netlify URL, like `https://rolecallats.netlify.app` (fix after the first deploy if needed) |
+| `NEXT_PUBLIC_SITE_URL` | Live: `https://rolecallats.netlify.app`. Preview site: `https://rolecall-preview.netlify.app` |
+| `NEXT_PUBLIC_ROLECALL_PREVIEW` | Preview site only: `true`. Leave this off on the live site. |
 | `CRON_SECRET` | A long random string (see below) |
 | `STRIPE_SECRET_KEY` | Optional. Stripe **test** key only, if you want checkout |
 | `STRIPE_WEBHOOK_SECRET` | Optional. Add after you create a Stripe webhook |

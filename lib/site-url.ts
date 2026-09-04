@@ -7,3 +7,25 @@ export function getSiteUrl(): string {
     "http://localhost:3000";
   return raw.replace(/\/$/, "");
 }
+
+/** True on the RoleCall Preview Netlify site and on Deploy Previews. */
+export function isPreviewSite(): boolean {
+  if (process.env.NEXT_PUBLIC_ROLECALL_PREVIEW === "true") {
+    return true;
+  }
+  if (
+    process.env.CONTEXT === "deploy-preview" ||
+    process.env.CONTEXT === "branch-deploy"
+  ) {
+    return true;
+  }
+  const branch = process.env.BRANCH ?? process.env.HEAD ?? "";
+  if (branch === "preview") {
+    return true;
+  }
+  try {
+    return new URL(getSiteUrl()).hostname.includes("preview");
+  } catch {
+    return false;
+  }
+}
