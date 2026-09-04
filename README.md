@@ -15,34 +15,9 @@ Updates go to **RoleCall Preview** first. The live board changes only after you 
 
 There is **no demo board**. If the database is not connected, the jobs list is empty. Fake companies such as Northwind Labs only appear if they were loaded into Neon with a seed script.
 
-## Where the keys come from (not a Mac file)
+Keys: see [ENV.md](ENV.md).
 
-1. Open [https://console.neon.tech](https://console.neon.tech) and click the **RoleCall** project.
-2. **Dashboard → Connect** (or Connection details):
-   - Copy the **pooled** connection string (the host contains `-pooler`). That is `DATABASE_URL`.
-   - Copy the **direct** connection string (no `-pooler`). That is `DATABASE_URL_UNPOOLED`.
-3. Open **Auth** in that same Neon project:
-   - Copy the Auth URL (it ends with `/neondb/auth`). That is `NEON_AUTH_BASE_URL`.
-   - Copy the cookie secret. That is `NEON_AUTH_COOKIE_SECRET`.
-4. Open [https://app.netlify.com](https://app.netlify.com) → **rolecallats** → **Project configuration → Environment variables**.
-5. Add each name below. For every variable, include **Production** (and **Preview** if Netlify shows that option).
-6. **Deploys → Trigger deploy → Deploy site**.
-
-Do not put these values in GitHub or in chat.
-
-| Name | What to paste |
-| --- | --- |
-| `DATABASE_URL` | Neon pooled URL (host has `-pooler`) |
-| `DATABASE_URL_UNPOOLED` | Neon direct URL |
-| `NEON_AUTH_BASE_URL` | Neon Auth URL (ends with `/neondb/auth`) |
-| `NEON_AUTH_COOKIE_SECRET` | Neon Auth cookie secret |
-| `NEXT_PUBLIC_SITE_URL` | Live: `https://rolecallats.netlify.app`. Preview site: `https://rolecall-preview.netlify.app` |
-| `NEXT_PUBLIC_ROLECALL_PREVIEW` | Preview site only: `true`. Leave this off on the live site. |
-| `CRON_SECRET` | Any long random password you invent (20+ characters). You do not need to remember it. |
-| `STRIPE_SECRET_KEY` | Optional. Stripe **test** key only, if you want checkout |
-| `STRIPE_WEBHOOK_SECRET` | Optional. Add after you create a Stripe webhook |
-
-## RoleCall Preview (click by click)
+## RoleCall Preview
 
 This is a second Netlify site. Same GitHub repo. It does not replace `rolecallats`.
 
