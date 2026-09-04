@@ -98,7 +98,7 @@ export default async function DashboardPage() {
                   />
                   <div className="relative px-5 pb-5">
                     <div
-                      className="-mt-6 flex h-12 w-12 items-center justify-center rounded-[12px] border-[3px] border-[var(--paper)] text-sm font-semibold text-white"
+                      className="-mt-6 flex h-12 w-12 items-center justify-center rounded-[6px] border-2 border-[var(--paper)] text-sm font-semibold text-white"
                       style={{ background: tone }}
                     >
                       {initials(company.name)}

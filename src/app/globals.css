@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #0d0c22;
+  --ink: #0f172a;
   --paper: #ffffff;
-  --canvas: #f8f7f4;
-  --fog: #f3f2ef;
-  --line: #e7e7e9;
-  --muted: #6e6d7a;
-  --primary: #ea4c89;
-  --primary-hover: #f082ac;
-  --primary-soft: #fce8ef;
-  --signal: #ea4c89;
-  --danger: #e54b4b;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 1px 2px rgba(13, 12, 34, 0.04), 0 4px 16px rgba(13, 12, 34, 0.04);
-  --shadow-lift: 0 8px 28px rgba(13, 12, 34, 0.08);
+  --canvas: #f4f6f9;
+  --fog: #eef1f6;
+  --line: #e2e6ee;
+  --muted: #5b6577;
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
+  --primary-soft: #e8eefb;
+  --signal: #1d4ed8;
+  --danger: #c24141;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-lift: 0 4px 14px rgba(15, 23, 42, 0.06);
   --background: var(--canvas);
   --foreground: var(--ink);
 }
@@ -65,8 +65,8 @@ body {
 }
 
 .surface-card-lift:hover {
+  border-color: color-mix(in srgb, var(--primary) 25%, var(--line));
   box-shadow: var(--shadow-lift);
-  transform: translateY(-2px);
 }
 
 .badge {
@@ -77,12 +77,12 @@ body {
   color: var(--muted);
   font-size: 12px;
   line-height: 1;
-  padding: 6px 10px;
-  border-radius: 999px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
 }
 
 .badge-promoted {
-  border-color: color-mix(in srgb, var(--primary) 30%, var(--line));
+  border-color: color-mix(in srgb, var(--primary) 25%, var(--line));
   background: var(--primary-soft);
   color: var(--primary);
 }
@@ -93,21 +93,19 @@ body {
   font-size: 12px;
   color: var(--muted);
   background: var(--fog);
-  border-radius: 8px;
-  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  padding: 4px 7px;
 }
 
 .hero-glow {
   background:
-    radial-gradient(ellipse 80% 60% at 70% 20%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 60%),
-    radial-gradient(ellipse 50% 40% at 15% 80%, color-mix(in srgb, #2d6a6a 10%, transparent), transparent 55%),
-    var(--canvas);
+    linear-gradient(180deg, #eef2f8 0%, var(--canvas) 72%);
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -116,19 +114,19 @@ body {
 }
 
 .anim-fade-up {
-  animation: fade-up 0.55s ease-out both;
+  animation: fade-up 0.45s ease-out both;
 }
 
 .anim-delay-1 {
-  animation-delay: 0.08s;
+  animation-delay: 0.06s;
 }
 
 .anim-delay-2 {
-  animation-delay: 0.16s;
+  animation-delay: 0.12s;
 }
 
 .anim-delay-3 {
-  animation-delay: 0.24s;
+  animation-delay: 0.18s;
 }
 
 @media (prefers-reduced-motion: reduce) {

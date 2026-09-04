@@ -65,7 +65,7 @@ export default async function CompanyProfilePage({
         />
         <div className="px-6 pb-8 pt-0 sm:px-8">
           <div
-            className="-mt-10 flex h-20 w-20 items-center justify-center rounded-[20px] border-[4px] border-[var(--paper)] text-xl font-semibold text-white"
+            className="-mt-10 flex h-20 w-20 items-center justify-center rounded-[8px] border-[3px] border-[var(--paper)] text-xl font-semibold text-white"
             style={{ background: markColor }}
           >
             {initials(company.name)}

@@ -69,7 +69,7 @@ export default function PricingPage() {
               key={plan.key}
               className={`surface-card flex flex-col p-8 ${
                 plan.highlight
-                  ? "border-[color-mix(in_srgb,var(--primary)_40%,var(--line))] ring-2 ring-[color-mix(in_srgb,var(--primary)_15%,transparent)]"
+                  ? "border-[var(--primary)]"
                   : ""
               }`}
             >
@@ -93,7 +93,7 @@ export default function PricingPage() {
               <ul className="mt-8 flex-1 space-y-3 text-sm text-[var(--muted)]">
                 {plan.points.map((point) => (
                   <li key={point} className="flex gap-2.5">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary)]" />
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-[2px] bg-[var(--primary)]" />
                     <span>{point}</span>
                   </li>
                 ))}

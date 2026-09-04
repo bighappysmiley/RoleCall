@@ -37,7 +37,7 @@ export function CompanyCard({
       />
       <div className="relative px-5 pb-5 pt-0">
         <div
-          className="-mt-8 flex h-16 w-16 items-center justify-center rounded-[16px] border-[3px] border-[var(--paper)] text-lg font-semibold text-white shadow-sm"
+          className="-mt-8 flex h-16 w-16 items-center justify-center rounded-[8px] border-2 border-[var(--paper)] text-lg font-semibold text-white"
           style={{ background: markColor }}
         >
           {initials(name)}

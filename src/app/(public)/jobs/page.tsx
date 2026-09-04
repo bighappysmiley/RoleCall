@@ -120,7 +120,7 @@ export default async function JobsPage({
           <select
             name="type"
             defaultValue={employmentType}
-            className="flex h-11 w-full rounded-[10px] border border-[var(--line)] bg-[var(--paper)] px-3 text-sm"
+            className="flex h-11 w-full rounded-[6px] border border-[var(--line)] bg-[var(--paper)] px-3 text-sm"
           >
             <option value="">Any</option>
             <option value="full_time">Full-time</option>

@@ -33,7 +33,7 @@ function SignUpForm() {
         <div className="mt-8 grid grid-cols-2 gap-2">
           <button
             type="button"
-            className={`rounded-[10px] border px-3 py-2.5 text-sm font-medium transition-colors ${
+            className={`rounded-[6px] border px-3 py-2.5 text-sm font-medium transition-colors ${
               accountType === "candidate"
                 ? "border-[var(--primary)] bg-[var(--primary-soft)] text-[var(--ink)]"
                 : "border-[var(--line)] bg-[var(--paper)] text-[var(--muted)]"
@@ -44,7 +44,7 @@ function SignUpForm() {
           </button>
           <button
             type="button"
-            className={`rounded-[10px] border px-3 py-2.5 text-sm font-medium transition-colors ${
+            className={`rounded-[6px] border px-3 py-2.5 text-sm font-medium transition-colors ${
               accountType === "employer"
                 ? "border-[var(--primary)] bg-[var(--primary-soft)] text-[var(--ink)]"
                 : "border-[var(--line)] bg-[var(--paper)] text-[var(--muted)]"

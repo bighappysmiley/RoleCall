@@ -67,7 +67,7 @@ export default async function ProfilePage() {
             name="bio"
             defaultValue={p.bio ?? ""}
             rows={4}
-            className="w-full rounded-[10px] border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2 text-sm"
+            className="w-full rounded-[6px] border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2 text-sm"
           />
         </div>
         <Button type="submit">Save profile</Button>

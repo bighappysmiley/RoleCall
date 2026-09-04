@@ -29,7 +29,7 @@ export default function ResetPasswordPage() {
         </p>
 
         {sent ? (
-          <p className="mt-8 rounded-[10px] bg-[var(--primary-soft)] px-4 py-3 text-sm text-[var(--ink)]">
+          <p className="mt-8 rounded-[6px] bg-[var(--primary-soft)] px-4 py-3 text-sm text-[var(--ink)]">
             If an account exists for that email, you’ll receive a reset link
             shortly.
           </p>

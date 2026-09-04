@@ -1,12 +1,12 @@
 const PALETTE = [
-  "#0d0c22",
-  "#3d3a5c",
-  "#ea4c89",
-  "#2d6a6a",
-  "#8b5a2b",
-  "#4a5568",
-  "#1f4e79",
-  "#5c4033",
+  "#0f172a",
+  "#1e3a5f",
+  "#1d4ed8",
+  "#0f766e",
+  "#334155",
+  "#1e40af",
+  "#475569",
+  "#0c4a6e",
 ];
 
 export function colorFromString(input: string): string {

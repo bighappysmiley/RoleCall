@@ -45,10 +45,10 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: "Product", tone: "#0d0c22" },
-              { label: "Engineering", tone: "#2d6a6a" },
-              { label: "Design", tone: "#ea4c89" },
-              { label: "Ops", tone: "#8b5a2b" },
+              { label: "Product", tone: "#0f172a" },
+              { label: "Engineering", tone: "#1d4ed8" },
+              { label: "Design", tone: "#1e3a5f" },
+              { label: "Ops", tone: "#0f766e" },
             ].map((tile, i) => (
               <div
                 key={tile.label}
@@ -57,7 +57,7 @@ export default function HomePage() {
                 <div
                   className="h-20"
                   style={{
-                    background: `linear-gradient(135deg, ${tile.tone}, color-mix(in srgb, ${tile.tone} 45%, white))`,
+                    background: `linear-gradient(145deg, ${tile.tone}, color-mix(in srgb, ${tile.tone} 55%, #94a3b8))`,
                   }}
                 />
                 <div className="p-3">
