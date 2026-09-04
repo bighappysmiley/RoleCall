@@ -23,6 +23,11 @@ export default async function CompaniesPage() {
         DIRECTORY
       </p>
       <h1 className="mt-2 font-heading text-4xl">Companies</h1>
+      {companies.length === 0 ? (
+        <p className="mt-8 border border-line bg-fog px-4 py-6 text-sm text-muted-foreground">
+          No companies yet. Hiring teams show up here after they create a profile.
+        </p>
+      ) : (
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {companies.map((company) => (
           <Link
@@ -49,6 +54,7 @@ export default async function CompaniesPage() {
           </Link>
         ))}
       </div>
+      )}
     </div>
   );
 }

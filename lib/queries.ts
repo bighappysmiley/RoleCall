@@ -1,5 +1,4 @@
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
-import { DEMO_COMPANIES, DEMO_JOBS, getDemoCompany, getDemoJob } from "@/lib/demo-data";
 import { getDb, isDatabaseConfigured, requireDb } from "@/lib/db";
 import {
   applicationNotes,
@@ -174,10 +173,11 @@ export async function listPublishedJobs(filters?: JobBoardFilters) {
         filters,
       );
     } catch (error) {
-      console.error("Failed to load jobs from Neon; using demo board.", error);
+      console.error("Failed to load jobs from Neon.", error);
+      return [];
     }
   }
-  return applyBoardFilters(rankJobs(DEMO_JOBS, filters?.q), filters);
+  return [];
 }
 
 export async function listCompanies(): Promise<CompanyRecord[]> {
@@ -187,10 +187,11 @@ export async function listCompanies(): Promise<CompanyRecord[]> {
       const rows = await db.select().from(companies).orderBy(companies.name);
       return rows.map(mapCompany);
     } catch (error) {
-      console.error("Failed to load companies from Neon; using demo data.", error);
+      console.error("Failed to load companies from Neon.", error);
+      return [];
     }
   }
-  return DEMO_COMPANIES;
+  return [];
 }
 
 export async function getCompanyBySlug(
@@ -206,10 +207,11 @@ export async function getCompanyBySlug(
         .limit(1);
       return row ? mapCompany(row) : null;
     } catch (error) {
-      console.error("Failed to load company from Neon; using demo data.", error);
+      console.error("Failed to load company from Neon.", error);
+      return null;
     }
   }
-  return getDemoCompany(slug) ?? null;
+  return null;
 }
 
 export async function getCompanyById(id: string): Promise<CompanyRecord | null> {
@@ -266,10 +268,11 @@ export async function getJobBySlugs(
       }
       return null;
     } catch (error) {
-      console.error("Failed to load job from Neon; using demo data.", error);
+      console.error("Failed to load job from Neon.", error);
+      return null;
     }
   }
-  return getDemoJob(companySlug, jobSlug) ?? null;
+  return null;
 }
 
 export async function getJobById(jobId: string): Promise<JobWithCompany | null> {

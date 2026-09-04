@@ -55,9 +55,13 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid gap-3">
-          {jobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))}
+          {jobs.length === 0 ? (
+            <p className="border border-line bg-fog px-4 py-6 text-sm text-muted-foreground">
+              No published roles yet.
+            </p>
+          ) : (
+            jobs.map((job) => <JobCard key={job.id} job={job} />)
+          )}
         </div>
       </section>
     </div>
