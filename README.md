@@ -39,11 +39,25 @@ Open [http://localhost:3000](http://localhost:3000).
 
 1. Log in at [netlify.com](https://www.netlify.com) (Free plan)
 2. **Add new site → Import an existing project → GitHub**
-3. Choose `bighappysmiley/rolecall` and the branch from the Phase 1 PR
-4. Build command: `npm run build` (Next.js plugin should auto-detect)
-5. Paste the environment variables above
-6. Deploy, then copy your `https://….netlify.app` URL
+3. Choose `bighappysmiley/RoleCall` and the branch from the Phase 1 PR
+4. **Before or after the first deploy**, open **Site configuration → Environment variables** and add **every** key below. Scope each one to **Builds** and **Functions** (not “runtime only”).
+5. Trigger **Clear cache and deploy site** after saving variables
+6. Copy your `https://….netlify.app` URL
 7. In Neon → RoleCall → Auth → add that URL as a trusted domain / redirect host
+
+### Required Netlify env vars
+
+| Variable | Notes |
+|---|---|
+| `DATABASE_URL` | Neon pooled Postgres URL |
+| `NEON_AUTH_BASE_URL` | From Neon Auth configuration |
+| `NEON_AUTH_COOKIE_SECRET` | 32+ characters (`openssl rand -base64 32`) — **required at build time** |
+| `AWS_ENDPOINT_URL_S3` | Neon storage endpoint |
+| `AWS_REGION` | `us-east-2` |
+| `AWS_ACCESS_KEY_ID` | Neon storage credential |
+| `AWS_SECRET_ACCESS_KEY` | Neon storage credential |
+
+If the build says `Missing required config: cookies.secret`, `NEON_AUTH_COOKIE_SECRET` is missing or not available to **Builds**.
 
 ## What’s in Phase 1
 
