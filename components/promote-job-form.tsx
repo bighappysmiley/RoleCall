@@ -30,14 +30,17 @@ export function PromoteJobForm({
     <form action={action} className="mt-10 max-w-2xl border border-line p-4">
       <RefreshOnSuccess state={state} />
       <input type="hidden" name="jobId" value={jobId} />
-      <p className="font-mono text-[11px] tracking-wider text-muted-foreground">
-        PROMOTE
+      <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
+        Promote
       </p>
       <h2 className="mt-1 font-heading text-2xl">Lift this listing</h2>
       <p className="mt-2 text-sm text-muted-foreground">
         Promoted jobs sit under Featured and above the rest of the board, with a
-        labeled rail. Spend is taken from ad credits. Balance: {formatCents(balanceCents)}.
-        {active ? ` Currently promoted until ${formatShortDate(promotedUntil)}.` : ""}
+        labeled rail. Spend comes from your promotion credits. Balance:{" "}
+        {formatCents(balanceCents)}.
+        {active
+          ? ` Currently promoted until ${formatShortDate(promotedUntil)}.`
+          : ""}
       </p>
       {!published ? (
         <p className="mt-3 text-sm text-muted-foreground">

@@ -362,7 +362,7 @@ export async function spendCreditsToPromote(options: {
     .limit(1);
   if (!company || company.balance < pack.cents) {
     throw new InsufficientCreditsError(
-      `You have ${formatCents(company?.balance ?? 0)} in ad credits. Buy a ${pack.label.replace(" days", "-day")} pack on Billing to promote this job.`,
+      `You have ${formatCents(company?.balance ?? 0)} in promotion credits. Buy a ${pack.label.replace(" days", "-day")} pack on Billing to promote this job.`,
     );
   }
 
@@ -407,7 +407,7 @@ export async function spendCreditsToPromote(options: {
   const row = Array.isArray(rows) ? rows[0] : undefined;
   if (!row) {
     throw new InsufficientCreditsError(
-      `You have ${formatCents(company.balance)} in ad credits. Buy a pack on Billing to promote this job.`,
+      `You have ${formatCents(company.balance)} in promotion credits. Buy a pack on Billing to promote this job.`,
     );
   }
   const promotedUntil = new Date(String(row.promotedUntil));

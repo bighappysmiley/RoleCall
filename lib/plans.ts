@@ -21,7 +21,7 @@ export const PLANS: PlanDefinition[] = [
     name: "Free",
     priceLabel: "$0",
     priceCents: 0,
-    blurb: "Post a couple of roles and see how the board works.",
+    blurb: "Post a couple of roles and get started on the board.",
     activeJobs: 2,
     seats: 2,
     rankingMultiplier: 1,
@@ -30,8 +30,8 @@ export const PLANS: PlanDefinition[] = [
     highlights: [
       "2 active jobs",
       "2 team seats",
-      "1.0× ranking",
-      "Ad credits available",
+      "Standard board placement",
+      "Promotion credits available",
     ],
   },
   {
@@ -48,7 +48,7 @@ export const PLANS: PlanDefinition[] = [
     highlights: [
       "10 active jobs",
       "5 team seats",
-      "1.5× ranking",
+      "Stronger board placement",
       "Custom careers domain",
     ],
   },
@@ -57,7 +57,7 @@ export const PLANS: PlanDefinition[] = [
     name: "Pro Plus",
     priceLabel: "$149",
     priceCents: 14900,
-    blurb: "Pinned placement on the RoleCall board.",
+    blurb: "Featured placement on the RoleCall board.",
     activeJobs: 40,
     seats: 15,
     rankingMultiplier: 2.5,
@@ -66,8 +66,8 @@ export const PLANS: PlanDefinition[] = [
     highlights: [
       "40 active jobs",
       "15 team seats",
-      "2.5× ranking",
-      "Featured pin on the board",
+      "Priority board placement",
+      "Featured label on listings",
     ],
   },
   {
@@ -75,7 +75,7 @@ export const PLANS: PlanDefinition[] = [
     name: "Enterprise",
     priceLabel: "Custom",
     priceCents: null,
-    blurb: "Unlimited seats, jobs, and a named partner.",
+    blurb: "Unlimited seats, jobs, and a dedicated partner.",
     activeJobs: "unlimited",
     seats: "unlimited",
     rankingMultiplier: 2.5,
@@ -83,9 +83,9 @@ export const PLANS: PlanDefinition[] = [
     customDomain: true,
     highlights: [
       "Unlimited jobs and seats",
-      "2.5× ranking",
-      "Featured pin",
-      "Ad credits included",
+      "Priority board placement",
+      "Featured label on listings",
+      "Promotion credits included",
     ],
   },
 ];

@@ -44,8 +44,9 @@ export function creditPackPriceData(cents: number, label: string) {
     currency: "usd" as const,
     unit_amount: cents,
     product_data: {
-      name: `RoleCall ad credits ${label}`,
-      description: "One-time ad credits to promote a published job on the board.",
+      name: `RoleCall promotion credits ${label}`,
+      description:
+        "One-time promotion credits to feature a published job on the board.",
     },
   };
 }

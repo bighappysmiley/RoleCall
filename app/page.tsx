@@ -140,8 +140,8 @@ export default async function HomePage() {
             <div className="border border-white/15 bg-white/5 px-5 py-5">
               <p className="font-display text-lg">For employers</p>
               <p className="mt-2 text-sm leading-relaxed text-white/65">
-                Post roles, review applicants, and promote listings without
-                murky ranking tricks.
+                Post roles, review applicants, and promote listings with
+                placement that stays clearly labeled.
               </p>
             </div>
           </div>

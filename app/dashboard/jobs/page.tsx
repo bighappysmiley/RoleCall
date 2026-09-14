@@ -65,13 +65,13 @@ export default async function DashboardJobsPage() {
                 >
                   {job.title}
                 </Link>
-                <p className="font-mono text-[11px] tracking-wider text-muted-foreground">
-                  {formatJobStatus(job.status).toUpperCase()}
+                <p className="text-[12px] text-muted-foreground">
+                  {formatJobStatus(job.status)}
                   {job.applicationCount
-                    ? ` · ${job.applicationCount} APPS`
+                    ? ` · ${job.applicationCount} applicant${job.applicationCount === 1 ? "" : "s"}`
                     : ""}
                   {job.promotedUntil && !isPast(job.promotedUntil)
-                    ? ` · PROMOTED UNTIL ${formatShortDate(job.promotedUntil).toUpperCase()}`
+                    ? ` · Promoted until ${formatShortDate(job.promotedUntil)}`
                     : ""}
                 </p>
               </div>

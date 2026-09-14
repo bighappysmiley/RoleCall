@@ -198,10 +198,10 @@ export default async function BillingPage({
           </section>
 
           <section className="mt-8 border border-line p-5">
-            <h2 className="font-heading text-2xl">Ad credit packs</h2>
+            <h2 className="font-heading text-2xl">Promotion credit packs</h2>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-              Any plan can buy credits. They are not a subscription. After purchase,
-              open a published job and choose a duration.
+              Any plan can buy credits. They are not a subscription. After
+              purchase, open a published job and choose how long to promote it.
             </p>
             {canBill ? (
               <div className="mt-4">

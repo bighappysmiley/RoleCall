@@ -88,11 +88,11 @@ export default async function PricingPage() {
       </div>
       <section className="mt-12 border border-line bg-white/90 px-6 py-8">
         <h2 className="font-display text-2xl tracking-[-0.03em]">
-          Promotion credits
+          One-time promotion packs
         </h2>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Buy a one-time pack and promote a published job. Duration matches the
-          pack — and the listing stays labeled.
+          Give a published role more visibility for a set number of days. Every
+          promoted listing stays clearly labeled on the board.
         </p>
         <ul className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
           {PROMOTION_PACKS.map((pack, index) => (

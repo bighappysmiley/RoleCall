@@ -172,7 +172,7 @@ export default async function DashboardPage() {
           </h2>
           <p className="mt-2 font-heading text-2xl">{plan.name}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {formatCents(company.adCreditBalanceCents)} in ad credits
+            {formatCents(company.adCreditBalanceCents)} in promotion credits
           </p>
           <Button className="mt-4" size="sm" variant="outline" asChild>
             <Link href="/dashboard/billing">Billing</Link>
