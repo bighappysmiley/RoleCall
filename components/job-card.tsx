@@ -39,11 +39,6 @@ export function JobCard({ job }: { job: RankedJob }) {
               <h2 className="font-display text-lg font-medium tracking-[-0.03em]">
                 {job.title}
               </h2>
-              {job.company.isVerified ? (
-                <span className="text-[11px] font-medium tracking-wide text-primary">
-                  Verified
-                </span>
-              ) : null}
             </div>
             <p className="mt-0.5 text-sm text-muted-foreground">
               <NameWithBadge

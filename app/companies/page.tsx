@@ -58,11 +58,6 @@ export default async function CompaniesPage() {
                       badgeSize={18}
                     />
                   </h2>
-                  {company.isVerified ? (
-                    <span className="text-[11px] font-medium tracking-wide text-primary">
-                      Verified
-                    </span>
-                  ) : null}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {company.tagline}

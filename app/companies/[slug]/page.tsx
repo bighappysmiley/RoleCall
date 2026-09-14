@@ -86,11 +86,6 @@ export default async function CompanyPage({
                 badgeSize={28}
               />
             </h1>
-            {company.isVerified ? (
-              <span className="font-mono text-[10px] tracking-wider text-primary">
-                VERIFIED
-              </span>
-            ) : null}
             {canEdit ? (
               <CompanyOwnerEditor
                 company={company}
