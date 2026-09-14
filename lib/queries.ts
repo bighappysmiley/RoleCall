@@ -26,6 +26,7 @@ import type {
   ProfileLinks,
   ProfileRecord,
   RankedJob,
+  SubscriptionTier,
   WorkplaceType,
 } from "@/lib/types";
 
@@ -763,6 +764,25 @@ export async function updateCompany(companyId: string, input: CompanyWriteInput)
     .where(eq(companies.id, companyId))
     .returning();
 
+  if (!row) {
+    throw new Error("Company not found.");
+  }
+  return mapCompany(row);
+}
+
+export async function setCompanyOverrideTier(
+  companyId: string,
+  overrideTier: SubscriptionTier | null,
+): Promise<CompanyRecord> {
+  const db = requireDb();
+  const [row] = await db
+    .update(companies)
+    .set({
+      overrideTier,
+      updatedAt: new Date(),
+    })
+    .where(eq(companies.id, companyId))
+    .returning();
   if (!row) {
     throw new Error("Company not found.");
   }

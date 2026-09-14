@@ -32,11 +32,11 @@ export default async function PricingPage() {
         Pricing
       </p>
       <h1 className="mt-2 max-w-2xl font-display text-4xl tracking-[-0.04em] sm:text-5xl">
-        Simple plans for teams that hire in the open.
+        Plans that stay clear and fair.
       </h1>
       <p className="mt-4 max-w-xl text-base text-muted-foreground">
-        Job and seat limits apply on every plan. Upgrade when you need more open
-        roles or teammates.
+        Start free with room to hire. Upgrade when you need more open roles,
+        teammates, or stronger placement on the board.
       </p>
       <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {PLANS.map((plan) => {

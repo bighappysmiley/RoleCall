@@ -23,7 +23,7 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-6xl px-4 py-10">
         <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
           CANDIDATE
-          {profile.isPlatformAdmin ? " · PLATFORM ADMIN" : ""}
+          {profile.isPlatformAdmin ? " · ADMIN" : ""}
         </p>
         <h1 className="mt-2 font-heading text-4xl">
           Hello{profile.fullName ? `, ${profile.fullName.split(" ")[0]}` : ""}
@@ -34,11 +34,9 @@ export default async function DashboardPage() {
         </p>
         {profile.isPlatformAdmin ? (
           <div className="mt-6 border border-primary/30 bg-primary/5 p-4">
-            <p className="font-mono text-[11px] tracking-wider text-primary">
-              PLATFORM ADMIN
-            </p>
+            <p className="text-sm font-medium text-primary">Admin</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Create badges and manage platform settings.
+              Manage badges and complimentary company plans.
             </p>
             <Button className="mt-3" size="sm" asChild>
               <Link href="/dashboard/admin">Open admin panel</Link>
@@ -141,7 +139,7 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-6xl px-4 py-10">
       <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
         EMPLOYER
-        {profile.isPlatformAdmin ? " · PLATFORM ADMIN" : ""}
+        {profile.isPlatformAdmin ? " · ADMIN" : ""}
         {access.role ? ` · ${access.role.toUpperCase()}` : ""}
       </p>
       <h1 className="mt-2 font-heading text-4xl">{company.name}</h1>
@@ -150,11 +148,9 @@ export default async function DashboardPage() {
       </p>
       {profile.isPlatformAdmin ? (
         <div className="mt-6 border border-primary/30 bg-primary/5 p-4">
-          <p className="font-mono text-[11px] tracking-wider text-primary">
-            PLATFORM ADMIN
-          </p>
+          <p className="text-sm font-medium text-primary">Admin</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Create badges and manage platform settings.
+            Manage badges and complimentary company plans.
           </p>
           <Button className="mt-3" size="sm" asChild>
             <Link href="/dashboard/admin">Open admin panel</Link>
