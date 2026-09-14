@@ -46,6 +46,11 @@ export async function SiteHeader() {
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/profile">Profile</Link>
               </Button>
+              {profile?.isPlatformAdmin ? (
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/dashboard/admin">Admin</Link>
+                </Button>
+              ) : null}
               <Button size="sm" asChild>
                 <Link href="/dashboard">Dashboard</Link>
               </Button>

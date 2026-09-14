@@ -32,6 +32,19 @@ export default async function DashboardPage() {
           Track applications and saved roles. Keep your profile current so
           hiring teams can read you quickly.
         </p>
+        {profile.isPlatformAdmin ? (
+          <div className="mt-6 border border-primary/30 bg-primary/5 p-4">
+            <p className="font-mono text-[11px] tracking-wider text-primary">
+              PLATFORM ADMIN
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Create badges and manage platform settings.
+            </p>
+            <Button className="mt-3" size="sm" asChild>
+              <Link href="/dashboard/admin">Open admin panel</Link>
+            </Button>
+          </div>
+        ) : null}
         <div className="mt-8 grid gap-3 md:grid-cols-3">
           <section className="border border-line p-4">
             <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground">
@@ -135,6 +148,19 @@ export default async function DashboardPage() {
       <p className="mt-2 max-w-xl text-sm text-muted-foreground">
         {company.tagline ?? "Post jobs, run the pipeline, and invite your team."}
       </p>
+      {profile.isPlatformAdmin ? (
+        <div className="mt-6 border border-primary/30 bg-primary/5 p-4">
+          <p className="font-mono text-[11px] tracking-wider text-primary">
+            PLATFORM ADMIN
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Create badges and manage platform settings.
+          </p>
+          <Button className="mt-3" size="sm" asChild>
+            <Link href="/dashboard/admin">Open admin panel</Link>
+          </Button>
+        </div>
+      ) : null}
       <div className="mt-8 grid gap-3 md:grid-cols-3">
         <section className="border border-line p-4">
           <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground">

@@ -21,6 +21,7 @@ export default async function DashboardLayout({
         }))}
         activeId={ctx.company?.id}
         showHiringNav={showHiringNav}
+        isPlatformAdmin={ctx.profile.isPlatformAdmin}
       />
       {children}
     </div>

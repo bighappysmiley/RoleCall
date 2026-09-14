@@ -1,4 +1,5 @@
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { getPinnedCompanyBadgesByIds } from "@/lib/badge-queries";
 import { getDb, isDatabaseConfigured, requireDb } from "@/lib/db";
 import {
   applicationNotes,
@@ -28,7 +29,41 @@ import type {
   WorkplaceType,
 } from "@/lib/types";
 
-const PLATFORM_ADMIN_EMAIL = "hf@bighappysmiley.com";
+async function hydrateCompanyPinnedBadges(
+  companyList: CompanyRecord[],
+): Promise<CompanyRecord[]> {
+  const pinned = await getPinnedCompanyBadgesByIds(
+    companyList.map((company) => company.id),
+  );
+  return companyList.map((company) => ({
+    ...company,
+    pinnedBadge: pinned.get(company.id) ?? null,
+  }));
+}
+
+async function hydrateJobCompanyPinnedBadges(
+  jobList: Array<JobWithCompany | RankedJob>,
+): Promise<typeof jobList> {
+  const pinned = await getPinnedCompanyBadgesByIds(
+    jobList.map((job) => job.company.id),
+  );
+  return jobList.map((job) => ({
+    ...job,
+    company: {
+      ...job.company,
+      pinnedBadge: pinned.get(job.company.id) ?? null,
+    },
+  }));
+}
+
+const PLATFORM_ADMIN_EMAILS = new Set([
+  "hf@bighappysmiley.com",
+  "orshfrankel@gmail.com",
+]);
+
+function emailIsPlatformAdmin(email?: string | null) {
+  return Boolean(email && PLATFORM_ADMIN_EMAILS.has(email.toLowerCase()));
+}
 
 function asStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) {
@@ -165,13 +200,14 @@ export async function listPublishedJobs(filters?: JobBoardFilters) {
         .from(jobs)
         .innerJoin(companies, eq(jobs.companyId, companies.id))
         .where(eq(jobs.status, "published"));
-      return applyBoardFilters(
+      const ranked = applyBoardFilters(
         rankJobs(
           rows.map((row) => mapJob(row.jobs, mapCompany(row.companies))),
           filters?.q,
         ),
         filters,
       );
+      return (await hydrateJobCompanyPinnedBadges(ranked)) as RankedJob[];
     } catch (error) {
       console.error("Failed to load jobs.", error);
       return [];
@@ -185,7 +221,7 @@ export async function listCompanies(): Promise<CompanyRecord[]> {
   if (db) {
     try {
       const rows = await db.select().from(companies).orderBy(companies.name);
-      return rows.map(mapCompany);
+      return hydrateCompanyPinnedBadges(rows.map(mapCompany));
     } catch (error) {
       console.error("Failed to load companies.", error);
       return [];
@@ -205,7 +241,11 @@ export async function getCompanyBySlug(
         .from(companies)
         .where(eq(companies.slug, slug))
         .limit(1);
-      return row ? mapCompany(row) : null;
+      if (!row) {
+        return null;
+      }
+      const [company] = await hydrateCompanyPinnedBadges([mapCompany(row)]);
+      return company ?? null;
     } catch (error) {
       console.error("Failed to load company.", error);
       return null;
@@ -220,7 +260,11 @@ export async function getCompanyById(id: string): Promise<CompanyRecord | null> 
     return null;
   }
   const [row] = await db.select().from(companies).where(eq(companies.id, id)).limit(1);
-  return row ? mapCompany(row) : null;
+  if (!row) {
+    return null;
+  }
+  const [company] = await hydrateCompanyPinnedBadges([mapCompany(row)]);
+  return company ?? null;
 }
 
 export async function listCompanyJobs(companyId: string): Promise<RankedJob[]> {
@@ -259,7 +303,12 @@ export async function getJobBySlugs(
       if (!row) {
         return null;
       }
-      const job = mapJob(row.jobs, mapCompany(row.companies));
+      const [job] = await hydrateJobCompanyPinnedBadges([
+        mapJob(row.jobs, mapCompany(row.companies)),
+      ]);
+      if (!job) {
+        return null;
+      }
       if (job.status === "published") {
         return job;
       }
@@ -315,6 +364,8 @@ export async function ensureProfile(user: {
   image?: string | null;
 }): Promise<ProfileRecord | null> {
   const db = getDb();
+  const adminFromEmail = emailIsPlatformAdmin(user.email);
+
   if (!db) {
     return {
       id: user.id,
@@ -325,7 +376,7 @@ export async function ensureProfile(user: {
       location: null,
       bio: null,
       links: {},
-      isPlatformAdmin: user.email?.toLowerCase() === PLATFORM_ADMIN_EMAIL,
+      isPlatformAdmin: adminFromEmail,
     };
   }
 
@@ -336,6 +387,14 @@ export async function ensureProfile(user: {
     .limit(1);
 
   if (existing) {
+    if (adminFromEmail && !existing.isPlatformAdmin) {
+      const [updated] = await db
+        .update(profiles)
+        .set({ isPlatformAdmin: true, updatedAt: new Date() })
+        .where(eq(profiles.id, existing.id))
+        .returning();
+      return mapProfile(updated ?? existing);
+    }
     return mapProfile(existing);
   }
 
@@ -345,7 +404,7 @@ export async function ensureProfile(user: {
       id: user.id,
       fullName: user.name ?? null,
       avatarUrl: user.image ?? null,
-      isPlatformAdmin: user.email?.toLowerCase() === PLATFORM_ADMIN_EMAIL,
+      isPlatformAdmin: adminFromEmail,
     })
     .returning();
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NameWithBadge } from "@/components/badge-icon";
 import { CompanyMark } from "@/components/company-mark";
 import { PromotionRail } from "@/components/promotion-rail";
 import {
@@ -38,15 +39,16 @@ export function JobCard({ job }: { job: RankedJob }) {
               <h2 className="font-display text-lg font-medium tracking-[-0.03em]">
                 {job.title}
               </h2>
-              {job.company.isVerified ? (
-                <span className="text-[11px] font-medium tracking-wide text-primary">
-                  Verified
-                </span>
-              ) : null}
             </div>
             <p className="mt-0.5 text-sm text-muted-foreground">
-              {job.company.name}
-              {job.location ? ` · ${job.location}` : ""}
+              <NameWithBadge
+                name={job.company.name}
+                badge={job.company.pinnedBadge}
+                badgeSize={14}
+              />
+              {job.location ? (
+                <span>{` · ${job.location}`}</span>
+              ) : null}
             </p>
             <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
               <span>{formatEmployment(job.employmentType)}</span>

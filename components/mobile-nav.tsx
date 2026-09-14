@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { signOutAction } from "@/lib/auth/actions";
@@ -25,8 +26,24 @@ export function MobileNav({
   signedIn: boolean;
   isAdmin: boolean;
 }) {
+  const [open, setOpen] = useState(false);
+
+  function NavLink({
+    href,
+    children,
+  }: {
+    href: string;
+    children: React.ReactNode;
+  }) {
+    return (
+      <Link href={href} className="py-1" onClick={() => setOpen(false)}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         className="inline-flex size-8 items-center justify-center border border-line md:hidden"
         aria-label="Open menu"
@@ -39,19 +56,17 @@ export function MobileNav({
         </SheetHeader>
         <nav className="mt-6 flex flex-col gap-3 px-4 text-sm">
           {NAV.map((item) => (
-            <Link key={item.href} href={item.href} className="py-1">
+            <NavLink key={item.href} href={item.href}>
               {item.label}
-            </Link>
+            </NavLink>
           ))}
           <div className="my-2 h-px bg-line" />
           {signedIn ? (
             <>
-              <Link href="/dashboard">Dashboard</Link>
-              <Link href="/profile">Profile</Link>
+              <NavLink href="/dashboard">Dashboard</NavLink>
+              <NavLink href="/profile">Profile</NavLink>
               {isAdmin ? (
-                <p className="font-mono text-[10px] tracking-wider text-muted-foreground">
-                  ADMIN
-                </p>
+                <NavLink href="/dashboard/admin">Admin panel</NavLink>
               ) : null}
               <form action={signOutAction}>
                 <Button type="submit" variant="outline" size="sm">
@@ -61,8 +76,8 @@ export function MobileNav({
             </>
           ) : (
             <>
-              <Link href="/login">Sign in</Link>
-              <Link href="/signup">Create account</Link>
+              <NavLink href="/login">Sign in</NavLink>
+              <NavLink href="/signup">Create account</NavLink>
             </>
           )}
         </nav>

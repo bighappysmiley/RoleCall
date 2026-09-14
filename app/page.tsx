@@ -4,6 +4,8 @@ import { JobCard } from "@/components/job-card";
 import { Button } from "@/components/ui/button";
 import { listPublishedJobs } from "@/lib/queries";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const allJobs = await listPublishedJobs();
   const jobs = allJobs.slice(0, 6);
