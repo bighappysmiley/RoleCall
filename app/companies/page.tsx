@@ -18,42 +18,52 @@ export default async function CompaniesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
-        DIRECTORY
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+      <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
+        Directory
       </p>
-      <h1 className="mt-2 font-heading text-4xl">Companies</h1>
+      <h1 className="mt-2 font-display text-4xl tracking-[-0.04em] sm:text-5xl">
+        Companies
+      </h1>
+      <p className="mt-3 max-w-xl text-base text-muted-foreground">
+        Meet the teams hiring on RoleCall.
+      </p>
       {companies.length === 0 ? (
-        <p className="mt-8 border border-line bg-fog px-4 py-6 text-sm text-muted-foreground">
-          No companies yet. Hiring teams show up here after they create a profile.
+        <p className="mt-10 border border-line bg-white/80 px-5 py-8 text-sm text-muted-foreground">
+          No companies yet. Hiring teams appear here after they create a
+          profile.
         </p>
       ) : (
-      <div className="mt-8 grid gap-3 sm:grid-cols-2">
-        {companies.map((company) => (
-          <Link
-            key={company.id}
-            href={`/companies/${company.slug}`}
-            className="flex gap-4 border border-line bg-paper p-4 hover:bg-fog"
-          >
-            <CompanyMark name={company.name} className="size-12 text-sm" />
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h2 className="font-heading text-xl">{company.name}</h2>
-                {company.isVerified ? (
-                  <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
-                    VERIFIED
-                  </span>
-                ) : null}
+        <div className="mt-10 grid gap-3 sm:grid-cols-2">
+          {companies.map((company) => (
+            <Link
+              key={company.id}
+              href={`/companies/${company.slug}`}
+              className="flex gap-4 border border-line bg-white/90 p-5 transition-colors hover:border-primary/30 hover:bg-white"
+            >
+              <CompanyMark name={company.name} className="size-12 text-sm" />
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="font-display text-xl tracking-[-0.03em]">
+                    {company.name}
+                  </h2>
+                  {company.isVerified ? (
+                    <span className="text-[11px] font-medium tracking-wide text-primary">
+                      Verified
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {company.tagline}
+                </p>
+                <p className="mt-3 text-xs tracking-wide text-muted-foreground">
+                  {counts.get(company.id) ?? 0} open
+                  {company.industry ? ` · ${company.industry}` : ""}
+                </p>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">{company.tagline}</p>
-              <p className="mt-3 font-mono text-[11px] tracking-wide text-muted-foreground">
-                {counts.get(company.id) ?? 0} OPEN
-                {company.industry ? ` · ${company.industry.toUpperCase()}` : ""}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
       )}
     </div>
   );

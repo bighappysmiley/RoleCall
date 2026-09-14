@@ -1,19 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Sans, Inter, JetBrains_Mono } from "next/font/google";
+import { Figtree, JetBrains_Mono, Syne } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PreviewBanner } from "@/components/preview-banner";
 import { SetupBanner } from "@/components/setup-banner";
 import "./globals.css";
 
-const instrument = Instrument_Sans({
-  variable: "--font-instrument",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
   display: "swap",
 });
@@ -26,11 +26,11 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "RoleCall — hiring, plainly",
+    default: "RoleCall — find work, hire well",
     template: "%s · RoleCall",
   },
   description:
-    "RoleCall is a two-sided hiring board by BigHappySmiley. Employers post jobs. Candidates apply. Placement is labeled.",
+    "RoleCall is a clear hiring board. Employers post jobs. Candidates apply. Paid placement is always labeled.",
   applicationName: "RoleCall",
   appleWebApp: {
     capable: true,
@@ -63,7 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrument.variable} ${inter.variable} ${jetbrains.variable} flex min-h-screen flex-col bg-paper text-ink`}
+        className={`${syne.variable} ${figtree.variable} ${jetbrains.variable} flex min-h-screen flex-col bg-paper text-ink`}
       >
         <PreviewBanner />
         <SetupBanner />

@@ -9,16 +9,31 @@ import { Input } from "@/components/ui/input";
 
 export function JobsFilter({ filters }: { filters: JobBoardFilters }) {
   return (
-    <form method="get" action="/jobs" className="grid gap-3 border border-line bg-paper p-4 md:grid-cols-[1fr_10rem_10rem_1fr_auto] md:items-end">
+    <form
+      method="get"
+      action="/jobs"
+      className="grid gap-3 border border-line bg-white/90 p-4 md:grid-cols-[1fr_10rem_10rem_1fr_auto] md:items-end"
+    >
       <div className="grid gap-1.5">
-        <label htmlFor="q" className="font-mono text-[11px] tracking-wider text-muted-foreground">
-          SEARCH
+        <label
+          htmlFor="q"
+          className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase"
+        >
+          Search
         </label>
-        <Input id="q" name="q" defaultValue={filters.q ?? ""} placeholder="Title, skill, company" />
+        <Input
+          id="q"
+          name="q"
+          defaultValue={filters.q ?? ""}
+          placeholder="Title, skill, company"
+        />
       </div>
       <div className="grid gap-1.5">
-        <label htmlFor="type" className="font-mono text-[11px] tracking-wider text-muted-foreground">
-          TYPE
+        <label
+          htmlFor="type"
+          className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase"
+        >
+          Type
         </label>
         <select
           id="type"
@@ -35,8 +50,11 @@ export function JobsFilter({ filters }: { filters: JobBoardFilters }) {
         </select>
       </div>
       <div className="grid gap-1.5">
-        <label htmlFor="workplace" className="font-mono text-[11px] tracking-wider text-muted-foreground">
-          PLACE
+        <label
+          htmlFor="workplace"
+          className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase"
+        >
+          Place
         </label>
         <select
           id="workplace"
@@ -53,8 +71,11 @@ export function JobsFilter({ filters }: { filters: JobBoardFilters }) {
         </select>
       </div>
       <div className="grid gap-1.5">
-        <label htmlFor="location" className="font-mono text-[11px] tracking-wider text-muted-foreground">
-          LOCATION
+        <label
+          htmlFor="location"
+          className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase"
+        >
+          Location
         </label>
         <Input
           id="location"
@@ -63,7 +84,7 @@ export function JobsFilter({ filters }: { filters: JobBoardFilters }) {
           placeholder="City or remote"
         />
       </div>
-      <Button type="submit" className="h-8">
+      <Button type="submit" className="md:h-8">
         Filter
       </Button>
     </form>

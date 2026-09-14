@@ -24,16 +24,16 @@ export async function SiteHeader() {
     : null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-        <div className="flex items-center gap-8">
+    <header className="sticky top-0 z-40 border-b border-line/80 bg-paper/85 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+        <div className="flex items-center gap-10">
           <Wordmark />
-          <nav className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
+          <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="hover:text-ink"
+                className="transition-colors hover:text-ink"
               >
                 {item.label}
               </Link>
@@ -50,11 +50,6 @@ export async function SiteHeader() {
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
               <SignOutButton />
-              {profile?.isPlatformAdmin ? (
-                <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
-                  ADMIN
-                </span>
-              ) : null}
             </>
           ) : (
             <>

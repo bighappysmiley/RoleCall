@@ -27,49 +27,56 @@ export default async function PricingPage() {
         : "/signup";
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
-        PLANS
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+      <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
+        Pricing
       </p>
-      <h1 className="mt-2 font-heading text-4xl">Pricing</h1>
-      <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-        Job and seat limits apply on every plan. Upgrade when you need more
-        open roles or team seats.
+      <h1 className="mt-2 max-w-2xl font-display text-4xl tracking-[-0.04em] sm:text-5xl">
+        Simple plans for teams that hire in the open.
+      </h1>
+      <p className="mt-4 max-w-xl text-base text-muted-foreground">
+        Job and seat limits apply on every plan. Upgrade when you need more open
+        roles or teammates.
       </p>
-      <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {PLANS.map((plan) => {
           const href =
             plan.id === "enterprise"
-              ? "mailto:hf@bighappysmiley.com"
+              ? "mailto:hello@bighappysmiley.com"
               : hiringCta;
           const label =
             plan.id === "enterprise"
               ? "Talk to us"
               : session?.user
                 ? "Go to billing"
-                : "Start";
+                : "Get started";
           return (
             <article
               key={plan.id}
-              className="flex flex-col border border-line bg-paper p-5"
+              className="flex flex-col border border-line bg-white/90 p-6 transition-colors hover:border-primary/25"
             >
-              <p className="font-mono text-[11px] tracking-wider text-muted-foreground">
-                {plan.name.toUpperCase()}
-              </p>
-              <p className="mt-2 font-heading text-3xl">
+              <p className="text-sm font-medium text-primary">{plan.name}</p>
+              <p className="mt-3 font-display text-4xl tracking-[-0.04em]">
                 {plan.priceLabel}
                 {plan.priceCents != null && plan.priceCents > 0 ? (
-                  <span className="text-base text-muted-foreground"> /mo</span>
+                  <span className="text-base font-sans tracking-normal text-muted-foreground">
+                    /mo
+                  </span>
                 ) : null}
               </p>
-              <p className="mt-2 text-sm text-muted-foreground">{plan.blurb}</p>
-              <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {plan.blurb}
+              </p>
+              <ul className="mt-5 flex flex-1 flex-col gap-2.5 text-sm text-ink/85">
                 {plan.highlights.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item} className="flex gap-2">
+                    <span className="mt-2 size-1 shrink-0 rounded-full bg-primary" />
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ul>
               <Button
-                className="mt-6 w-full"
+                className="mt-8 w-full"
                 variant={plan.id === "pro" ? "default" : "outline"}
                 asChild
               >
@@ -79,16 +86,26 @@ export default async function PricingPage() {
           );
         })}
       </div>
-      <section className="mt-10 border border-line p-5">
-        <h2 className="font-heading text-2xl">Ad credits</h2>
+      <section className="mt-12 border border-line bg-white/90 px-6 py-8">
+        <h2 className="font-display text-2xl tracking-[-0.03em]">
+          Promotion credits
+        </h2>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Any tier can buy a one-time pack and promote a published job under
-          Featured. Duration matches the pack.
+          Buy a one-time pack and promote a published job. Duration matches the
+          pack — and the listing stays labeled.
         </p>
-        <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
+        <ul className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
           {PROMOTION_PACKS.map((pack, index) => (
-            <li key={pack.cents} className="border border-line px-3 py-2">
-              {AD_CREDIT_PACKS[index]?.label} · {pack.label} on the board
+            <li
+              key={pack.cents}
+              className="border border-line bg-paper/80 px-4 py-3"
+            >
+              <p className="font-display text-lg tracking-[-0.03em]">
+                {AD_CREDIT_PACKS[index]?.label}
+              </p>
+              <p className="mt-1 text-muted-foreground">
+                {pack.label} on the board
+              </p>
             </li>
           ))}
         </ul>

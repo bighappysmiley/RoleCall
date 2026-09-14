@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { CompanyMark } from "@/components/company-mark";
 import { PromotionRail } from "@/components/promotion-rail";
-import { formatEmployment, formatPostedAt, formatSalary, formatWorkplace } from "@/lib/format";
+import {
+  formatEmployment,
+  formatPostedAt,
+  formatSalary,
+  formatWorkplace,
+} from "@/lib/format";
 import type { RankedJob } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +22,7 @@ export function JobCard({ job }: { job: RankedJob }) {
   return (
     <article
       className={cn(
-        "relative border border-line bg-paper",
+        "relative border border-line bg-white/90 transition-colors hover:border-primary/25 hover:bg-white",
         job.rail !== "none" && "pl-1",
       )}
     >
@@ -30,12 +35,12 @@ export function JobCard({ job }: { job: RankedJob }) {
           <CompanyMark name={job.company.name} />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <h2 className="font-heading text-lg font-medium tracking-[-0.03em]">
+              <h2 className="font-display text-lg font-medium tracking-[-0.03em]">
                 {job.title}
               </h2>
               {job.company.isVerified ? (
-                <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
-                  VERIFIED
+                <span className="text-[11px] font-medium tracking-wide text-primary">
+                  Verified
                 </span>
               ) : null}
             </div>
@@ -43,14 +48,14 @@ export function JobCard({ job }: { job: RankedJob }) {
               {job.company.name}
               {job.location ? ` · ${job.location}` : ""}
             </p>
-            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-muted-foreground">
+            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
               <span>{formatEmployment(job.employmentType)}</span>
               <span>{formatWorkplace(job.workplaceType)}</span>
               {salary ? <span>{salary}</span> : null}
               <span>{formatPostedAt(job.publishedAt)}</span>
             </div>
             {job.skills.length > 0 ? (
-              <p className="mt-2 truncate text-sm text-ink/80">
+              <p className="mt-2 truncate text-sm text-ink/75">
                 {job.skills.slice(0, 4).join(" · ")}
               </p>
             ) : null}

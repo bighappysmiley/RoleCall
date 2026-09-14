@@ -17,17 +17,17 @@ export default async function SignupPage({
 
   return (
     <div className="mx-auto w-full max-w-sm px-4 py-16">
-      <h1 className="font-heading text-3xl">Create account</h1>
+      <h1 className="font-display text-3xl tracking-[-0.04em]">Create account</h1>
       <p className="mt-2 mb-6 text-sm text-muted-foreground">
         {configured
-          ? "Then choose whether you are hiring or looking."
+          ? "Then choose whether you are hiring or looking for work."
           : "Account creation is temporarily unavailable. Please try again soon."}
       </p>
       <div className="flex flex-col gap-4">
         <GoogleButton callbackURL={next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding"} />
-        <div className="flex items-center gap-3 font-mono text-[10px] tracking-wider text-muted-foreground">
+        <div className="flex items-center gap-3 text-[11px] tracking-[0.12em] text-muted-foreground uppercase">
           <span className="h-px flex-1 bg-line" />
-          OR
+          or
           <span className="h-px flex-1 bg-line" />
         </div>
         <AuthForm

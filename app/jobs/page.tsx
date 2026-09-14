@@ -31,27 +31,29 @@ export default async function JobsPage({
   const jobs = await listPublishedJobs(filters);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
-            LIVE BOARD
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+      <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-2xl">
+          <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
+            Live board
           </p>
-          <h1 className="mt-2 font-heading text-4xl">Jobs</h1>
-          <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-            Featured sits at the top, then credit-promoted, then the rest.
-            Search and filters rank the board — they do not hide paid labels.
+          <h1 className="mt-2 font-display text-4xl tracking-[-0.04em] sm:text-5xl">
+            Jobs
+          </h1>
+          <p className="mt-3 text-base text-muted-foreground">
+            Featured and promoted roles stay labeled. Search ranks the board —
+            it never hides who paid for placement.
           </p>
         </div>
-        <p className="font-mono text-[11px] tracking-wide text-muted-foreground">
-          {jobs.length} OPEN
+        <p className="text-sm text-muted-foreground">
+          {jobs.length} open {jobs.length === 1 ? "role" : "roles"}
         </p>
       </div>
       <div className="mb-6">
         <JobsFilter filters={filters} />
       </div>
       {jobs.length === 0 ? (
-        <p className="border border-line bg-fog px-4 py-6 text-sm text-muted-foreground">
+        <p className="border border-line bg-white/80 px-5 py-8 text-sm text-muted-foreground">
           {filters.q || filters.type || filters.workplace || filters.location
             ? "No published roles match those filters."
             : "No published roles yet."}
