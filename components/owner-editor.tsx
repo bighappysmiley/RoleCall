@@ -207,6 +207,7 @@ export function ProfileOwnerEditor({
               action={awardAction}
               className="space-y-3 border-t border-line pt-6"
             >
+              <RefreshOnSuccess state={awardState} />
               <h3 className="font-heading text-lg">Add a badge</h3>
               <input type="hidden" name="profileId" value={profile.id} />
               <select
@@ -412,6 +413,7 @@ export function CompanyOwnerEditor({
               action={awardAction}
               className="space-y-3 border-t border-line pt-6"
             >
+              <RefreshOnSuccess state={awardState} />
               <h3 className="font-heading text-lg">Add a badge</h3>
               <input type="hidden" name="companyId" value={company.id} />
               <select
