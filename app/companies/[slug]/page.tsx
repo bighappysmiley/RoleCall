@@ -1,10 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { NameWithBadge } from "@/components/badge-icon";
 import { CompanyMark } from "@/components/company-mark";
 import { JobCard } from "@/components/job-card";
-import { getCompanyBySlug, listCompanyJobs } from "@/lib/queries";
+import { CompanyOwnerEditor } from "@/components/owner-editor";
+import { getOptionalSession } from "@/lib/auth/server";
+import {
+  listBadges,
+  listCompanyBadges,
+} from "@/lib/badge-queries";
+import { canEditCompany } from "@/lib/permissions";
 import { effectiveTier } from "@/lib/plans";
+import {
+  ensureProfile,
+  getActiveMembership,
+  getCompanyBySlug,
+  listCompanyJobs,
+} from "@/lib/queries";
 
 type Params = { slug: string };
 
@@ -28,8 +41,33 @@ export default async function CompanyPage({
   if (!company) {
     notFound();
   }
-  const jobs = await listCompanyJobs(company.id);
+
+  const [jobs, assigned, catalog, session] = await Promise.all([
+    listCompanyJobs(company.id),
+    listCompanyBadges(company.id),
+    listBadges(),
+    getOptionalSession(),
+  ]);
+  const pinned = assigned.find((badge) => badge.isPinned) ?? null;
   const tier = effectiveTier(company.subscriptionTier, company.overrideTier);
+
+  let canEdit = false;
+  if (session?.user) {
+    const profile = await ensureProfile({
+      id: session.user.id,
+      name: session.user.name,
+      email: session.user.email,
+      image: session.user.image,
+    });
+    if (profile) {
+      const membership = await getActiveMembership(profile.id, company.id);
+      canEdit = canEditCompany({
+        companyId: company.id,
+        isPlatformAdmin: profile.isPlatformAdmin,
+        role: membership?.role ?? null,
+      });
+    }
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -41,11 +79,25 @@ export default async function CompanyPage({
         />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="font-heading text-4xl">{company.name}</h1>
+            <h1 className="font-heading text-4xl">
+              <NameWithBadge
+                name={company.name}
+                badge={pinned}
+                badgeSize={28}
+              />
+            </h1>
             {company.isVerified ? (
               <span className="font-mono text-[10px] tracking-wider text-primary">
                 VERIFIED
               </span>
+            ) : null}
+            {canEdit ? (
+              <CompanyOwnerEditor
+                company={company}
+                assigned={assigned}
+                catalog={catalog}
+                canAward={canEdit}
+              />
             ) : null}
           </div>
           {company.tagline ? (
@@ -78,6 +130,19 @@ export default async function CompanyPage({
                   className="border border-line bg-fog/70 px-2 py-1 text-[12px] text-ink/80"
                 >
                   {item}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {assigned.length > 0 ? (
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {assigned.map((badge) => (
+                <li
+                  key={badge.assignmentId}
+                  className="inline-flex items-center gap-1.5 border border-line px-2 py-1 text-[12px]"
+                  title={badge.description ?? badge.name}
+                >
+                  <NameWithBadge name={badge.name} badge={badge} badgeSize={16} />
                 </li>
               ))}
             </ul>

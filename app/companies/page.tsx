@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { NameWithBadge } from "@/components/badge-icon";
 import { CompanyMark } from "@/components/company-mark";
 import { listCompanies, listPublishedJobs } from "@/lib/queries";
 
@@ -49,7 +50,11 @@ export default async function CompaniesPage() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="font-display text-xl tracking-[-0.03em]">
-                    {company.name}
+                    <NameWithBadge
+                      name={company.name}
+                      badge={company.pinnedBadge}
+                      badgeSize={18}
+                    />
                   </h2>
                   {company.isVerified ? (
                     <span className="text-[11px] font-medium tracking-wide text-primary">

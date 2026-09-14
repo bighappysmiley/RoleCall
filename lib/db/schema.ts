@@ -348,3 +348,75 @@ export const jobViews = pgTable(
   },
   (table) => [index("job_views_job_idx").on(table.jobId)],
 );
+
+export const badges = pgTable(
+  "badges",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").notNull().unique(),
+    name: text("name").notNull(),
+    description: text("description"),
+    iconDataUrl: text("icon_data_url").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [index("badges_slug_idx").on(table.slug)],
+);
+
+export const profileBadges = pgTable(
+  "profile_badges",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    profileId: uuid("profile_id")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" }),
+    badgeId: uuid("badge_id")
+      .notNull()
+      .references(() => badges.id, { onDelete: "cascade" }),
+    isPinned: boolean("is_pinned").notNull().default(false),
+    awardedBy: uuid("awarded_by").references(() => profiles.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    unique("profile_badges_profile_badge_uidx").on(
+      table.profileId,
+      table.badgeId,
+    ),
+    index("profile_badges_profile_idx").on(table.profileId),
+  ],
+);
+
+export const companyBadges = pgTable(
+  "company_badges",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    badgeId: uuid("badge_id")
+      .notNull()
+      .references(() => badges.id, { onDelete: "cascade" }),
+    isPinned: boolean("is_pinned").notNull().default(false),
+    awardedBy: uuid("awarded_by").references(() => profiles.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    unique("company_badges_company_badge_uidx").on(
+      table.companyId,
+      table.badgeId,
+    ),
+    index("company_badges_company_idx").on(table.companyId),
+  ],
+);

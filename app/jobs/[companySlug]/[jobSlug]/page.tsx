@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApplyForm, SaveJobButton } from "@/components/apply-form";
+import { NameWithBadge } from "@/components/badge-icon";
 import { CompanyMark } from "@/components/company-mark";
 import { PromotionRail } from "@/components/promotion-rail";
 import { Button } from "@/components/ui/button";
@@ -90,7 +91,11 @@ export default async function JobDetailPage({
             <div>
               <p className="text-sm text-muted-foreground">
                 <Link href={`/companies/${job.company.slug}`} className="hover:text-ink">
-                  {job.company.name}
+                  <NameWithBadge
+                    name={job.company.name}
+                    badge={job.company.pinnedBadge}
+                    badgeSize={16}
+                  />
                 </Link>
               </p>
               <h1 className="mt-1 font-heading text-3xl sm:text-4xl">{job.title}</h1>

@@ -99,6 +99,7 @@ export type CompanyRecord = {
   adCreditBalanceCents: number;
   overrideTier: SubscriptionTier | null;
   overrideBoost: boolean;
+  pinnedBadge?: BadgeRecord | null;
 };
 
 export type JobRecord = {
@@ -153,4 +154,19 @@ export type ProfileRecord = {
   bio: string | null;
   links: ProfileLinks;
   isPlatformAdmin: boolean;
+};
+
+export type BadgeRecord = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  iconDataUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type AssignedBadge = BadgeRecord & {
+  assignmentId: string;
+  isPinned: boolean;
 };

@@ -15,10 +15,12 @@ export function DashboardNav({
   companies,
   activeId,
   showHiringNav,
+  isPlatformAdmin = false,
 }: {
   companies: { id: string; name: string }[];
   activeId?: string;
   showHiringNav: boolean;
+  isPlatformAdmin?: boolean;
 }) {
   return (
     <div className="border-b border-line bg-paper">
@@ -37,6 +39,11 @@ export function DashboardNav({
           <Link href="/profile" className="text-muted-foreground hover:text-ink">
             Profile
           </Link>
+          {isPlatformAdmin ? (
+            <Link href="/dashboard/admin" className="text-muted-foreground hover:text-ink">
+              Admin
+            </Link>
+          ) : null}
         </nav>
         {companies.length > 1 ? (
           <form action={switchCompanyAction}>
