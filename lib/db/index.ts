@@ -19,7 +19,7 @@ export function requireDb() {
   const db = getDb();
   if (!db) {
     throw new Error(
-      "Database is not connected. Add DATABASE_URL in Netlify → Environment variables.",
+      "RoleCall is temporarily unavailable. Please try again soon.",
     );
   }
   return db;

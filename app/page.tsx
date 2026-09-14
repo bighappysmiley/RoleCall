@@ -41,8 +41,8 @@ export default async function HomePage() {
               <dd className="mt-1 text-sm text-ink">$0–$149</dd>
             </div>
             <div>
-              <dt className="text-muted-foreground">HOST</dt>
-              <dd className="mt-1 text-sm text-ink">Netlify</dd>
+              <dt className="text-muted-foreground">LABELS</dt>
+              <dd className="mt-1 text-sm text-ink">Always on</dd>
             </div>
           </dl>
         </div>

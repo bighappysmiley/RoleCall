@@ -37,7 +37,7 @@ export class StripeNotConfiguredError extends Error {
   readonly code = "STRIPE_NOT_CONFIGURED";
 
   constructor(
-    message = "Stripe test keys are not in Netlify environment variables yet. Billing checkout cannot run until they are added.",
+    message = "Billing is temporarily unavailable. Please try again soon.",
   ) {
     super(message);
     this.name = "StripeNotConfiguredError";

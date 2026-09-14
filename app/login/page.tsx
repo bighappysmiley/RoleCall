@@ -21,7 +21,7 @@ export default async function LoginPage({
       <p className="mt-2 mb-6 text-sm text-muted-foreground">
         {configured
           ? "Email and password, or Google."
-          : "Add Neon Auth keys in Netlify → Environment variables to turn this on."}
+          : "Sign-in is temporarily unavailable. Please try again soon."}
       </p>
       <div className="flex flex-col gap-4">
         <GoogleButton callbackURL={next ?? "/dashboard"} />

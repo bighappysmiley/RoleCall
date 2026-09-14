@@ -92,7 +92,7 @@ export function BillingPortalForm({ companyId }: { companyId: string }) {
     <form action={action} className="flex flex-col gap-2">
       <input type="hidden" name="companyId" value={companyId} />
       <Button type="submit" variant="outline" disabled={pending}>
-        {pending ? "Opening…" : "Manage billing in Stripe"}
+        {pending ? "Opening…" : "Manage billing"}
       </Button>
       <FormError state={state} />
     </form>

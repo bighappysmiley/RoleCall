@@ -173,7 +173,7 @@ export async function listPublishedJobs(filters?: JobBoardFilters) {
         filters,
       );
     } catch (error) {
-      console.error("Failed to load jobs from Neon.", error);
+      console.error("Failed to load jobs.", error);
       return [];
     }
   }
@@ -187,7 +187,7 @@ export async function listCompanies(): Promise<CompanyRecord[]> {
       const rows = await db.select().from(companies).orderBy(companies.name);
       return rows.map(mapCompany);
     } catch (error) {
-      console.error("Failed to load companies from Neon.", error);
+      console.error("Failed to load companies.", error);
       return [];
     }
   }
@@ -207,7 +207,7 @@ export async function getCompanyBySlug(
         .limit(1);
       return row ? mapCompany(row) : null;
     } catch (error) {
-      console.error("Failed to load company from Neon.", error);
+      console.error("Failed to load company.", error);
       return null;
     }
   }
@@ -268,7 +268,7 @@ export async function getJobBySlugs(
       }
       return null;
     } catch (error) {
-      console.error("Failed to load job from Neon.", error);
+      console.error("Failed to load job.", error);
       return null;
     }
   }

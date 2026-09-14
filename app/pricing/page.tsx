@@ -33,8 +33,8 @@ export default async function PricingPage() {
       </p>
       <h1 className="mt-2 font-heading text-4xl">Pricing</h1>
       <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-        Job and seat limits are enforced today. Checkout uses Stripe test mode
-        until you flip to live keys. Test cards do not charge real money.
+        Job and seat limits apply on every plan. Upgrade when you need more
+        open roles or team seats.
       </p>
       <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {PLANS.map((plan) => {

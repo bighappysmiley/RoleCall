@@ -68,8 +68,7 @@ export default async function BillingPage({
       </p>
       <h1 className="mt-2 font-heading text-4xl">Plan and credits</h1>
       <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-        Limits are enforced on the server. Stripe test mode is free and does not
-        charge a real card.
+        Plan limits are enforced when you post jobs and invite teammates.
       </p>
 
       {paid ? (
@@ -84,7 +83,7 @@ export default async function BillingPage({
       ) : null}
       {errored ? (
         <p className="mt-4 text-sm text-destructive">
-          Checkout came back, but we could not apply it to this company. Try again or check the Stripe dashboard.
+          Checkout came back, but we could not apply it to this company. Please try again.
         </p>
       ) : null}
 
@@ -93,7 +92,7 @@ export default async function BillingPage({
           <h2 className="font-heading text-2xl">Partner plan</h2>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             {company.name} is on {plan.name} through a partner override. There is
-            no self-serve checkout or Stripe portal for this account.
+            no self-serve checkout or billing portal for this account.
           </p>
           <p className="mt-4 font-mono text-[11px] tracking-wider text-muted-foreground">
             EFFECTIVE TIER · {plan.name.toUpperCase()}
@@ -102,12 +101,8 @@ export default async function BillingPage({
       ) : (
         <>
           {!stripeReady ? (
-            <p className="mt-6 border border-line bg-fog px-4 py-3 font-mono text-[11px] tracking-wide text-muted-foreground">
-              Add <span className="text-ink">STRIPE_SECRET_KEY</span> in{" "}
-              <span className="text-ink">Netlify → Environment variables</span>{" "}
-              to turn on checkout. Use Stripe test mode (free). Optional:{" "}
-              <span className="text-ink">STRIPE_WEBHOOK_SECRET</span> for live
-              webhook updates.
+            <p className="mt-6 border border-line bg-fog px-4 py-3 text-sm text-muted-foreground">
+              Billing checkout is temporarily unavailable. Please try again soon.
             </p>
           ) : null}
 
@@ -120,7 +115,7 @@ export default async function BillingPage({
               <p className="mt-1 text-sm text-muted-foreground">
                 {company.subscriptionStatus
                   ? company.subscriptionStatus.replaceAll("_", " ")
-                  : "No Stripe subscription yet"}
+                  : "No paid plan yet"}
                 {company.currentPeriodEnd
                   ? ` · renews ${formatShortDate(company.currentPeriodEnd)}`
                   : ""}
@@ -221,10 +216,10 @@ export default async function BillingPage({
 
           {canBill && company.stripeCustomerId ? (
             <section className="mt-8 border border-line p-5">
-              <h2 className="font-heading text-2xl">Customer portal</h2>
+              <h2 className="font-heading text-2xl">Manage billing</h2>
               <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                Update the card or cancel the subscription in Stripe. Canceled plans
-                return to Free at period end once Stripe sends the update.
+                Update your card or cancel a subscription. Canceled plans return
+                to Free at the end of the current period.
               </p>
               <div className="mt-4">
                 <BillingPortalForm companyId={company.id} />

@@ -8,7 +8,7 @@ export function getSiteUrl(): string {
   return raw.replace(/\/$/, "");
 }
 
-/** True on the RoleCall Preview Netlify site and on Deploy Previews. */
+/** True on the RoleCall preview deployment. */
 export function isPreviewSite(): boolean {
   if (process.env.NEXT_PUBLIC_ROLECALL_PREVIEW === "true") {
     return true;

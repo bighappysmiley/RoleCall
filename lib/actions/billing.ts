@@ -62,7 +62,7 @@ export async function startPlanCheckoutAction(
   if (!isStripeConfigured()) {
     return {
       error:
-        "Add STRIPE_SECRET_KEY in Netlify → Environment variables (Stripe test mode is free) to start checkout.",
+        "Billing is temporarily unavailable. Please try again soon.",
     };
   }
   let url = "";
@@ -121,7 +121,7 @@ export async function startCreditCheckoutAction(
   if (!isStripeConfigured()) {
     return {
       error:
-        "Add STRIPE_SECRET_KEY in Netlify → Environment variables (Stripe test mode is free) to buy credits.",
+        "Billing is temporarily unavailable. Please try again soon.",
     };
   }
   let url = "";
@@ -167,14 +167,14 @@ export async function startBillingPortalAction(
   if (!isStripeConfigured()) {
     return {
       error:
-        "Add STRIPE_SECRET_KEY in Netlify → Environment variables (Stripe test mode is free) to open the billing portal.",
+        "Billing is temporarily unavailable. Please try again soon.",
     };
   }
   let url = "";
   try {
     const { company } = await requireBillingCompany(companyId);
     if (!company.stripeCustomerId) {
-      return { error: "No Stripe customer yet. Start a plan or buy credits first." };
+      return { error: "No billing profile yet. Start a plan or buy credits first." };
     }
     const session = await getStripe().billingPortal.sessions.create({
       customer: company.stripeCustomerId,
@@ -184,7 +184,7 @@ export async function startBillingPortalAction(
   } catch (error) {
     return billingError(
       error,
-      "Could not open the billing portal. In Stripe test mode, turn on the Customer Portal under Settings.",
+      "Could not open billing management. Please try again soon.",
     );
   }
   redirect(url);

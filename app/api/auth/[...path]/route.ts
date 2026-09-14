@@ -4,7 +4,7 @@ type RouteContext = { params: Promise<{ path: string[] }> };
 
 function notConfigured() {
   return Response.json(
-    { error: "Neon Auth is not configured." },
+    { error: "Sign-in is temporarily unavailable." },
     { status: 503 },
   );
 }
