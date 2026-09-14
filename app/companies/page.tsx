@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "Companies",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function CompaniesPage() {
   const [companies, jobs] = await Promise.all([
     listCompanies(),
