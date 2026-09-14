@@ -89,13 +89,13 @@ export default async function BillingPage({
 
       {partner ? (
         <section className="mt-8 border border-line p-5">
-          <h2 className="font-heading text-2xl">Partner plan</h2>
+          <h2 className="font-heading text-2xl">Complimentary plan</h2>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-            {company.name} is on {plan.name} through a partner override. There is
-            no self-serve checkout or billing portal for this account.
+            {company.name} is on {plan.name} at no charge. Self-serve upgrades
+            and the billing portal are paused while this plan is active.
           </p>
-          <p className="mt-4 font-mono text-[11px] tracking-wider text-muted-foreground">
-            EFFECTIVE TIER · {plan.name.toUpperCase()}
+          <p className="mt-4 text-sm text-muted-foreground">
+            Current plan: <span className="text-ink">{plan.name}</span>
           </p>
         </section>
       ) : (
