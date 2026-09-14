@@ -56,7 +56,14 @@ async function hydrateJobCompanyPinnedBadges(
   }));
 }
 
-const PLATFORM_ADMIN_EMAIL = "hf@bighappysmiley.com";
+const PLATFORM_ADMIN_EMAILS = new Set([
+  "hf@bighappysmiley.com",
+  "orshfrankel@gmail.com",
+]);
+
+function emailIsPlatformAdmin(email?: string | null) {
+  return Boolean(email && PLATFORM_ADMIN_EMAILS.has(email.toLowerCase()));
+}
 
 function asStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) {
@@ -357,6 +364,8 @@ export async function ensureProfile(user: {
   image?: string | null;
 }): Promise<ProfileRecord | null> {
   const db = getDb();
+  const adminFromEmail = emailIsPlatformAdmin(user.email);
+
   if (!db) {
     return {
       id: user.id,
@@ -367,7 +376,7 @@ export async function ensureProfile(user: {
       location: null,
       bio: null,
       links: {},
-      isPlatformAdmin: user.email?.toLowerCase() === PLATFORM_ADMIN_EMAIL,
+      isPlatformAdmin: adminFromEmail,
     };
   }
 
@@ -378,6 +387,14 @@ export async function ensureProfile(user: {
     .limit(1);
 
   if (existing) {
+    if (adminFromEmail && !existing.isPlatformAdmin) {
+      const [updated] = await db
+        .update(profiles)
+        .set({ isPlatformAdmin: true, updatedAt: new Date() })
+        .where(eq(profiles.id, existing.id))
+        .returning();
+      return mapProfile(updated ?? existing);
+    }
     return mapProfile(existing);
   }
 
@@ -387,7 +404,7 @@ export async function ensureProfile(user: {
       id: user.id,
       fullName: user.name ?? null,
       avatarUrl: user.image ?? null,
-      isPlatformAdmin: user.email?.toLowerCase() === PLATFORM_ADMIN_EMAIL,
+      isPlatformAdmin: adminFromEmail,
     })
     .returning();
 

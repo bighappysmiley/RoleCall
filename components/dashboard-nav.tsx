@@ -40,8 +40,11 @@ export function DashboardNav({
             Profile
           </Link>
           {isPlatformAdmin ? (
-            <Link href="/dashboard/admin" className="text-muted-foreground hover:text-ink">
-              Admin
+            <Link
+              href="/dashboard/admin"
+              className="font-medium text-primary hover:text-ink"
+            >
+              Admin panel
             </Link>
           ) : null}
         </nav>
