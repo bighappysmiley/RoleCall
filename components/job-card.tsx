@@ -32,7 +32,7 @@ export function JobCard({ job }: { job: RankedJob }) {
         className="block px-4 py-4 sm:px-5"
       >
         <div className="flex items-start gap-3">
-          <CompanyMark name={job.company.name} />
+          <CompanyMark name={job.company.name} logoUrl={job.company.logoUrl} />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
               <h2 className="font-display text-lg font-medium tracking-[-0.03em]">

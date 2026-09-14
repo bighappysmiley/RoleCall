@@ -41,7 +41,11 @@ export default async function CompaniesPage() {
               href={`/companies/${company.slug}`}
               className="flex gap-4 border border-line bg-white/90 p-5 transition-colors hover:border-primary/30 hover:bg-white"
             >
-              <CompanyMark name={company.name} className="size-12 text-sm" />
+              <CompanyMark
+                name={company.name}
+                logoUrl={company.logoUrl}
+                className="size-12 text-sm"
+              />
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="font-display text-xl tracking-[-0.03em]">

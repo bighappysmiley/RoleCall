@@ -82,7 +82,11 @@ export default async function JobDetailPage({
         <PromotionRail rail={rail} />
         <div className="px-5 py-6 sm:px-8">
           <div className="flex items-start gap-3">
-            <CompanyMark name={job.company.name} className="size-11 text-sm" />
+            <CompanyMark
+              name={job.company.name}
+              logoUrl={job.company.logoUrl}
+              className="size-11 text-sm"
+            />
             <div>
               <p className="text-sm text-muted-foreground">
                 <Link href={`/companies/${job.company.slug}`} className="hover:text-ink">

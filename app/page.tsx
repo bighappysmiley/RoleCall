@@ -12,15 +12,15 @@ export default async function HomePage() {
     <div>
       <section className="relative isolate min-h-[min(92vh,52rem)] overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2400&q=80"
-          alt="Bright modern office with long desks and natural light"
+          src="/hero-workspace.jpg"
+          alt="Colleagues collaborating around a laptop in a bright, welcoming workspace"
           fill
           priority
-          className="hero-drift object-cover"
+          className="hero-drift object-cover object-[center_35%]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgb(11_21_38/0.88)_0%,rgb(11_21_38/0.72)_42%,rgb(11_21_38/0.35)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgb(29_78_216/0.28),transparent_42%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgb(11_21_38/0.68)_0%,rgb(11_21_38/0.42)_50%,rgb(11_21_38/0.22)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_22%,rgb(29_78_216/0.16),transparent_44%)]" />
 
         <div className="relative mx-auto flex min-h-[min(92vh,52rem)] max-w-6xl flex-col justify-end px-4 pb-16 pt-28 sm:pb-20 sm:pt-32">
           <p className="reveal font-display text-[clamp(3.5rem,12vw,8.5rem)] leading-[0.88] font-bold tracking-[-0.06em] text-white">
