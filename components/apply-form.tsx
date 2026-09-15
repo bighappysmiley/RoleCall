@@ -63,7 +63,7 @@ export function SaveJobButton({ jobId, saved }: { jobId: string; saved: boolean 
         });
       }}
     >
-      {saved ? "Saved" : "Save"}
+      {saved ? "Saved" : "Save for later"}
     </Button>
   );
 }

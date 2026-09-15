@@ -68,45 +68,98 @@ export default async function DashboardPage() {
             <p className="text-sm text-muted-foreground">roles</p>
           </section>
         </div>
-        {applications.length > 0 ? (
-          <section className="mt-8">
+        <section className="mt-8">
+          <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
             <h2 className="font-heading text-2xl">Applications</h2>
-            <ul className="mt-3 divide-y divide-line border border-line">
+            <Link href="/jobs" className="text-sm text-primary hover:underline">
+              Find roles
+            </Link>
+          </div>
+          {applications.length === 0 ? (
+            <div className="border border-line px-4 py-6 text-sm text-muted-foreground">
+              <p>No applications yet. Browse the board and send a short cover note.</p>
+              <Button className="mt-4" size="sm" asChild>
+                <Link href="/jobs">Browse jobs</Link>
+              </Button>
+            </div>
+          ) : (
+            <ul className="divide-y divide-line border border-line">
               {applications.map((row) => (
-                <li key={row.id} className="flex items-center justify-between px-4 py-3 text-sm">
-                  <Link
-                    href={`/jobs/${row.company.slug}/${row.job.slug}`}
-                    className="hover:underline"
-                  >
-                    {row.job.title}
-                    <span className="text-muted-foreground"> · {row.company.name}</span>
-                  </Link>
+                <li
+                  key={row.id}
+                  className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+                >
+                  <div className="min-w-0">
+                    <Link
+                      href={`/jobs/${row.company.slug}/${row.job.slug}`}
+                      className="font-medium hover:underline"
+                    >
+                      {row.job.title}
+                    </Link>
+                    <p className="text-muted-foreground">
+                      {row.company.name}
+                      {row.job.location ? ` · ${row.job.location}` : ""}
+                      {row.job.status !== "published" ? " · closed" : ""}
+                    </p>
+                  </div>
                   <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
                     {formatStage(row.stage).toUpperCase()}
                   </span>
                 </li>
               ))}
             </ul>
-          </section>
-        ) : null}
-        {saved.length > 0 ? (
-          <section className="mt-8">
+          )}
+        </section>
+        <section className="mt-8">
+          <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
             <h2 className="font-heading text-2xl">Saved jobs</h2>
-            <ul className="mt-3 divide-y divide-line border border-line">
+            <Link href="/jobs" className="text-sm text-primary hover:underline">
+              Browse more
+            </Link>
+          </div>
+          {saved.length === 0 ? (
+            <div className="border border-line px-4 py-6 text-sm text-muted-foreground">
+              <p>Save roles while you browse, then come back when you are ready to apply.</p>
+              <Button className="mt-4" size="sm" variant="outline" asChild>
+                <Link href="/jobs">Open the board</Link>
+              </Button>
+            </div>
+          ) : (
+            <ul className="divide-y divide-line border border-line">
               {saved.map((job) => (
-                <li key={job.id} className="px-4 py-3 text-sm">
-                  <Link
-                    href={`/jobs/${job.company.slug}/${job.slug}`}
-                    className="hover:underline"
-                  >
-                    {job.title}
-                    <span className="text-muted-foreground"> · {job.company.name}</span>
-                  </Link>
+                <li
+                  key={job.id}
+                  className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
+                >
+                  <div className="min-w-0">
+                    <Link
+                      href={`/jobs/${job.company.slug}/${job.slug}`}
+                      className="font-medium hover:underline"
+                    >
+                      {job.title}
+                    </Link>
+                    <p className="text-muted-foreground">
+                      {job.company.name}
+                      {job.location ? ` · ${job.location}` : ""}
+                      {job.status !== "published" ? " · no longer open" : ""}
+                    </p>
+                  </div>
+                  {job.status === "published" ? (
+                    <Button size="sm" variant="outline" asChild>
+                      <Link href={`/jobs/${job.company.slug}/${job.slug}`}>
+                        View
+                      </Link>
+                    </Button>
+                  ) : (
+                    <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
+                      CLOSED
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
-          </section>
-        ) : null}
+          )}
+        </section>
       </div>
     );
   }

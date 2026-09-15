@@ -91,6 +91,61 @@ export default async function PersonPage({
             No bio yet.
           </p>
         )}
+        {profile.links.website ||
+        profile.links.linkedin ||
+        profile.links.github ||
+        profile.links.portfolio ? (
+          <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+            {profile.links.website ? (
+              <li>
+                <a
+                  href={profile.links.website}
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Website
+                </a>
+              </li>
+            ) : null}
+            {profile.links.linkedin ? (
+              <li>
+                <a
+                  href={profile.links.linkedin}
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  LinkedIn
+                </a>
+              </li>
+            ) : null}
+            {profile.links.github ? (
+              <li>
+                <a
+                  href={profile.links.github}
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </a>
+              </li>
+            ) : null}
+            {profile.links.portfolio ? (
+              <li>
+                <a
+                  href={profile.links.portfolio}
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Portfolio
+                </a>
+              </li>
+            ) : null}
+          </ul>
+        ) : null}
         {assigned.length > 0 ? (
           <ul className="mt-6 flex flex-wrap gap-2">
             {assigned.map((badge) => (

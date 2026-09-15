@@ -162,12 +162,13 @@ function applyBoardFilters(
         job.company.name,
         job.location ?? "",
         job.department ?? "",
+        job.experienceLevel ?? "",
         job.skills.join(" "),
         job.description,
       ]
         .join(" ")
         .toLowerCase();
-      if (!terms.some((term) => haystack.includes(term))) {
+      if (!terms.every((term) => haystack.includes(term))) {
         return false;
       }
     }
@@ -181,6 +182,18 @@ function applyBoardFilters(
       const needle = filters.location.toLowerCase();
       const haystack = (job.location ?? "").toLowerCase();
       if (!haystack.includes(needle)) {
+        return false;
+      }
+    }
+    if (filters?.experience?.trim()) {
+      const needle = filters.experience.trim().toLowerCase();
+      if (!(job.experienceLevel ?? "").toLowerCase().includes(needle)) {
+        return false;
+      }
+    }
+    if (filters?.skill?.trim()) {
+      const needle = filters.skill.trim().toLowerCase();
+      if (!job.skills.some((skill) => skill.toLowerCase().includes(needle))) {
         return false;
       }
     }
@@ -215,6 +228,67 @@ export async function listPublishedJobs(filters?: JobBoardFilters) {
     }
   }
   return [];
+}
+
+function relatedJobScore(source: JobWithCompany, candidate: RankedJob): number {
+  let score = 0;
+  if (candidate.companyId === source.companyId) {
+    score += 4;
+  }
+  if (
+    source.department &&
+    candidate.department &&
+    source.department.toLowerCase() === candidate.department.toLowerCase()
+  ) {
+    score += 3;
+  }
+  if (candidate.employmentType === source.employmentType) {
+    score += 1;
+  }
+  if (candidate.workplaceType === source.workplaceType) {
+    score += 1;
+  }
+  if (
+    source.experienceLevel &&
+    candidate.experienceLevel &&
+    source.experienceLevel.toLowerCase() ===
+      candidate.experienceLevel.toLowerCase()
+  ) {
+    score += 2;
+  }
+  const sourceSkills = new Set(
+    source.skills.map((skill) => skill.toLowerCase()),
+  );
+  for (const skill of candidate.skills) {
+    if (sourceSkills.has(skill.toLowerCase())) {
+      score += 2;
+    }
+  }
+  if (
+    source.location &&
+    candidate.location &&
+    source.location.toLowerCase() === candidate.location.toLowerCase()
+  ) {
+    score += 1;
+  }
+  return score;
+}
+
+export async function listRelatedJobs(
+  job: JobWithCompany,
+  limit = 4,
+): Promise<RankedJob[]> {
+  const all = await listPublishedJobs();
+  return all
+    .filter((candidate) => candidate.id !== job.id)
+    .map((candidate) => ({
+      job: candidate,
+      score: relatedJobScore(job, candidate),
+    }))
+    .filter((row) => row.score > 0)
+    .sort((a, b) => b.score - a.score || b.job.score - a.job.score)
+    .slice(0, limit)
+    .map((row) => row.job);
 }
 
 export async function listCompanies(): Promise<CompanyRecord[]> {

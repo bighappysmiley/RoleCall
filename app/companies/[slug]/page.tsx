@@ -158,10 +158,22 @@ export default async function CompanyPage({
       ) : null}
       <h2 className="mt-10 font-heading text-2xl">Open roles</h2>
       <div className="mt-4 grid gap-3">
-        {jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
+        {jobs.length === 0 ? (
+          <p className="border border-line px-4 py-6 text-sm text-muted-foreground">
+            No open roles right now. Check back soon, or browse the full job
+            board.
+          </p>
+        ) : (
+          jobs.map((job) => <JobCard key={job.id} job={job} />)
+        )}
       </div>
+      {jobs.length === 0 ? (
+        <div className="mt-3">
+          <Link href="/jobs" className="text-sm text-primary hover:underline">
+            Browse all jobs
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }
