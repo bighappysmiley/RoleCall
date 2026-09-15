@@ -15,7 +15,7 @@ export function CompanyMark({
     return (
       <span
         className={cn(
-          "relative inline-flex size-9 shrink-0 overflow-hidden border border-line bg-white",
+          "relative inline-flex size-9 shrink-0 overflow-hidden rounded-xl border border-line/80 bg-white shadow-sm",
           className,
         )}
       >
@@ -33,7 +33,7 @@ export function CompanyMark({
   return (
     <span
       className={cn(
-        "inline-flex size-9 shrink-0 items-center justify-center border border-line bg-fog font-mono text-[11px] tracking-wide text-ink",
+        "inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-line/80 bg-mist/60 font-mono text-[11px] tracking-wide text-navy",
         className,
       )}
       aria-hidden
