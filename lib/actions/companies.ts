@@ -50,6 +50,20 @@ function companyInputFromForm(formData: FormData) {
       twitter: parsed.data.twitter || undefined,
       github: parsed.data.github || undefined,
     },
+    logoUrl: (() => {
+      const logoUrl = formString(formData, "logoUrl");
+      if (!logoUrl) return null;
+      const isData =
+        /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(logoUrl);
+      const isRemote = /^https?:\/\//i.test(logoUrl);
+      if (!isData && !isRemote) {
+        throw new Error("That company logo format is not supported.");
+      }
+      if (isData && logoUrl.length > 400_000) {
+        throw new Error("That company logo is too large.");
+      }
+      return logoUrl;
+    })(),
   };
 }
 

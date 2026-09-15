@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import {
   addApplicationNoteAction,
@@ -15,9 +16,12 @@ export type PipelineCard = {
   id: string;
   stage: ApplicationStage;
   coverLetter: string | null;
+  resumeUrl: string | null;
   createdAt: Date;
   candidateName: string;
   candidateHeadline: string | null;
+  candidateId: string;
+  conversationId: string | null;
   notes: { id: string; body: string; author: string; createdAt: Date }[];
 };
 
@@ -57,11 +61,40 @@ export function KanbanBoard({
                   ) : (
                     <p className="mt-2 text-sm text-muted-foreground">No cover note.</p>
                   )}
+                  <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                    {card.resumeUrl ? (
+                      <a
+                        href={card.resumeUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        Resume
+                      </a>
+                    ) : null}
+                    <Link
+                      href={`/people/${card.candidateId}`}
+                      className="text-primary hover:underline"
+                    >
+                      Profile
+                    </Link>
+                    {card.conversationId ? (
+                      <Link
+                        href={`/messages/${card.conversationId}`}
+                        className="text-primary hover:underline"
+                      >
+                        Message
+                      </Link>
+                    ) : null}
+                  </div>
                   {canMove ? <StageForm key={`${card.id}-${card.stage}`} card={card} /> : null}
                   <details className="mt-3">
                     <summary className="cursor-pointer font-mono text-[10px] tracking-wider text-muted-foreground">
-                      NOTES ({card.notes.length})
+                      PRIVATE NOTES ({card.notes.length})
                     </summary>
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      Visible to your hiring team only.
+                    </p>
                     <ul className="mt-2 space-y-2">
                       {card.notes.map((note) => (
                         <li key={note.id} className="text-xs">

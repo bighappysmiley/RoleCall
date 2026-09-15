@@ -85,7 +85,6 @@ export async function addApplicationNoteAction(
     return { error: errorMessage(error, "Could not save the note.") };
   }
   revalidatePath(`/dashboard/jobs/${row.job.id}/pipeline`);
-  revalidatePath("/messages");
   revalidatePath("/notifications");
-  return { success: "Note saved." };
+  return { success: "Private note saved." };
 }

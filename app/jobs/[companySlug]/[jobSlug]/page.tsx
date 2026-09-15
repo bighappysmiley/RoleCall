@@ -194,7 +194,11 @@ export default async function JobDetailPage({
                 hiring, or create a candidate profile to apply.
               </p>
             ) : (
-              <ApplyForm jobId={job.id} alreadyApplied={applied} />
+              <ApplyForm
+                jobId={job.id}
+                alreadyApplied={applied}
+                resumeUrl={profile?.resumeUrl}
+              />
             )}
             {session?.user && profile?.accountType === "candidate" ? (
               <SaveJobButton jobId={job.id} saved={saved} />

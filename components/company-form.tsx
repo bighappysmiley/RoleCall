@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { CompanyRecord } from "@/lib/types";
+import { CompanyLogoField } from "@/components/company-logo-field";
 
 const SIZE_RANGES = ["1-10", "11-50", "51-200", "201-500", "500+"];
 
@@ -29,7 +30,7 @@ export function CompanyForm({
     <form
       key={
         company
-          ? `${company.id}-${company.name}-${company.tagline ?? ""}-${company.website ?? ""}`
+          ? `${company.id}-${company.name}-${company.tagline ?? ""}-${company.website ?? ""}-${company.logoUrl ?? ""}`
           : "new"
       }
       action={formAction}
@@ -37,6 +38,11 @@ export function CompanyForm({
     >
       <RefreshOnSuccess state={state} />
       {company ? <input type="hidden" name="companyId" value={company.id} /> : null}
+      <CompanyLogoField
+        name={company?.name ?? "Company"}
+        logoUrl={company?.logoUrl ?? null}
+        disabled={readOnly}
+      />
       <div className="grid gap-1.5">
         <Label htmlFor="name">Company name</Label>
         <Input

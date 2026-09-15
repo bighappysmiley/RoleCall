@@ -180,9 +180,11 @@ export async function updateProfileAction(
     headline: formString(formData, "headline"),
     location: formString(formData, "location"),
     bio: formString(formData, "bio"),
+    resumeUrl: formString(formData, "resumeUrl"),
     website: formString(formData, "website"),
     linkedin: formString(formData, "linkedin"),
     github: formString(formData, "github"),
+    portfolio: formString(formData, "portfolio"),
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Check the form and try again." };
@@ -204,10 +206,12 @@ export async function updateProfileAction(
     headline: parsed.data.headline ?? "",
     location: parsed.data.location ?? "",
     bio: parsed.data.bio ?? "",
+    resumeUrl: parsed.data.resumeUrl || null,
     links: {
       website: parsed.data.website || undefined,
       linkedin: parsed.data.linkedin || undefined,
       github: parsed.data.github || undefined,
+      portfolio: parsed.data.portfolio || undefined,
     },
     avatarUrl,
   });
@@ -251,6 +255,7 @@ export async function applyToJobAction(
       jobId: parsed.data.jobId,
       candidateId: session.user.id,
       coverLetter: parsed.data.coverLetter ?? "",
+      resumeUrl: profile.resumeUrl,
     });
   } catch (error) {
     return { error: errorMessage(error, "Could not submit the application.") };

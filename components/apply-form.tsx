@@ -10,15 +10,17 @@ import { Textarea } from "@/components/ui/textarea";
 export function ApplyForm({
   jobId,
   alreadyApplied,
+  resumeUrl,
 }: {
   jobId: string;
   alreadyApplied: boolean;
+  resumeUrl?: string | null;
 }) {
   const [state, formAction, pending] = useActionState(applyToJobAction, null);
 
   if (alreadyApplied || (state && "success" in state)) {
     return (
-            <p className="border border-line bg-fog px-4 py-3 text-sm">
+      <p className="border border-line bg-fog px-4 py-3 text-sm">
         Application on file. Watch status from your dashboard.
       </p>
     );
@@ -36,6 +38,22 @@ export function ApplyForm({
           placeholder="A short note is enough."
         />
       </div>
+      {resumeUrl ? (
+        <p className="text-xs text-muted-foreground">
+          Your profile resume URL will be attached with this application.{" "}
+          <a href="/profile" className="text-primary hover:underline">
+            Update it
+          </a>
+        </p>
+      ) : (
+        <p className="text-xs text-muted-foreground">
+          Tip: add a resume URL on your{" "}
+          <a href="/profile" className="text-primary hover:underline">
+            profile
+          </a>{" "}
+          so hiring teams can open it from the pipeline.
+        </p>
+      )}
       {state && "error" in state ? (
         <p className="text-sm text-destructive">{state.error}</p>
       ) : null}
