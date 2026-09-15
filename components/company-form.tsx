@@ -27,7 +27,11 @@ export function CompanyForm({
 
   return (
     <form
-      key={company ? `${company.id}-${company.slug}` : "new"}
+      key={
+        company
+          ? `${company.id}-${company.name}-${company.tagline ?? ""}-${company.website ?? ""}`
+          : "new"
+      }
       action={formAction}
       className="flex max-w-2xl flex-col gap-4"
     >
@@ -68,7 +72,7 @@ export function CompanyForm({
           <Input
             id="website"
             name="website"
-            type="url"
+            type="text" inputMode="url"
             defaultValue={company?.website ?? ""}
             disabled={readOnly}
           />
@@ -143,7 +147,7 @@ export function CompanyForm({
           <Input
             id="linkedin"
             name="linkedin"
-            type="url"
+            type="text" inputMode="url"
             defaultValue={company?.socialLinks.linkedin ?? ""}
             disabled={readOnly}
           />
@@ -153,7 +157,7 @@ export function CompanyForm({
           <Input
             id="twitter"
             name="twitter"
-            type="url"
+            type="text" inputMode="url"
             defaultValue={company?.socialLinks.twitter ?? ""}
             disabled={readOnly}
           />
@@ -163,7 +167,7 @@ export function CompanyForm({
           <Input
             id="github"
             name="github"
-            type="url"
+            type="text" inputMode="url"
             defaultValue={company?.socialLinks.github ?? ""}
             disabled={readOnly}
           />

@@ -17,9 +17,9 @@ export async function SiteHeader() {
     <HeaderNav
       signedIn={Boolean(session?.user)}
       isAdmin={Boolean(profile?.isPlatformAdmin)}
-      name={session?.user?.name}
+      name={profile?.fullName ?? session?.user?.name}
       email={session?.user?.email}
-      image={session?.user?.image}
+      image={profile?.avatarUrl ?? session?.user?.image}
     />
   );
 }

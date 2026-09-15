@@ -30,14 +30,32 @@ export const onboardingSchema = z.object({
   accountType: z.enum(["candidate", "employer"]),
 });
 
+function optionalProfileUrl(label: string) {
+  return z
+    .string()
+    .trim()
+    .max(300)
+    .transform((value) => {
+      if (!value) return "";
+      if (/^https?:\/\//i.test(value)) return value;
+      // Allow bare domains like linkedin.com/in/you without blocking the whole save.
+      if (/^[\w.-]+\.[\w.-]+/.test(value)) return `https://${value}`;
+      return value;
+    })
+    .refine(
+      (value) => value === "" || /^https?:\/\//i.test(value),
+      `Enter a valid ${label} URL`,
+    );
+}
+
 export const profileSchema = z.object({
   fullName: z.string().trim().min(1, "Name is required").max(120),
   headline: z.string().trim().max(160).optional().or(z.literal("")),
   location: z.string().trim().max(120).optional().or(z.literal("")),
   bio: z.string().trim().max(2000).optional().or(z.literal("")),
-  website: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
-  linkedin: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
-  github: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
+  website: optionalProfileUrl("website"),
+  linkedin: optionalProfileUrl("LinkedIn"),
+  github: optionalProfileUrl("GitHub"),
 });
 
 export const applySchema = z.object({
@@ -45,7 +63,20 @@ export const applySchema = z.object({
   coverLetter: z.string().trim().max(4000).optional().or(z.literal("")),
 });
 
-const optionalUrl = z.string().trim().url("Enter a valid URL").optional().or(z.literal(""));
+const optionalUrl = z
+  .string()
+  .trim()
+  .max(300)
+  .transform((value) => {
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value)) return value;
+    if (/^[\w.-]+\.[\w.-]+/.test(value)) return `https://${value}`;
+    return value;
+  })
+  .refine(
+    (value) => value === "" || /^https?:\/\//i.test(value),
+    "Enter a valid URL",
+  );
 
 export const companySchema = z.object({
   name: z.string().trim().min(1, "Company name is required").max(120),

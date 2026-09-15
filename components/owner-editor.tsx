@@ -93,7 +93,16 @@ export function ProfileOwnerEditor({
           </SheetDescription>
         </SheetHeader>
         <div className="mt-6 space-y-8 px-4 pb-8">
-          <form action={editAction} className="space-y-3">
+          <form
+            key={[
+              profile.fullName,
+              profile.headline,
+              profile.location,
+              profile.bio,
+            ].join("|")}
+            action={editAction}
+            className="space-y-3"
+          >
             <RefreshOnSuccess state={editState} />
             <input type="hidden" name="profileId" value={profile.id} />
             <div className="grid gap-1.5">
@@ -103,6 +112,7 @@ export function ProfileOwnerEditor({
                 name="fullName"
                 defaultValue={profile.fullName ?? ""}
                 required
+                autoComplete="name"
               />
             </div>
             <div className="grid gap-1.5">
