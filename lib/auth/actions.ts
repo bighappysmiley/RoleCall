@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth, getOptionalSession } from "@/lib/auth/server";
 import type { ActionState } from "@/lib/auth/state";
@@ -199,6 +200,10 @@ export async function updateProfileAction(
     },
   });
 
+  revalidatePath("/profile");
+  revalidatePath(`/people/${session.user.id}`);
+  revalidatePath("/", "layout");
+  revalidatePath("/");
   return { success: "Profile saved." };
 }
 
