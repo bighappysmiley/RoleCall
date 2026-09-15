@@ -15,7 +15,7 @@ export function RoleCallMark({ className }: { className?: string }) {
       height="28"
       aria-hidden
     >
-      <rect width="128" height="128" rx="28" fill="#0d7377" />
+      <rect width="128" height="128" rx="28" fill="#1d4ed8" />
       <path transform={R_TRANSFORM} d={R_PATH} fill="#fff" />
     </svg>
   );

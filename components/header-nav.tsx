@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, ChevronDown, MessageCircle } from "lucide-react";
+import { Bell, ChevronDown, MessageCircle, Plus } from "lucide-react";
 import { signOutAction } from "@/lib/auth/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -17,21 +17,27 @@ import { Wordmark } from "@/components/wordmark";
 import { MobileNav } from "@/components/mobile-nav";
 
 const EXPLORE = [
-  { href: "/jobs", label: "Browse jobs", hint: "Live roles on the board" },
+  { href: "/jobs", label: "Browse jobs", hint: "Open roles on the board" },
   { href: "/companies", label: "Companies", hint: "Teams hiring now" },
-  { href: "/pricing", label: "Pricing", hint: "Plans that stay clear" },
+  { href: "/pricing", label: "Pricing", hint: "Clear plans for every stage" },
 ];
 
-const FIND_WORK = [
-  { href: "/jobs", label: "Open roles", hint: "Apply in minutes" },
-  { href: "/signup", label: "Create a profile", hint: "Show what you do" },
+const HIRE_TALENT = [
+  { href: "/signup", label: "Post a job", hint: "Start hiring today" },
+  { href: "/pricing", label: "Compare plans", hint: "Free through Pro Plus" },
+  { href: "/companies", label: "Company pages", hint: "Show your team" },
+];
+
+const GET_HIRED = [
+  { href: "/jobs", label: "Find roles", hint: "Apply in minutes" },
+  { href: "/signup", label: "Create a profile", hint: "Show your work" },
   { href: "/pricing", label: "How placement works", hint: "Paid rails stay labeled" },
 ];
 
-const HIRE = [
-  { href: "/signup", label: "Post a job", hint: "Start hiring today" },
-  { href: "/pricing", label: "Compare plans", hint: "Free to Pro Plus" },
-  { href: "/companies", label: "Company pages", hint: "Build your presence" },
+const COMMUNITY = [
+  { href: "/companies", label: "Companies", hint: "Browse hiring teams" },
+  { href: "/jobs", label: "Open roles", hint: "What's live now" },
+  { href: "/signup", label: "Join RoleCall", hint: "Create a free account" },
 ];
 
 function NavDropdown({
@@ -43,14 +49,17 @@ function NavDropdown({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm text-ink/80 outline-none transition-colors hover:bg-fog hover:text-ink data-[state=open]:bg-fog data-[state=open]:text-ink">
+      <DropdownMenuTrigger className="inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-[15px] text-ink/80 outline-none transition-colors hover:text-ink data-[state=open]:text-ink">
         {label}
-        <ChevronDown className="size-3.5 opacity-60" />
+        <ChevronDown className="size-3.5 opacity-50" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="min-w-56 rounded-xl p-1.5">
+      <DropdownMenuContent align="start" className="min-w-56 rounded-xl border-line p-1.5 shadow-md">
         {items.map((item) => (
           <DropdownMenuItem key={item.href + item.label} asChild>
-            <Link href={item.href} className="flex flex-col items-start gap-0.5 rounded-lg px-3 py-2">
+            <Link
+              href={item.href}
+              className="flex flex-col items-start gap-0.5 rounded-lg px-3 py-2"
+            >
               <span className="text-sm font-medium text-ink">{item.label}</span>
               <span className="text-xs text-muted-foreground">{item.hint}</span>
             </Link>
@@ -103,34 +112,46 @@ export function HeaderNav({
       .toUpperCase() || "U";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/50 bg-white/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 px-4">
-        <div className="flex min-w-0 items-center gap-6 lg:gap-8">
+    <header className="sticky top-0 z-40 border-b border-line bg-white">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+        <div className="flex min-w-0 items-center gap-5 lg:gap-7">
           <Wordmark />
           <nav className="hidden items-center gap-0.5 md:flex">
             <NavDropdown label="Explore" items={EXPLORE} />
-            <NavDropdown label="Find work" items={FIND_WORK} />
-            <NavDropdown label="Hire talent" items={HIRE} />
+            <NavDropdown label="Hire Talent" items={HIRE_TALENT} />
+            <NavDropdown label="Get Hired" items={GET_HIRED} />
+            <NavDropdown label="Community" items={COMMUNITY} />
           </nav>
         </div>
 
-        <div className="hidden items-center gap-1.5 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           {signedIn ? (
             <>
-              <IconLink href="/dashboard" label="Notifications">
-                <Bell className="size-4" />
-              </IconLink>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 rounded-full border-line bg-white px-3.5 text-sm"
+                asChild
+              >
+                <Link href="/dashboard/jobs/new">
+                  <Plus className="size-3.5" />
+                  Create New
+                </Link>
+              </Button>
               <IconLink href="/dashboard" label="Messages">
                 <MessageCircle className="size-4" />
               </IconLink>
+              <IconLink href="/dashboard" label="Notifications">
+                <Bell className="size-4" />
+              </IconLink>
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  className="ml-1 rounded-full outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary/40"
+                  className="ml-0.5 rounded-full outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary/40"
                   aria-label="Account menu"
                 >
-                  <Avatar size="sm" className="size-8">
+                  <Avatar className="size-8">
                     {image ? <AvatarImage src={image} alt="" /> : null}
-                    <AvatarFallback className="bg-mist text-[11px] font-medium text-navy">
+                    <AvatarFallback className="bg-fog text-[11px] font-medium text-ink">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
@@ -171,11 +192,25 @@ export function HeaderNav({
             </>
           ) : (
             <>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 rounded-full border-line bg-white px-3.5 text-sm"
+                asChild
+              >
+                <Link href="/signup">
+                  <Plus className="size-3.5" />
+                  Create New
+                </Link>
+              </Button>
+              <IconLink href="/login" label="Messages">
+                <MessageCircle className="size-4" />
+              </IconLink>
+              <IconLink href="/login" label="Notifications">
+                <Bell className="size-4" />
+              </IconLink>
               <Button variant="ghost" size="sm" className="rounded-full" asChild>
                 <Link href="/login">Sign in</Link>
-              </Button>
-              <Button size="sm" className="rounded-full px-4" asChild>
-                <Link href="/signup">Sign up</Link>
               </Button>
             </>
           )}
