@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RefreshOnSuccess } from "@/components/refresh-on-success";
+import { ProfileAvatarField } from "@/components/profile-avatar-field";
 
 export function OnboardingForm({ next }: { next?: string }) {
   const [state, formAction, pending] = useActionState(
@@ -121,9 +123,28 @@ export function UpdatePasswordForm({ token }: { token: string }) {
 
 export function ProfileForm({ profile }: { profile: ProfileRecord }) {
   const [state, formAction, pending] = useActionState(updateProfileAction, null);
+  const formKey = [
+    profile.fullName,
+    profile.avatarUrl,
+    profile.headline,
+    profile.location,
+    profile.bio,
+    profile.links.website,
+    profile.links.linkedin,
+    profile.links.github,
+  ].join("|");
 
   return (
-    <form action={formAction} className="flex max-w-xl flex-col gap-4">
+    <form
+      key={formKey}
+      action={formAction}
+      className="flex max-w-xl flex-col gap-4"
+    >
+      <RefreshOnSuccess state={state} />
+      <ProfileAvatarField
+        name={profile.fullName ?? "You"}
+        avatarUrl={profile.avatarUrl}
+      />
       <div className="grid gap-1.5">
         <Label htmlFor="fullName">Name</Label>
         <Input
@@ -131,6 +152,7 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
           name="fullName"
           defaultValue={profile.fullName ?? ""}
           required
+          autoComplete="name"
         />
       </div>
       <div className="grid gap-1.5">
@@ -159,7 +181,9 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
         <Input
           id="website"
           name="website"
-          type="url"
+          type="text"
+          inputMode="url"
+          placeholder="https://"
           defaultValue={profile.links.website ?? ""}
         />
       </div>
@@ -168,7 +192,9 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
         <Input
           id="linkedin"
           name="linkedin"
-          type="url"
+          type="text"
+          inputMode="url"
+          placeholder="https://linkedin.com/in/…"
           defaultValue={profile.links.linkedin ?? ""}
         />
       </div>
@@ -177,7 +203,9 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
         <Input
           id="github"
           name="github"
-          type="url"
+          type="text"
+          inputMode="url"
+          placeholder="https://github.com/…"
           defaultValue={profile.links.github ?? ""}
         />
       </div>

@@ -39,6 +39,8 @@ export async function moveApplicationStageAction(
     return { error: errorMessage(error, "Could not update the stage.") };
   }
   revalidatePath(`/dashboard/jobs/${row.job.id}/pipeline`);
+  revalidatePath("/messages");
+  revalidatePath("/notifications");
   return { success: "Stage updated." };
 }
 
@@ -46,7 +48,7 @@ export async function addApplicationNoteAction(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const { user } = await requireOnboardedUser();
+  const { user, profile } = await requireOnboardedUser();
   const parsed = applicationNoteSchema.safeParse({
     applicationId: formString(formData, "applicationId"),
     body: formString(formData, "body"),
@@ -68,9 +70,22 @@ export async function addApplicationNoteAction(
       authorId: user.id,
       body: parsed.data.body,
     });
+    const { notifyApplicationNote } = await import("@/lib/messaging");
+    await notifyApplicationNote({
+      applicationId: parsed.data.applicationId,
+      companyId: row.company.id,
+      candidateId: row.application.candidateId,
+      jobId: row.job.id,
+      jobTitle: row.job.title,
+      authorId: user.id,
+      authorName: profile.fullName ?? "Hiring team",
+      body: parsed.data.body,
+    });
   } catch (error) {
     return { error: errorMessage(error, "Could not save the note.") };
   }
   revalidatePath(`/dashboard/jobs/${row.job.id}/pipeline`);
+  revalidatePath("/messages");
+  revalidatePath("/notifications");
   return { success: "Note saved." };
 }

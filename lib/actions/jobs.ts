@@ -84,7 +84,7 @@ export async function createJobAction(
   formData: FormData,
 ): Promise<ActionState> {
   const companyId = formString(formData, "companyId");
-  const { access, company } = await requireCompanyAccess(companyId);
+  const { user, access, company } = await requireCompanyAccess(companyId);
   if (!canManageJobs(access)) {
     return { error: "You can view jobs, but you cannot create them." };
   }
@@ -94,11 +94,21 @@ export async function createJobAction(
     await enforceJobLimit(company, input.status, false);
     const job = await createJob(companyId, input);
     jobId = job.id;
+    if (input.status === "published") {
+      const { notifyJobPublished } = await import("@/lib/messaging");
+      await notifyJobPublished({
+        companyId,
+        jobId: job.id,
+        jobTitle: job.title,
+        actorUserId: user.id,
+      });
+    }
   } catch (error) {
     return { error: errorMessage(error, "Could not create the job.") };
   }
   revalidatePath("/dashboard/jobs");
   revalidatePath("/jobs");
+  revalidatePath("/notifications");
   redirect(`/dashboard/jobs/${jobId}`);
 }
 
@@ -112,20 +122,31 @@ export async function updateJobAction(
   if (!job) {
     return { error: "Job not found." };
   }
-  const { access, company } = await requireCompanyAccess(job.companyId);
+  const { user, access, company } = await requireCompanyAccess(job.companyId);
   if (!canManageJobs(access)) {
     return { error: "You can view jobs, but you cannot edit them." };
   }
   try {
     const input = jobInputFromForm(formData);
-    await enforceJobLimit(company, input.status, job.status === "published");
+    const wasPublished = job.status === "published";
+    await enforceJobLimit(company, input.status, wasPublished);
     await updateJob(jobId, input);
+    if (input.status === "published" && !wasPublished) {
+      const { notifyJobPublished } = await import("@/lib/messaging");
+      await notifyJobPublished({
+        companyId: job.companyId,
+        jobId,
+        jobTitle: input.title,
+        actorUserId: user.id,
+      });
+    }
   } catch (error) {
     return { error: errorMessage(error, "Could not save the job.") };
   }
   revalidatePath(`/dashboard/jobs/${jobId}`);
   revalidatePath("/dashboard/jobs");
   revalidatePath("/jobs");
+  revalidatePath("/notifications");
   return { success: "Job saved." };
 }
 

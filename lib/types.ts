@@ -172,3 +172,58 @@ export type AssignedBadge = BadgeRecord & {
   assignmentId: string;
   isPinned: boolean;
 };
+
+
+export type ConversationCategory =
+  | "applications"
+  | "interviews"
+  | "offers"
+  | "team"
+  | "inquiries";
+
+export type InboxIdentity =
+  | { kind: "personal" }
+  | { kind: "company"; companyId: string };
+
+export type ConversationFilter =
+  | "all"
+  | "unread"
+  | "favorites"
+  | "archive"
+  | ConversationCategory;
+
+export type ConversationPreview = {
+  id: string;
+  category: ConversationCategory;
+  subject: string | null;
+  lastMessageAt: Date;
+  lastBody: string | null;
+  unread: boolean;
+  isFavorite: boolean;
+  isArchived: boolean;
+  counterpartName: string;
+  counterpartImage: string | null;
+  counterpartSubtitle: string | null;
+};
+
+export type MessageRecord = {
+  id: string;
+  conversationId: string;
+  senderUserId: string;
+  body: string;
+  createdAt: Date;
+  senderName: string | null;
+  senderAvatarUrl: string | null;
+};
+
+export type NotificationRecord = {
+  id: string;
+  userId: string;
+  companyId: string | null;
+  type: string;
+  title: string;
+  body: string | null;
+  href: string | null;
+  readAt: Date | null;
+  createdAt: Date;
+};

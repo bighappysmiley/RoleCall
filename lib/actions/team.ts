@@ -42,7 +42,7 @@ export async function inviteMemberAction(
     return { error: parsed.error.issues[0]?.message ?? "Check the invite and try again." };
   }
 
-  const { access, company } = await requireCompanyAccess(parsed.data.companyId);
+  const { user, access, company } = await requireCompanyAccess(parsed.data.companyId);
   if (!canManageTeam(access)) {
     return { error: "You can view the team, but you cannot invite people." };
   }
@@ -60,7 +60,17 @@ export async function inviteMemberAction(
       token,
       expiresAt,
     });
+    const { notifyTeamInvite } = await import("@/lib/messaging");
+    await notifyTeamInvite({
+      inviterUserId: user.id,
+      companyId: company.id,
+      companyName: company.name,
+      email: parsed.data.email,
+      inviteUrl: inviteUrl(token),
+    });
     revalidatePath("/dashboard/team");
+    revalidatePath("/messages");
+    revalidatePath("/notifications");
     return {
       success: "Invite created. Copy the link and send it yourself — email delivery comes later.",
       inviteUrl: inviteUrl(token),
@@ -76,16 +86,23 @@ export async function removeMemberAction(
 ): Promise<ActionState> {
   const companyId = formString(formData, "companyId");
   const memberId = formString(formData, "memberId");
-  const { access } = await requireCompanyAccess(companyId);
+  const { access, company } = await requireCompanyAccess(companyId);
   if (!canManageTeam(access)) {
     return { error: "You cannot remove people from this team." };
   }
   try {
-    await removeCompanyMember(memberId, companyId);
+    const removed = await removeCompanyMember(memberId, companyId);
+    const { notifyMemberRemoved } = await import("@/lib/messaging");
+    await notifyMemberRemoved({
+      userId: removed.userId,
+      companyId: company.id,
+      companyName: company.name,
+    });
   } catch (error) {
     return { error: errorMessage(error, "Could not remove that seat.") };
   }
   revalidatePath("/dashboard/team");
+  revalidatePath("/notifications");
   return { success: "Seat removed." };
 }
 
@@ -116,9 +133,17 @@ export async function acceptInviteAction(
     });
     const store = await cookies();
     store.set(COMPANY_COOKIE, result.company.id, { path: "/", sameSite: "lax" });
+    const { notifyInviteAccepted } = await import("@/lib/messaging");
+    await notifyInviteAccepted({
+      companyId: result.company.id,
+      companyName: result.company.name,
+      memberName: user.name ?? user.email,
+      memberUserId: user.id,
+    });
   } catch (error) {
     return { error: errorMessage(error, "Could not accept the invite.") };
   }
   revalidatePath("/dashboard");
+  revalidatePath("/notifications");
   redirect("/dashboard");
 }

@@ -83,12 +83,17 @@ export async function updateCompanyAction(
     return { error: "You can view this company, but you cannot edit it." };
   }
   try {
-    await updateCompany(companyId, companyInputFromForm(formData));
+    const company = await updateCompany(
+      companyId,
+      companyInputFromForm(formData),
+    );
+    revalidatePath("/dashboard/company");
+    revalidatePath("/companies");
+    revalidatePath(`/companies/${company.slug}`);
+    revalidatePath("/");
   } catch (error) {
     return { error: errorMessage(error, "Could not save the company.") };
   }
-  revalidatePath("/dashboard/company");
-  revalidatePath("/companies");
   return { success: "Company saved." };
 }
 

@@ -138,8 +138,19 @@ export async function awardProfileBadgeAction(
       badgeId,
       awardedBy: profile.id,
     });
+    const { getBadge } = await import("@/lib/badge-queries");
+    const badge = await getBadge(badgeId);
+    if (badge) {
+      const { notifyBadgeAwarded } = await import("@/lib/messaging");
+      await notifyBadgeAwarded({
+        userId: profileId,
+        badgeName: badge.name,
+        awardedByUserId: profile.id,
+      });
+    }
     revalidatePath(`/people/${profileId}`);
     revalidatePath("/dashboard/admin");
+    revalidatePath("/notifications");
     return { success: "Badge added to profile." };
   } catch (error) {
     return { error: errorMessage(error, "Could not add badge.") };
@@ -285,15 +296,27 @@ export async function ownerUpdateProfileAction(
     if (!target) {
       return { error: "Profile not found." };
     }
+    const avatarUrl = formString(formData, "avatarUrl");
+    const isDataImage =
+      /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(avatarUrl);
+    const isRemoteImage = /^https?:\/\//i.test(avatarUrl);
+    if (avatarUrl && !isDataImage && !isRemoteImage) {
+      return { error: "That profile photo format is not supported." };
+    }
+    if (isDataImage && avatarUrl.length > 400_000) {
+      return { error: "That profile photo is too large." };
+    }
     await updateProfile(profileId, {
       fullName: formString(formData, "fullName") || target.fullName || "Member",
       headline: formString(formData, "headline"),
       location: formString(formData, "location"),
       bio: formString(formData, "bio"),
       links: target.links,
+      avatarUrl,
     });
     revalidatePath(`/people/${profileId}`);
     revalidatePath("/profile");
+    revalidatePath("/", "layout");
     return { success: "Profile updated." };
   } catch (error) {
     return { error: errorMessage(error, "Could not update profile.") };
