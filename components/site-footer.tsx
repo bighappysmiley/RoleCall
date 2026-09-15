@@ -16,6 +16,7 @@ export function SiteFooter() {
           {[
             { href: "/jobs", label: "Jobs" },
             { href: "/companies", label: "Companies" },
+            { href: "/people", label: "People" },
             { href: "/pricing", label: "Pricing" },
             { href: "/signup", label: "Create account" },
           ].map((item) => (

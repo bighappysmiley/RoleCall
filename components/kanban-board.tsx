@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import {
   addApplicationNoteAction,
+  messageCandidateAction,
   moveApplicationStageAction,
 } from "@/lib/actions/pipeline";
 import { formatStage } from "@/lib/format";
@@ -85,6 +86,16 @@ export function KanbanBoard({
                       >
                         Message
                       </Link>
+                    ) : canMove ? (
+                      <form action={messageCandidateAction}>
+                        <input type="hidden" name="applicationId" value={card.id} />
+                        <button
+                          type="submit"
+                          className="text-primary hover:underline"
+                        >
+                          Message
+                        </button>
+                      </form>
                     ) : null}
                   </div>
                   {canMove ? <StageForm key={`${card.id}-${card.stage}`} card={card} /> : null}
