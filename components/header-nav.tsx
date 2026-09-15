@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, ChevronDown, MessageCircle, Plus } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { signOutAction } from "@/lib/auth/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Wordmark } from "@/components/wordmark";
 import { MobileNav } from "@/components/mobile-nav";
+import {
+  CreateNewMenu,
+  type CreateNewItem,
+} from "@/components/create-new-menu";
+import { MessagesMenu } from "@/components/messages-menu";
+import { NotificationsMenu } from "@/components/notifications-menu";
+import type { ConversationPreview, NotificationRecord } from "@/lib/types";
 
 const EXPLORE = [
   { href: "/jobs", label: "Browse jobs", hint: "Open roles on the board" },
@@ -70,39 +77,33 @@ function NavDropdown({
   );
 }
 
-function IconLink({
-  href,
-  label,
-  children,
-}: {
-  href: string;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      aria-label={label}
-      className="inline-flex size-9 items-center justify-center rounded-full text-ink/70 transition-colors hover:bg-fog hover:text-ink"
-    >
-      {children}
-    </Link>
-  );
-}
-
 export function HeaderNav({
   signedIn,
   isAdmin,
   name,
   email,
   image,
+  createItems,
+  messagePreview,
+  notificationPreview,
+  unreadNotifications,
+  ownedCompanies: _ownedCompanies,
+  inbox: _inbox,
 }: {
   signedIn: boolean;
   isAdmin: boolean;
   name?: string | null;
   email?: string | null;
   image?: string | null;
+  createItems: CreateNewItem[];
+  messagePreview: ConversationPreview[];
+  notificationPreview: NotificationRecord[];
+  unreadNotifications: number;
+  ownedCompanies: { id: string; name: string; logoUrl: string | null }[];
+  inbox: string;
 }) {
+  void _ownedCompanies;
+  void _inbox;
   const initials =
     (name ?? email ?? "U")
       .split(/\s+/)
@@ -125,94 +126,69 @@ export function HeaderNav({
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
+          <CreateNewMenu items={createItems} />
+          <MessagesMenu signedIn={signedIn} preview={messagePreview} />
+          <NotificationsMenu
+            signedIn={signedIn}
+            preview={notificationPreview}
+            unreadCount={unreadNotifications}
+          />
           {signedIn ? (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-9 rounded-full border-line bg-white px-3.5 text-sm"
-                asChild
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="ml-0.5 rounded-full outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary/40"
+                aria-label="Account menu"
               >
-                <Link href="/dashboard/jobs/new">
-                  <Plus className="size-3.5" />
-                  Create New
-                </Link>
-              </Button>
-              <IconLink href="/dashboard" label="Messages">
-                <MessageCircle className="size-4" />
-              </IconLink>
-              <IconLink href="/dashboard" label="Notifications">
-                <Bell className="size-4" />
-              </IconLink>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  className="ml-0.5 rounded-full outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary/40"
-                  aria-label="Account menu"
-                >
-                  <Avatar className="size-8">
-                    {image ? <AvatarImage src={image} alt="" /> : null}
-                    <AvatarFallback className="bg-fog text-[11px] font-medium text-ink">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="min-w-48 rounded-xl">
-                  <DropdownMenuLabel className="font-normal">
-                    <p className="text-sm font-medium text-ink">
-                      {name ?? "Your account"}
+                <Avatar className="size-8">
+                  {image ? <AvatarImage src={image} alt="" /> : null}
+                  <AvatarFallback className="bg-fog text-[11px] font-medium text-ink">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-48 rounded-xl">
+                <DropdownMenuLabel className="font-normal">
+                  <p className="text-sm font-medium text-ink">
+                    {name ?? "Your account"}
+                  </p>
+                  {email ? (
+                    <p className="truncate text-xs text-muted-foreground">
+                      {email}
                     </p>
-                    {email ? (
-                      <p className="truncate text-xs text-muted-foreground">
-                        {email}
-                      </p>
-                    ) : null}
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/profile">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </DropdownMenuItem>
-                  {isAdmin ? (
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard/admin">Admin</Link>
-                    </DropdownMenuItem>
                   ) : null}
-                  <DropdownMenuSeparator />
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/messages">Messages</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/notifications">Notifications</Link>
+                </DropdownMenuItem>
+                {isAdmin ? (
                   <DropdownMenuItem asChild>
-                    <form action={signOutAction} className="w-full">
-                      <button type="submit" className="w-full text-left">
-                        Sign out
-                      </button>
-                    </form>
+                    <Link href="/dashboard/admin">Admin</Link>
                   </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
+                ) : null}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <form action={signOutAction} className="w-full">
+                    <button type="submit" className="w-full text-left">
+                      Sign out
+                    </button>
+                  </form>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-9 rounded-full border-line bg-white px-3.5 text-sm"
-                asChild
-              >
-                <Link href="/signup">
-                  <Plus className="size-3.5" />
-                  Create New
-                </Link>
-              </Button>
-              <IconLink href="/login" label="Messages">
-                <MessageCircle className="size-4" />
-              </IconLink>
-              <IconLink href="/login" label="Notifications">
-                <Bell className="size-4" />
-              </IconLink>
-              <Button variant="ghost" size="sm" className="rounded-full" asChild>
-                <Link href="/login">Sign in</Link>
-              </Button>
-            </>
+            <Button variant="ghost" size="sm" className="rounded-full" asChild>
+              <Link href="/login">Sign in</Link>
+            </Button>
           )}
         </div>
 

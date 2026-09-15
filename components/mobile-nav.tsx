@@ -66,8 +66,9 @@ export function MobileNav({
           <div className="my-2 h-px bg-line" />
           {signedIn ? (
             <>
-              <NavLink href="/dashboard">Notifications</NavLink>
-              <NavLink href="/dashboard">Messages</NavLink>
+              <NavLink href="/notifications">Notifications</NavLink>
+              <NavLink href="/dashboard/jobs/new">Post a role</NavLink>
+              <NavLink href="/messages">Messages</NavLink>
               <NavLink href="/profile">Profile</NavLink>
               <NavLink href="/dashboard">Dashboard</NavLink>
               {isAdmin ? (

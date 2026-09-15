@@ -656,6 +656,19 @@ export async function applyToJob(input: {
     .set({ applicationCount: sql`${jobs.applicationCount} + 1` })
     .where(eq(jobs.id, input.jobId));
 
+  const candidate = await getProfile(input.candidateId);
+  const { openApplicationConversation } = await import("@/lib/messaging");
+  await openApplicationConversation({
+    applicationId: created.id,
+    jobId: job.id,
+    companyId: job.companyId,
+    candidateId: input.candidateId,
+    coverLetter: input.coverLetter || "",
+    jobTitle: job.title,
+    companyName: job.company.name,
+    candidateName: candidate?.fullName ?? "Candidate",
+  });
+
   return created;
 }
 
@@ -1192,6 +1205,8 @@ export async function updateApplicationStage(
   if (!row) {
     throw new Error("Application not found.");
   }
+  const { syncConversationCategoryForApplication } = await import("@/lib/messaging");
+  await syncConversationCategoryForApplication(applicationId, stage);
   return row;
 }
 

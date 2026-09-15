@@ -42,7 +42,7 @@ export async function inviteMemberAction(
     return { error: parsed.error.issues[0]?.message ?? "Check the invite and try again." };
   }
 
-  const { access, company } = await requireCompanyAccess(parsed.data.companyId);
+  const { user, access, company } = await requireCompanyAccess(parsed.data.companyId);
   if (!canManageTeam(access)) {
     return { error: "You can view the team, but you cannot invite people." };
   }
@@ -60,7 +60,16 @@ export async function inviteMemberAction(
       token,
       expiresAt,
     });
+    const { notifyTeamInvite } = await import("@/lib/messaging");
+    await notifyTeamInvite({
+      inviterUserId: user.id,
+      companyId: company.id,
+      companyName: company.name,
+      email: parsed.data.email,
+      inviteUrl: inviteUrl(token),
+    });
     revalidatePath("/dashboard/team");
+    revalidatePath("/messages");
     return {
       success: "Invite created. Copy the link and send it yourself — email delivery comes later.",
       inviteUrl: inviteUrl(token),
