@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NameWithBadge } from "@/components/badge-icon";
 import { CompanyMark } from "@/components/company-mark";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { listCompanies, listPublishedJobs } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -10,7 +12,14 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function CompaniesPage() {
+export default async function CompaniesPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const raw = Array.isArray(params.q) ? params.q[0] : params.q;
+  const q = raw?.trim() ?? "";
   const [companies, jobs] = await Promise.all([
     listCompanies(),
     listPublishedJobs(),
@@ -19,6 +28,21 @@ export default async function CompaniesPage() {
   for (const job of jobs) {
     counts.set(job.companyId, (counts.get(job.companyId) ?? 0) + 1);
   }
+
+  const needle = q.toLowerCase();
+  const filtered = needle
+    ? companies.filter((company) => {
+        const haystack = [
+          company.name,
+          company.tagline ?? "",
+          company.industry ?? "",
+          company.locations.join(" "),
+        ]
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(needle);
+      })
+    : companies;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
@@ -31,14 +55,48 @@ export default async function CompaniesPage() {
       <p className="mt-3 max-w-xl text-base text-muted-foreground">
         Meet the teams hiring on RoleCall.
       </p>
-      {companies.length === 0 ? (
-        <p className="mt-10 border border-line bg-white/80 px-5 py-8 text-sm text-muted-foreground">
-          No companies yet. Hiring teams appear here after they create a
-          profile.
-        </p>
+      <form
+        method="get"
+        action="/companies"
+        className="mt-8 flex flex-wrap items-end gap-3"
+      >
+        <div className="grid min-w-[16rem] flex-1 gap-1.5">
+          <label
+            htmlFor="q"
+            className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase"
+          >
+            Search
+          </label>
+          <Input
+            id="q"
+            name="q"
+            defaultValue={q}
+            placeholder="Name, industry, location"
+          />
+        </div>
+        <Button type="submit">Search</Button>
+        {q ? (
+          <Button type="button" variant="outline" asChild>
+            <Link href="/companies">Clear</Link>
+          </Button>
+        ) : null}
+      </form>
+      {filtered.length === 0 ? (
+        <div className="mt-10 border border-line bg-white/80 px-5 py-8 text-sm text-muted-foreground">
+          <p>
+            {q
+              ? "No companies match that search."
+              : "No companies yet. Hiring teams appear here after they create a profile."}
+          </p>
+          {q ? (
+            <Button className="mt-4" size="sm" variant="outline" asChild>
+              <Link href="/companies">Clear search</Link>
+            </Button>
+          ) : null}
+        </div>
       ) : (
         <div className="mt-10 grid gap-3 sm:grid-cols-2">
-          {companies.map((company) => (
+          {filtered.map((company) => (
             <Link
               key={company.id}
               href={`/companies/${company.slug}`}

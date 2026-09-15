@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { JobCard } from "@/components/job-card";
 import { JobsFilter } from "@/components/jobs-filter";
 import { jobBoardFilterSchema } from "@/lib/auth/schemas";
 import { listPublishedJobs } from "@/lib/queries";
 import type { JobBoardFilters } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Jobs",
@@ -28,9 +30,19 @@ export default async function JobsPage({
     type: firstParam(params.type),
     workplace: firstParam(params.workplace),
     location: firstParam(params.location),
+    experience: firstParam(params.experience),
+    skill: firstParam(params.skill),
   });
   const filters: JobBoardFilters = parsed.success ? parsed.data : {};
   const jobs = await listPublishedJobs(filters);
+  const filtered = Boolean(
+    filters.q ||
+      filters.type ||
+      filters.workplace ||
+      filters.location ||
+      filters.experience ||
+      filters.skill,
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
@@ -43,8 +55,8 @@ export default async function JobsPage({
             Jobs
           </h1>
           <p className="mt-3 text-base text-muted-foreground">
-            Featured and promoted roles stay labeled. Search ranks the board —
-            it never hides who paid for placement.
+            Search ranks the board without hiding paid placement. Featured and
+            promoted roles stay clearly labeled.
           </p>
         </div>
         <p className="text-sm text-muted-foreground">
@@ -55,11 +67,23 @@ export default async function JobsPage({
         <JobsFilter filters={filters} />
       </div>
       {jobs.length === 0 ? (
-        <p className="border border-line bg-white/80 px-5 py-8 text-sm text-muted-foreground">
-          {filters.q || filters.type || filters.workplace || filters.location
-            ? "No published roles match those filters."
-            : "No published roles yet."}
-        </p>
+        <div className="border border-line bg-white/80 px-5 py-8">
+          <p className="text-sm text-muted-foreground">
+            {filtered
+              ? "No published roles match those filters."
+              : "No published roles yet. Check back soon, or browse companies already on the board."}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {filtered ? (
+              <Button size="sm" variant="outline" asChild>
+                <Link href="/jobs">Clear filters</Link>
+              </Button>
+            ) : null}
+            <Button size="sm" variant="outline" asChild>
+              <Link href="/companies">Browse companies</Link>
+            </Button>
+          </div>
+        </div>
       ) : (
         <div className="grid gap-3">
           {jobs.map((job) => (

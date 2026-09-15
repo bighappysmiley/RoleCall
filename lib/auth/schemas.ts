@@ -110,6 +110,8 @@ export const jobBoardFilterSchema = z.object({
   type: z.enum(["full_time", "part_time", "contract", "internship"]).optional(),
   workplace: z.enum(["remote", "hybrid", "onsite"]).optional(),
   location: z.string().trim().max(120).optional(),
+  experience: z.string().trim().max(40).optional(),
+  skill: z.string().trim().max(60).optional(),
 });
 
 export const checkoutPlanSchema = z.object({

@@ -60,6 +60,8 @@ export type JobBoardFilters = {
   type?: EmploymentType;
   workplace?: WorkplaceType;
   location?: string;
+  experience?: string;
+  skill?: string;
 };
 
 export type ProfileLinks = {

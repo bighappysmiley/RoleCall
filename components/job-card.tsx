@@ -61,6 +61,16 @@ export function JobCard({ job }: { job: RankedJob }) {
                 {job.skills.slice(0, 4).join(" · ")}
               </p>
             ) : null}
+            {job.experienceLevel ? (
+              <p className="mt-1 text-[12px] text-muted-foreground">
+                {job.experienceLevel}
+                {job.department ? ` · ${job.department}` : ""}
+              </p>
+            ) : job.department ? (
+              <p className="mt-1 text-[12px] text-muted-foreground">
+                {job.department}
+              </p>
+            ) : null}
           </div>
         </div>
       </Link>
