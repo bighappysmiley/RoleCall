@@ -65,7 +65,7 @@ export async function resolveInboxIdentity(
   return { kind: "personal" };
 }
 
-async function createNotification(input: {
+export async function createNotification(input: {
   userId: string;
   companyId?: string | null;
   type: string;
@@ -82,6 +82,30 @@ async function createNotification(input: {
     body: input.body ?? null,
     href: input.href ?? null,
   });
+}
+
+export async function notifyCompanyTeam(
+  companyId: string,
+  input: {
+    type: string;
+    title: string;
+    body?: string;
+    href?: string;
+    excludeUserId?: string;
+  },
+) {
+  const hiringUsers = await listHiringUserIds(companyId);
+  for (const userId of hiringUsers) {
+    if (input.excludeUserId && userId === input.excludeUserId) continue;
+    await createNotification({
+      userId,
+      companyId,
+      type: input.type,
+      title: input.title,
+      body: input.body,
+      href: input.href,
+    });
+  }
 }
 
 export async function listNotifications(
@@ -117,6 +141,133 @@ export async function countUnreadNotifications(userId: string) {
     .from(notifications)
     .where(and(eq(notifications.userId, userId), isNull(notifications.readAt)));
   return row?.count ?? 0;
+}
+
+export async function countUnreadConversations(
+  userId: string,
+  identity: InboxIdentity,
+) {
+  const previews = await listConversations({
+    userId,
+    identity,
+    filter: "unread",
+    limit: 99,
+  });
+  return previews.length;
+}
+
+export async function notifyJobPublished(input: {
+  companyId: string;
+  jobId: string;
+  jobTitle: string;
+  actorUserId: string;
+}) {
+  await notifyCompanyTeam(input.companyId, {
+    type: "job",
+    title: `Role published: ${input.jobTitle}`,
+    body: "It is live on the RoleCall board.",
+    href: `/dashboard/jobs/${input.jobId}`,
+    excludeUserId: input.actorUserId,
+  });
+}
+
+export async function notifyApplicationNote(input: {
+  applicationId: string;
+  companyId: string;
+  candidateId: string;
+  jobId: string;
+  jobTitle: string;
+  authorId: string;
+  authorName: string;
+  body: string;
+}) {
+  const db = getDb();
+  if (!db) return;
+
+  const [conversation] = await db
+    .select()
+    .from(conversations)
+    .where(eq(conversations.applicationId, input.applicationId))
+    .limit(1);
+
+  const href = conversation
+    ? `/messages/${conversation.id}`
+    : `/dashboard/jobs/${input.jobId}/pipeline`;
+
+  if (conversation) {
+    await db.insert(messages).values({
+      conversationId: conversation.id,
+      senderUserId: input.authorId,
+      body: `Note on your application: ${input.body}`,
+    });
+    await db
+      .update(conversations)
+      .set({ lastMessageAt: new Date() })
+      .where(eq(conversations.id, conversation.id));
+  }
+
+  await createNotification({
+    userId: input.candidateId,
+    companyId: input.companyId,
+    type: "note",
+    title: `Update on ${input.jobTitle}`,
+    body: `${input.authorName}: ${input.body.slice(0, 140)}`,
+    href,
+  });
+
+  await notifyCompanyTeam(input.companyId, {
+    type: "note",
+    title: `Note on ${input.jobTitle}`,
+    body: `${input.authorName} left a note.`,
+    href,
+    excludeUserId: input.authorId,
+  });
+}
+
+export async function notifyInviteAccepted(input: {
+  companyId: string;
+  companyName: string;
+  memberName: string;
+  memberUserId: string;
+}) {
+  await notifyCompanyTeam(input.companyId, {
+    type: "team",
+    title: `${input.memberName} joined ${input.companyName}`,
+    body: "They accepted a team invite.",
+    href: "/dashboard/team",
+    excludeUserId: input.memberUserId,
+  });
+}
+
+export async function notifyMemberRemoved(input: {
+  userId: string | null;
+  companyId: string;
+  companyName: string;
+}) {
+  if (!input.userId) return;
+  await createNotification({
+    userId: input.userId,
+    companyId: input.companyId,
+    type: "team",
+    title: `Removed from ${input.companyName}`,
+    body: "Your seat on this company was removed.",
+    href: "/dashboard",
+  });
+}
+
+export async function notifyBadgeAwarded(input: {
+  userId: string;
+  badgeName: string;
+  awardedByUserId: string;
+}) {
+  if (input.userId === input.awardedByUserId) return;
+  await createNotification({
+    userId: input.userId,
+    type: "badge",
+    title: `New badge: ${input.badgeName}`,
+    body: "It was added to your RoleCall profile.",
+    href: `/people/${input.userId}`,
+  });
 }
 
 export async function markNotificationRead(notificationId: string, userId: string) {

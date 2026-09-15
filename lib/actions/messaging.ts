@@ -57,6 +57,7 @@ export async function sendMessageAction(formData: FormData) {
   }
   revalidatePath("/messages");
   revalidatePath(`/messages/${conversationId}`);
+  revalidatePath("/notifications");
   redirect(`/messages/${conversationId}`);
 }
 

@@ -507,6 +507,7 @@ export async function updateProfile(
     location: string;
     bio: string;
     links: ProfileLinks;
+    avatarUrl?: string | null;
   },
 ): Promise<ProfileRecord> {
   const db = requireDb();
@@ -518,6 +519,9 @@ export async function updateProfile(
       location: input.location || null,
       bio: input.bio || null,
       links: input.links,
+      ...(input.avatarUrl !== undefined
+        ? { avatarUrl: input.avatarUrl || null }
+        : {}),
       updatedAt: new Date(),
     })
     .where(eq(profiles.id, userId))
@@ -1159,6 +1163,7 @@ export async function removeCompanyMember(memberId: string, companyId: string) {
     .update(companyMembers)
     .set({ status: "removed", inviteToken: null })
     .where(eq(companyMembers.id, memberId));
+  return { userId: row.userId };
 }
 
 export async function listJobApplications(jobId: string) {

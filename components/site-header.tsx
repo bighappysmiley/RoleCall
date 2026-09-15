@@ -3,6 +3,7 @@ import { getOptionalSession } from "@/lib/auth/server";
 import { HeaderNav } from "@/components/header-nav";
 import { canManageJobs, canManageTeam } from "@/lib/permissions";
 import {
+  countUnreadConversations,
   countUnreadNotifications,
   listConversations,
   listNotifications,
@@ -39,6 +40,7 @@ export async function SiteHeader() {
         ]}
         messagePreview={[]}
         notificationPreview={[]}
+        unreadMessages={0}
         unreadNotifications={0}
         ownedCompanies={[]}
         inbox="personal"
@@ -105,7 +107,7 @@ export async function SiteHeader() {
     });
   }
 
-  const [messagePreview, notificationPreview, unreadNotifications] =
+  const [messagePreview, notificationPreview, unreadNotifications, unreadMessages] =
     await Promise.all([
       listConversations({
         userId: session.user.id,
@@ -115,6 +117,7 @@ export async function SiteHeader() {
       }),
       listNotifications(session.user.id, 3),
       countUnreadNotifications(session.user.id),
+      countUnreadConversations(session.user.id, identity),
     ]);
 
   return (
@@ -127,6 +130,7 @@ export async function SiteHeader() {
       createItems={createItems}
       messagePreview={messagePreview}
       notificationPreview={notificationPreview}
+      unreadMessages={unreadMessages}
       unreadNotifications={unreadNotifications}
       ownedCompanies={ownedCompanies.map((row) => ({
         id: row.id,

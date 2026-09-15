@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RefreshOnSuccess } from "@/components/refresh-on-success";
+import { ProfileAvatarField } from "@/components/profile-avatar-field";
 
 export function OnboardingForm({ next }: { next?: string }) {
   const [state, formAction, pending] = useActionState(
@@ -124,6 +125,7 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
   const [state, formAction, pending] = useActionState(updateProfileAction, null);
   const formKey = [
     profile.fullName,
+    profile.avatarUrl,
     profile.headline,
     profile.location,
     profile.bio,
@@ -139,6 +141,10 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
       className="flex max-w-xl flex-col gap-4"
     >
       <RefreshOnSuccess state={state} />
+      <ProfileAvatarField
+        name={profile.fullName ?? "You"}
+        avatarUrl={profile.avatarUrl}
+      />
       <div className="grid gap-1.5">
         <Label htmlFor="fullName">Name</Label>
         <Input

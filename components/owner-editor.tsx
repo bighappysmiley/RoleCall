@@ -26,6 +26,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { BadgeIcon } from "@/components/badge-icon";
+import { ProfileAvatarField } from "@/components/profile-avatar-field";
 import { RefreshOnSuccess } from "@/components/refresh-on-success";
 import type {
   AssignedBadge,
@@ -96,6 +97,7 @@ export function ProfileOwnerEditor({
           <form
             key={[
               profile.fullName,
+              profile.avatarUrl,
               profile.headline,
               profile.location,
               profile.bio,
@@ -105,6 +107,10 @@ export function ProfileOwnerEditor({
           >
             <RefreshOnSuccess state={editState} />
             <input type="hidden" name="profileId" value={profile.id} />
+            <ProfileAvatarField
+              name={profile.fullName ?? "You"}
+              avatarUrl={profile.avatarUrl}
+            />
             <div className="grid gap-1.5">
               <Label htmlFor="fullName">Name</Label>
               <Input

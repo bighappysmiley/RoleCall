@@ -86,6 +86,7 @@ export function HeaderNav({
   createItems,
   messagePreview,
   notificationPreview,
+  unreadMessages = 0,
   unreadNotifications,
   ownedCompanies: _ownedCompanies,
   inbox: _inbox,
@@ -98,6 +99,7 @@ export function HeaderNav({
   createItems: CreateNewItem[];
   messagePreview: ConversationPreview[];
   notificationPreview: NotificationRecord[];
+  unreadMessages?: number;
   unreadNotifications: number;
   ownedCompanies: { id: string; name: string; logoUrl: string | null }[];
   inbox: string;
@@ -127,7 +129,11 @@ export function HeaderNav({
 
         <div className="hidden items-center gap-2 md:flex">
           <CreateNewMenu items={createItems} />
-          <MessagesMenu signedIn={signedIn} preview={messagePreview} />
+          <MessagesMenu
+            signedIn={signedIn}
+            preview={messagePreview}
+            unreadCount={unreadMessages}
+          />
           <NotificationsMenu
             signedIn={signedIn}
             preview={notificationPreview}

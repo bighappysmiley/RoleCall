@@ -188,6 +188,17 @@ export async function updateProfileAction(
     return { error: parsed.error.issues[0]?.message ?? "Check the form and try again." };
   }
 
+  const avatarUrl = formString(formData, "avatarUrl");
+  const isDataImage =
+    /^data:image\/(jpeg|jpg|png|webp|gif);base64,/i.test(avatarUrl);
+  const isRemoteImage = /^https?:\/\//i.test(avatarUrl);
+  if (avatarUrl && !isDataImage && !isRemoteImage) {
+    return { error: "That profile photo format is not supported." };
+  }
+  if (isDataImage && avatarUrl.length > 400_000) {
+    return { error: "That profile photo is too large." };
+  }
+
   await updateProfile(session.user.id, {
     fullName: parsed.data.fullName,
     headline: parsed.data.headline ?? "",
@@ -198,6 +209,7 @@ export async function updateProfileAction(
       linkedin: parsed.data.linkedin || undefined,
       github: parsed.data.github || undefined,
     },
+    avatarUrl,
   });
 
   revalidatePath("/profile");
@@ -243,6 +255,9 @@ export async function applyToJobAction(
   } catch (error) {
     return { error: errorMessage(error, "Could not submit the application.") };
   }
+  revalidatePath("/messages");
+  revalidatePath("/notifications");
+  revalidatePath("/dashboard");
   return { success: "Application sent." };
 }
 

@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BadgeIcon, NameWithBadge } from "@/components/badge-icon";
 import { ProfileOwnerEditor } from "@/components/owner-editor";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getOptionalSession } from "@/lib/auth/server";
 import { listBadges, listProfileBadges } from "@/lib/badge-queries";
+import { initials } from "@/lib/format";
 import { ensureProfile, getProfile } from "@/lib/queries";
 
 type Params = { id: string };
@@ -53,25 +55,35 @@ export default async function PersonPage({
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="border border-line bg-paper p-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
-              PROFILE
-            </p>
-            <h1 className="mt-2 font-heading text-4xl">
-              <NameWithBadge
-                name={profile.fullName ?? "Member"}
-                badge={pinned}
-                badgeSize={28}
-              />
-            </h1>
-            {profile.headline ? (
-              <p className="mt-2 text-muted-foreground">{profile.headline}</p>
-            ) : null}
-            {profile.location ? (
-              <p className="mt-1 text-sm text-muted-foreground">
-                {profile.location}
+          <div className="flex min-w-0 items-start gap-4">
+            <Avatar className="size-16 shrink-0 border border-line">
+              {profile.avatarUrl ? (
+                <AvatarImage src={profile.avatarUrl} alt="" />
+              ) : null}
+              <AvatarFallback className="bg-fog text-lg font-medium text-ink">
+                {initials(profile.fullName ?? "Member")}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-mono text-[11px] tracking-[0.16em] text-muted-foreground">
+                PROFILE
               </p>
-            ) : null}
+              <h1 className="mt-2 font-heading text-4xl">
+                <NameWithBadge
+                  name={profile.fullName ?? "Member"}
+                  badge={pinned}
+                  badgeSize={28}
+                />
+              </h1>
+              {profile.headline ? (
+                <p className="mt-2 text-muted-foreground">{profile.headline}</p>
+              ) : null}
+              {profile.location ? (
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {profile.location}
+                </p>
+              ) : null}
+            </div>
           </div>
           {canEdit ? (
             <ProfileOwnerEditor

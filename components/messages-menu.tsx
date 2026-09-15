@@ -9,9 +9,11 @@ import type { ConversationPreview } from "@/lib/types";
 export function MessagesMenu({
   signedIn,
   preview,
+  unreadCount = 0,
 }: {
   signedIn: boolean;
   preview: ConversationPreview[];
+  unreadCount?: number;
 }) {
   if (!signedIn) {
     return (
@@ -30,9 +32,12 @@ export function MessagesMenu({
       <Link
         href="/messages"
         aria-label="Messages"
-        className="inline-flex size-9 items-center justify-center rounded-full text-ink/70 transition-colors hover:bg-fog hover:text-ink"
+        className="relative inline-flex size-9 items-center justify-center rounded-full text-ink/70 transition-colors hover:bg-fog hover:text-ink"
       >
         <MessageCircle className="size-4" />
+        {unreadCount > 0 ? (
+          <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary" />
+        ) : null}
       </Link>
       <div className="pointer-events-none invisible absolute right-0 z-50 mt-2 w-80 translate-y-1 rounded-2xl border border-line bg-white p-3 opacity-0 shadow-lg transition-all duration-150 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
         <div className="mb-2 flex items-center justify-between px-1">
@@ -51,7 +56,9 @@ export function MessagesMenu({
               <li key={item.id}>
                 <Link
                   href={`/messages/${item.id}`}
-                  className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-fog"
+                  className={`flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-fog ${
+                    item.unread ? "bg-fog/60" : ""
+                  }`}
                 >
                   <Avatar className="size-9">
                     {item.counterpartImage ? (
@@ -63,7 +70,11 @@ export function MessagesMenu({
                   </Avatar>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="truncate text-sm font-medium text-ink">
+                      <p
+                        className={`truncate text-sm text-ink ${
+                          item.unread ? "font-semibold" : "font-medium"
+                        }`}
+                      >
                         {item.counterpartName}
                       </p>
                       <span className="shrink-0 text-[11px] text-muted-foreground">
@@ -74,6 +85,9 @@ export function MessagesMenu({
                       {item.lastBody ?? item.subject ?? "Conversation"}
                     </p>
                   </div>
+                  {item.unread ? (
+                    <span className="size-2 shrink-0 rounded-full bg-primary" />
+                  ) : null}
                 </Link>
               </li>
             ))}
