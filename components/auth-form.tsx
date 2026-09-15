@@ -17,7 +17,7 @@ export function GoogleButton({ callbackURL = "/dashboard" }: { callbackURL?: str
   }
 
   return (
-    <Button type="button" variant="outline" className="w-full" onClick={onClick}>
+    <Button type="button" variant="outline" className="h-10 w-full rounded-xl" onClick={onClick}>
       Continue with Google
     </Button>
   );
@@ -74,7 +74,7 @@ export function AuthForm({
       {state && "success" in state ? (
         <p className="text-sm text-ink">{state.success}</p>
       ) : null}
-      <Button type="submit" disabled={pending} className="w-full">
+      <Button type="submit" disabled={pending} className="h-10 w-full rounded-xl">
         {pending ? pendingLabel : submitLabel}
       </Button>
     </form>

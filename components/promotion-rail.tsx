@@ -25,12 +25,12 @@ export function PromotionRail({
         )}
       />
       {rail === "featured" ? (
-        <span className="absolute top-0 right-0 bg-signal px-2 py-0.5 text-[10px] font-medium tracking-wide text-ink">
+        <span className="absolute top-3 right-3 rounded-full bg-signal px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-ink">
           Featured
         </span>
       ) : null}
       {rail === "promoted" ? (
-        <span className="absolute top-2 right-2 text-[10px] font-medium tracking-wide text-signal">
+        <span className="absolute top-3 right-3 rounded-full bg-signal/15 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-signal">
           Promoted
         </span>
       ) : null}

@@ -45,12 +45,10 @@ export default async function JobsPage({
   );
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+    <div className="page-shell">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-2xl">
-          <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
-            Live board
-          </p>
+          <p className="eyebrow">Live board</p>
           <h1 className="mt-2 font-display text-4xl tracking-[-0.04em] sm:text-5xl">
             Jobs
           </h1>
@@ -59,7 +57,7 @@ export default async function JobsPage({
             promoted roles stay clearly labeled.
           </p>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="rounded-full bg-mist/70 px-3.5 py-1.5 text-sm text-navy">
           {jobs.length} open {jobs.length === 1 ? "role" : "roles"}
         </p>
       </div>
@@ -67,7 +65,7 @@ export default async function JobsPage({
         <JobsFilter filters={filters} />
       </div>
       {jobs.length === 0 ? (
-        <div className="border border-line bg-white/80 px-5 py-8">
+        <div className="surface px-6 py-10">
           <p className="text-sm text-muted-foreground">
             {filtered
               ? "No published roles match those filters."

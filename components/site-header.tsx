@@ -24,16 +24,16 @@ export async function SiteHeader() {
     : null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-paper/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line/60 bg-paper/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
         <div className="flex items-center gap-10">
           <Wordmark />
-          <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+          <nav className="hidden items-center gap-1 text-sm text-muted-foreground md:flex">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="transition-colors hover:text-ink"
+                className="rounded-full px-3 py-1.5 transition-colors hover:bg-white/70 hover:text-ink"
               >
                 {item.label}
               </Link>
@@ -43,25 +43,25 @@ export async function SiteHeader() {
         <div className="hidden items-center gap-2 md:flex">
           {session?.user ? (
             <>
-              <Button variant="ghost" size="sm" asChild>
+              <Button variant="ghost" size="sm" className="rounded-full" asChild>
                 <Link href="/profile">Profile</Link>
               </Button>
               {profile?.isPlatformAdmin ? (
-                <Button variant="ghost" size="sm" asChild>
+                <Button variant="ghost" size="sm" className="rounded-full" asChild>
                   <Link href="/dashboard/admin">Admin</Link>
                 </Button>
               ) : null}
-              <Button size="sm" asChild>
+              <Button size="sm" className="rounded-full px-4" asChild>
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
               <SignOutButton />
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" asChild>
+              <Button variant="ghost" size="sm" className="rounded-full" asChild>
                 <Link href="/login">Sign in</Link>
               </Button>
-              <Button size="sm" asChild>
+              <Button size="sm" className="rounded-full px-4" asChild>
                 <Link href="/signup">Post a job</Link>
               </Button>
             </>

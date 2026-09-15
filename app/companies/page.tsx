@@ -45,10 +45,8 @@ export default async function CompaniesPage({
     : companies;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-      <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
-        Directory
-      </p>
+    <div className="page-shell">
+      <p className="eyebrow">Directory</p>
       <h1 className="mt-2 font-display text-4xl tracking-[-0.04em] sm:text-5xl">
         Companies
       </h1>
@@ -58,7 +56,7 @@ export default async function CompaniesPage({
       <form
         method="get"
         action="/companies"
-        className="mt-8 flex flex-wrap items-end gap-3"
+        className="surface mt-8 flex flex-wrap items-end gap-3 p-4 sm:p-5"
       >
         <div className="grid min-w-[16rem] flex-1 gap-1.5">
           <label
@@ -72,17 +70,20 @@ export default async function CompaniesPage({
             name="q"
             defaultValue={q}
             placeholder="Name, industry, location"
+            className="h-10 rounded-xl bg-white"
           />
         </div>
-        <Button type="submit">Search</Button>
+        <Button type="submit" className="h-10 rounded-xl px-5">
+          Search
+        </Button>
         {q ? (
-          <Button type="button" variant="outline" asChild>
+          <Button type="button" variant="outline" className="h-10 rounded-xl" asChild>
             <Link href="/companies">Clear</Link>
           </Button>
         ) : null}
       </form>
       {filtered.length === 0 ? (
-        <div className="mt-10 border border-line bg-white/80 px-5 py-8 text-sm text-muted-foreground">
+        <div className="surface mt-10 px-6 py-10 text-sm text-muted-foreground">
           <p>
             {q
               ? "No companies match that search."
@@ -100,7 +101,7 @@ export default async function CompaniesPage({
             <Link
               key={company.id}
               href={`/companies/${company.slug}`}
-              className="flex gap-4 border border-line bg-white/90 p-5 transition-colors hover:border-primary/30 hover:bg-white"
+              className="surface surface-hover flex gap-4 p-5"
             >
               <CompanyMark
                 name={company.name}

@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "A hiring board by BigHappySmiley. Placement is labeled.",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#1d4ed8",
+    background_color: "#eef3f7",
+    theme_color: "#0d7377",
     icons: [
       {
         src: "/icons/icon-192.png",

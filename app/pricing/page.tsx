@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getOptionalSession } from "@/lib/auth/server";
 import { AD_CREDIT_PACKS, PLANS, PROMOTION_PACKS } from "@/lib/plans";
 import { ensureProfile } from "@/lib/queries";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -27,10 +28,8 @@ export default async function PricingPage() {
         : "/signup";
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-      <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
-        Pricing
-      </p>
+    <div className="page-shell">
+      <p className="eyebrow">Pricing</p>
       <h1 className="mt-2 max-w-2xl font-display text-4xl tracking-[-0.04em] sm:text-5xl">
         Plans that stay clear and fair.
       </h1>
@@ -50,11 +49,21 @@ export default async function PricingPage() {
               : session?.user
                 ? "Go to billing"
                 : "Get started";
+          const featured = plan.id === "pro";
           return (
             <article
               key={plan.id}
-              className="flex flex-col border border-line bg-white/90 p-6 transition-colors hover:border-primary/25"
+              className={cn(
+                "surface surface-hover relative flex flex-col p-6",
+                featured &&
+                  "border-primary/35 bg-[linear-gradient(165deg,rgb(13_115_119/0.08),white_42%)] shadow-[var(--shadow-lift)] xl:-translate-y-2",
+              )}
             >
+              {featured ? (
+                <span className="absolute top-4 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase">
+                  Popular
+                </span>
+              ) : null}
               <p className="text-sm font-medium text-primary">{plan.name}</p>
               <p className="mt-3 font-display text-4xl tracking-[-0.04em]">
                 {plan.priceLabel}
@@ -70,14 +79,14 @@ export default async function PricingPage() {
               <ul className="mt-5 flex flex-1 flex-col gap-2.5 text-sm text-ink/85">
                 {plan.highlights.map((item) => (
                   <li key={item} className="flex gap-2">
-                    <span className="mt-2 size-1 shrink-0 rounded-full bg-primary" />
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
               <Button
-                className="mt-8 w-full"
-                variant={plan.id === "pro" ? "default" : "outline"}
+                className="mt-8 h-10 w-full rounded-xl"
+                variant={featured ? "default" : "outline"}
                 asChild
               >
                 <Link href={href}>{label}</Link>
@@ -86,7 +95,7 @@ export default async function PricingPage() {
           );
         })}
       </div>
-      <section className="mt-12 border border-line bg-white/90 px-6 py-8">
+      <section className="surface mt-12 px-6 py-8 sm:px-8">
         <h2 className="font-display text-2xl tracking-[-0.03em]">
           One-time promotion packs
         </h2>
@@ -94,11 +103,11 @@ export default async function PricingPage() {
           Give a published role more visibility for a set number of days. Every
           promoted listing stays clearly labeled on the board.
         </p>
-        <ul className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
+        <ul className="mt-6 grid gap-3 text-sm sm:grid-cols-3">
           {PROMOTION_PACKS.map((pack, index) => (
             <li
               key={pack.cents}
-              className="border border-line bg-paper/80 px-4 py-3"
+              className="rounded-2xl border border-line/80 bg-paper/70 px-4 py-4 transition-colors hover:border-primary/25 hover:bg-white"
             >
               <p className="font-display text-lg tracking-[-0.03em]">
                 {AD_CREDIT_PACKS[index]?.label}
