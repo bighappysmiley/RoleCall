@@ -154,6 +154,7 @@ export type ProfileRecord = {
   headline: string | null;
   location: string | null;
   bio: string | null;
+  resumeUrl: string | null;
   links: ProfileLinks;
   isPlatformAdmin: boolean;
 };

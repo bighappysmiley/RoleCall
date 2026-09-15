@@ -114,8 +114,12 @@ export async function markConversationReadAction(conversationId: string) {
 export async function markNotificationReadAction(formData: FormData) {
   const { user } = await requireUser();
   const notificationId = String(formData.get("notificationId") ?? "");
+  const href = String(formData.get("href") ?? "").trim();
   await markNotificationRead(notificationId, user.id);
   revalidatePath("/notifications");
+  if (href.startsWith("/") && !href.startsWith("//")) {
+    redirect(href);
+  }
 }
 
 export async function markAllNotificationsReadAction() {

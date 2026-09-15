@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { applicationNoteSchema, applicationStageSchema } from "@/lib/auth/schemas";
 import type { ActionState } from "@/lib/auth/state";
 import { requireCompanyAccess, requireOnboardedUser } from "@/lib/dashboard";
@@ -85,7 +86,38 @@ export async function addApplicationNoteAction(
     return { error: errorMessage(error, "Could not save the note.") };
   }
   revalidatePath(`/dashboard/jobs/${row.job.id}/pipeline`);
-  revalidatePath("/messages");
   revalidatePath("/notifications");
-  return { success: "Note saved." };
+  return { success: "Private note saved." };
+}
+
+export async function messageCandidateAction(formData: FormData) {
+  await requireOnboardedUser();
+  const applicationId = formString(formData, "applicationId");
+  if (!applicationId) {
+    throw new Error("Missing application.");
+  }
+  const row = await getApplicationForCompany(applicationId);
+  if (!row) {
+    throw new Error("Application not found.");
+  }
+  const { access } = await requireCompanyAccess(row.company.id);
+  if (!canManageApplications(access)) {
+    throw new Error("You cannot message candidates from this seat.");
+  }
+
+  const { openApplicationConversation } = await import("@/lib/messaging");
+  const conversation = await openApplicationConversation({
+    applicationId: row.application.id,
+    jobId: row.job.id,
+    companyId: row.company.id,
+    candidateId: row.application.candidateId,
+    coverLetter: row.application.coverLetter ?? "",
+    jobTitle: row.job.title,
+    companyName: row.company.name,
+    candidateName: row.candidate.fullName ?? "Candidate",
+  });
+
+  revalidatePath(`/dashboard/jobs/${row.job.id}/pipeline`);
+  revalidatePath("/messages");
+  redirect(`/messages/${conversation.id}`);
 }

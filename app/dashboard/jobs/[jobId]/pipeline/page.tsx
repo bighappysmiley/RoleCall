@@ -33,9 +33,12 @@ export default async function JobPipelinePage({
     id: row.application.id,
     stage: row.application.stage,
     coverLetter: row.application.coverLetter,
+    resumeUrl: row.application.resumeUrl ?? row.candidate.resumeUrl,
     createdAt: row.application.createdAt,
     candidateName: row.candidate.fullName ?? "Candidate",
     candidateHeadline: row.candidate.headline,
+    candidateId: row.candidate.id,
+    conversationId: row.conversationId,
     notes: row.notes.map((item) => ({
       id: item.note.id,
       body: item.note.body,

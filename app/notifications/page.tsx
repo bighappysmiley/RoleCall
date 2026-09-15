@@ -65,13 +65,12 @@ export default async function NotificationsPage() {
                           name="notificationId"
                           value={item.id}
                         />
-                        <button type="submit" className="text-left">
-                          <Link
-                            href={item.href}
-                            className="text-sm font-medium text-ink hover:underline"
-                          >
-                            {item.title}
-                          </Link>
+                        <input type="hidden" name="href" value={item.href} />
+                        <button
+                          type="submit"
+                          className="text-left text-sm font-medium text-ink hover:underline"
+                        >
+                          {item.title}
                         </button>
                       </form>
                     ) : (

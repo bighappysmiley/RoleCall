@@ -26,23 +26,27 @@ import type { ConversationPreview, NotificationRecord } from "@/lib/types";
 const EXPLORE = [
   { href: "/jobs", label: "Browse jobs", hint: "Open roles on the board" },
   { href: "/companies", label: "Companies", hint: "Teams hiring now" },
+  { href: "/people", label: "People", hint: "Public candidate profiles" },
   { href: "/pricing", label: "Pricing", hint: "Clear plans for every stage" },
 ];
 
 const HIRE_TALENT = [
   { href: "/signup", label: "Post a job", hint: "Start hiring today" },
   { href: "/pricing", label: "Compare plans", hint: "Free through Pro Plus" },
+  { href: "/people", label: "Browse people", hint: "Find candidates" },
   { href: "/companies", label: "Company pages", hint: "Show your team" },
 ];
 
 const GET_HIRED = [
   { href: "/jobs", label: "Find roles", hint: "Apply in minutes" },
+  { href: "/people", label: "People directory", hint: "See how profiles look" },
   { href: "/signup", label: "Create a profile", hint: "Show your work" },
   { href: "/pricing", label: "How placement works", hint: "Paid rails stay labeled" },
 ];
 
 const COMMUNITY = [
   { href: "/companies", label: "Companies", hint: "Browse hiring teams" },
+  { href: "/people", label: "People", hint: "Public profiles" },
   { href: "/jobs", label: "Open roles", hint: "What's live now" },
   { href: "/signup", label: "Join RoleCall", hint: "Create a free account" },
 ];

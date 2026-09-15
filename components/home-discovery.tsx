@@ -125,7 +125,7 @@ export function HomeDiscovery({
       return `/companies?q=${encodeURIComponent(tag)}`;
     }
     if (tab === "people") {
-      return `/?q=${encodeURIComponent(tag)}`;
+      return `/people?q=${encodeURIComponent(tag)}`;
     }
     return `/jobs?q=${encodeURIComponent(tag)}`;
   };
@@ -286,38 +286,52 @@ export function HomeDiscovery({
                 label="Update your profile"
               />
             ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {filteredPeople.map((person) => (
+              <div className="space-y-4">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {filteredPeople.map((person) => (
+                    <Link
+                      key={person.id}
+                      href={`/people/${person.id}`}
+                      className="flex gap-4 rounded-2xl border border-line bg-white p-5 transition-colors hover:border-primary/30"
+                    >
+                      <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-fog text-sm font-medium text-ink">
+                        {person.avatarUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={person.avatarUrl}
+                            alt=""
+                            className="size-full object-cover"
+                          />
+                        ) : (
+                          (person.fullName ?? "?").slice(0, 1)
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <h2 className="font-display text-xl tracking-[-0.03em]">
+                          <NameWithBadge name={person.fullName ?? "Member"} />
+                        </h2>
+                        {person.headline ? (
+                          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                            {person.headline}
+                          </p>
+                        ) : null}
+                        {person.location ? (
+                          <p className="mt-3 text-xs tracking-wide text-muted-foreground">
+                            {person.location}
+                          </p>
+                        ) : null}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="text-center">
                   <Link
-                    key={person.id}
-                    href={`/people/${person.id}`}
-                    className="flex gap-4 rounded-2xl border border-line bg-white p-5 transition-colors hover:border-primary/30"
+                    href={query.trim() ? `/people?q=${encodeURIComponent(query.trim())}` : "/people"}
+                    className="text-sm text-primary hover:underline"
                   >
-                    <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-fog text-sm font-medium text-ink">
-                      {person.avatarUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={person.avatarUrl} alt="" className="size-full object-cover" />
-                      ) : (
-                        (person.fullName ?? "?").slice(0, 1)
-                      )}
-                    </div>
-                    <div className="min-w-0">
-                      <h2 className="font-display text-xl tracking-[-0.03em]">
-                        <NameWithBadge name={person.fullName ?? "Member"} />
-                      </h2>
-                      {person.headline ? (
-                        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                          {person.headline}
-                        </p>
-                      ) : null}
-                      {person.location ? (
-                        <p className="mt-3 text-xs tracking-wide text-muted-foreground">
-                          {person.location}
-                        </p>
-                      ) : null}
-                    </div>
+                    Browse all people
                   </Link>
-                ))}
+                </div>
               </div>
             )
           ) : null}

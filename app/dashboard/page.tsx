@@ -102,9 +102,19 @@ export default async function DashboardPage() {
                       {row.job.status !== "published" ? " · closed" : ""}
                     </p>
                   </div>
-                  <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
-                    {formatStage(row.stage).toUpperCase()}
-                  </span>
+                  <div className="flex shrink-0 items-center gap-3">
+                    {row.conversationId ? (
+                      <Link
+                        href={`/messages/${row.conversationId}`}
+                        className="text-primary hover:underline"
+                      >
+                        Messages
+                      </Link>
+                    ) : null}
+                    <span className="font-mono text-[10px] tracking-wider text-muted-foreground">
+                      {formatStage(row.stage).toUpperCase()}
+                    </span>
+                  </div>
                 </li>
               ))}
             </ul>

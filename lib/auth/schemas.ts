@@ -53,9 +53,11 @@ export const profileSchema = z.object({
   headline: z.string().trim().max(160).optional().or(z.literal("")),
   location: z.string().trim().max(120).optional().or(z.literal("")),
   bio: z.string().trim().max(2000).optional().or(z.literal("")),
+  resumeUrl: optionalProfileUrl("resume"),
   website: optionalProfileUrl("website"),
   linkedin: optionalProfileUrl("LinkedIn"),
   github: optionalProfileUrl("GitHub"),
+  portfolio: optionalProfileUrl("portfolio"),
 });
 
 export const applySchema = z.object({

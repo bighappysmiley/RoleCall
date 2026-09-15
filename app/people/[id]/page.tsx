@@ -103,11 +103,24 @@ export default async function PersonPage({
             No bio yet.
           </p>
         )}
-        {profile.links.website ||
+        {profile.resumeUrl ||
+        profile.links.website ||
         profile.links.linkedin ||
         profile.links.github ||
         profile.links.portfolio ? (
           <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+            {profile.resumeUrl ? (
+              <li>
+                <a
+                  href={profile.resumeUrl}
+                  className="text-primary hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Resume
+                </a>
+              </li>
+            ) : null}
             {profile.links.website ? (
               <li>
                 <a

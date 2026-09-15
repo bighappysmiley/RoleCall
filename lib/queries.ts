@@ -6,6 +6,7 @@ import {
   applications,
   companies,
   companyMembers,
+  conversations,
   jobs,
   jobViews,
   profiles,
@@ -145,6 +146,7 @@ function mapProfile(row: typeof profiles.$inferSelect): ProfileRecord {
     headline: row.headline,
     location: row.location,
     bio: row.bio,
+    resumeUrl: row.resumeUrl,
     links: row.links ?? {},
     isPlatformAdmin: row.isPlatformAdmin,
   };
@@ -450,6 +452,7 @@ export async function ensureProfile(user: {
       headline: null,
       location: null,
       bio: null,
+      resumeUrl: null,
       links: {},
       isPlatformAdmin: adminFromEmail,
     };
@@ -506,6 +509,7 @@ export async function updateProfile(
     headline: string;
     location: string;
     bio: string;
+    resumeUrl?: string | null;
     links: ProfileLinks;
     avatarUrl?: string | null;
   },
@@ -518,6 +522,9 @@ export async function updateProfile(
       headline: input.headline || null,
       location: input.location || null,
       bio: input.bio || null,
+      ...(input.resumeUrl !== undefined
+        ? { resumeUrl: input.resumeUrl || null }
+        : {}),
       links: input.links,
       ...(input.avatarUrl !== undefined
         ? { avatarUrl: input.avatarUrl || null }
@@ -604,12 +611,15 @@ export async function listCandidateApplications(userId: string) {
       stage: applications.stage,
       createdAt: applications.createdAt,
       coverLetter: applications.coverLetter,
+      resumeUrl: applications.resumeUrl,
+      conversationId: conversations.id,
       job: jobs,
       company: companies,
     })
     .from(applications)
     .innerJoin(jobs, eq(applications.jobId, jobs.id))
     .innerJoin(companies, eq(jobs.companyId, companies.id))
+    .leftJoin(conversations, eq(conversations.applicationId, applications.id))
     .where(eq(applications.candidateId, userId))
     .orderBy(desc(applications.createdAt));
 }
@@ -633,6 +643,7 @@ export async function applyToJob(input: {
   jobId: string;
   candidateId: string;
   coverLetter: string;
+  resumeUrl?: string | null;
 }) {
   const db = requireDb();
   const job = await getJobById(input.jobId);
@@ -651,6 +662,7 @@ export async function applyToJob(input: {
       jobId: input.jobId,
       candidateId: input.candidateId,
       coverLetter: input.coverLetter || null,
+      resumeUrl: input.resumeUrl || null,
       source: "rolecall",
     })
     .returning();
@@ -770,6 +782,7 @@ export type CompanyWriteInput = {
   techStack: string[];
   benefits: string[];
   socialLinks: CompanyRecord["socialLinks"];
+  logoUrl?: string | null;
 };
 
 async function takenCompanySlugs(exceptId?: string) {
@@ -807,6 +820,7 @@ export async function createCompany(ownerId: string, input: CompanyWriteInput) {
       techStack: input.techStack,
       benefits: input.benefits,
       socialLinks: input.socialLinks,
+      ...(input.logoUrl !== undefined ? { logoUrl: input.logoUrl || null } : {}),
     })
     .returning();
 
@@ -850,6 +864,7 @@ export async function updateCompany(companyId: string, input: CompanyWriteInput)
       techStack: input.techStack,
       benefits: input.benefits,
       socialLinks: input.socialLinks,
+      ...(input.logoUrl !== undefined ? { logoUrl: input.logoUrl || null } : {}),
       updatedAt: new Date(),
     })
     .where(eq(companies.id, companyId))
@@ -1172,9 +1187,11 @@ export async function listJobApplications(jobId: string) {
     .select({
       application: applications,
       candidate: profiles,
+      conversationId: conversations.id,
     })
     .from(applications)
     .innerJoin(profiles, eq(applications.candidateId, profiles.id))
+    .leftJoin(conversations, eq(conversations.applicationId, applications.id))
     .where(eq(applications.jobId, jobId))
     .orderBy(applications.stage, applications.createdAt);
 }

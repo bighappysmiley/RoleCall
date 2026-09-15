@@ -129,9 +129,11 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
     profile.headline,
     profile.location,
     profile.bio,
+    profile.resumeUrl,
     profile.links.website,
     profile.links.linkedin,
     profile.links.github,
+    profile.links.portfolio,
   ].join("|");
 
   return (
@@ -177,6 +179,20 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
         <Textarea id="bio" name="bio" rows={5} defaultValue={profile.bio ?? ""} />
       </div>
       <div className="grid gap-1.5">
+        <Label htmlFor="resumeUrl">Resume URL</Label>
+        <Input
+          id="resumeUrl"
+          name="resumeUrl"
+          type="text"
+          inputMode="url"
+          placeholder="https://…"
+          defaultValue={profile.resumeUrl ?? ""}
+        />
+        <p className="text-xs text-muted-foreground">
+          Link a PDF or public resume page. File upload comes later.
+        </p>
+      </div>
+      <div className="grid gap-1.5">
         <Label htmlFor="website">Website</Label>
         <Input
           id="website"
@@ -185,6 +201,17 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
           inputMode="url"
           placeholder="https://"
           defaultValue={profile.links.website ?? ""}
+        />
+      </div>
+      <div className="grid gap-1.5">
+        <Label htmlFor="portfolio">Portfolio</Label>
+        <Input
+          id="portfolio"
+          name="portfolio"
+          type="text"
+          inputMode="url"
+          placeholder="https://"
+          defaultValue={profile.links.portfolio ?? ""}
         />
       </div>
       <div className="grid gap-1.5">
@@ -209,9 +236,6 @@ export function ProfileForm({ profile }: { profile: ProfileRecord }) {
           defaultValue={profile.links.github ?? ""}
         />
       </div>
-      <p className="font-mono text-[11px] tracking-wide text-muted-foreground">
-        Resume upload comes later. No files in this build.
-      </p>
       {state && "error" in state ? (
         <p className="text-sm text-destructive">{state.error}</p>
       ) : null}

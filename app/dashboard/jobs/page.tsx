@@ -70,6 +70,9 @@ export default async function DashboardJobsPage() {
                   {job.applicationCount
                     ? ` · ${job.applicationCount} applicant${job.applicationCount === 1 ? "" : "s"}`
                     : ""}
+                  {typeof job.viewCount === "number"
+                    ? ` · ${job.viewCount} view${job.viewCount === 1 ? "" : "s"}`
+                    : ""}
                   {job.promotedUntil && !isPast(job.promotedUntil)
                     ? ` · Promoted until ${formatShortDate(job.promotedUntil)}`
                     : ""}

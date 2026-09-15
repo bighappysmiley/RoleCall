@@ -181,47 +181,28 @@ export async function notifyApplicationNote(input: {
   authorName: string;
   body: string;
 }) {
-  const db = getDb();
-  if (!db) return;
-
-  const [conversation] = await db
-    .select()
-    .from(conversations)
-    .where(eq(conversations.applicationId, input.applicationId))
-    .limit(1);
-
-  const href = conversation
-    ? `/messages/${conversation.id}`
-    : `/dashboard/jobs/${input.jobId}/pipeline`;
-
-  if (conversation) {
-    await db.insert(messages).values({
-      conversationId: conversation.id,
-      senderUserId: input.authorId,
-      body: `Note on your application: ${input.body}`,
-    });
-    await db
-      .update(conversations)
-      .set({ lastMessageAt: new Date() })
-      .where(eq(conversations.id, conversation.id));
-  }
-
-  await createNotification({
-    userId: input.candidateId,
-    companyId: input.companyId,
-    type: "note",
-    title: `Update on ${input.jobTitle}`,
-    body: `${input.authorName}: ${input.body.slice(0, 140)}`,
-    href,
-  });
-
+  // Private hiring notes stay inside the company. Never post them into the
+  // candidate thread or notify the candidate.
+  void input.candidateId;
+  void input.body;
   await notifyCompanyTeam(input.companyId, {
     type: "note",
-    title: `Note on ${input.jobTitle}`,
-    body: `${input.authorName} left a note.`,
-    href,
+    title: `Private note on ${input.jobTitle}`,
+    body: `${input.authorName} left an internal hiring note.`,
+    href: `/dashboard/jobs/${input.jobId}/pipeline`,
     excludeUserId: input.authorId,
   });
+}
+
+export async function getConversationIdForApplication(applicationId: string) {
+  const db = getDb();
+  if (!db) return null;
+  const [row] = await db
+    .select({ id: conversations.id })
+    .from(conversations)
+    .where(eq(conversations.applicationId, applicationId))
+    .limit(1);
+  return row?.id ?? null;
 }
 
 export async function notifyInviteAccepted(input: {
@@ -781,9 +762,13 @@ export async function setConversationFlags(input: {
     );
 }
 
-export async function listPublicPeople(limit = 24): Promise<ProfileRecord[]> {
+export async function listPublicPeople(
+  limit = 24,
+  query?: string,
+): Promise<ProfileRecord[]> {
   const db = getDb();
   if (!db) return [];
+  const needle = query?.trim().toLowerCase() ?? "";
   const rows = await db
     .select()
     .from(profiles)
@@ -795,9 +780,9 @@ export async function listPublicPeople(limit = 24): Promise<ProfileRecord[]> {
       ),
     )
     .orderBy(desc(profiles.updatedAt))
-    .limit(limit);
+    .limit(needle ? 120 : limit);
 
-  return rows.map((row) => ({
+  const mapped = rows.map((row) => ({
     id: row.id,
     fullName: row.fullName,
     avatarUrl: row.avatarUrl,
@@ -805,7 +790,18 @@ export async function listPublicPeople(limit = 24): Promise<ProfileRecord[]> {
     headline: row.headline,
     location: row.location,
     bio: row.bio,
+    resumeUrl: row.resumeUrl,
     links: row.links ?? {},
     isPlatformAdmin: row.isPlatformAdmin,
   }));
+
+  if (!needle) return mapped.slice(0, limit);
+  return mapped
+    .filter((person) =>
+      [person.fullName ?? "", person.headline ?? "", person.location ?? "", person.bio ?? ""]
+        .join(" ")
+        .toLowerCase()
+        .includes(needle),
+    )
+    .slice(0, limit);
 }
