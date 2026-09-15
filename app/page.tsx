@@ -14,9 +14,8 @@ export default async function HomePage() {
     <div>
       <HomeHero />
 
-      <section className="relative overflow-hidden border-b border-line/70 bg-paper">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgb(13_115_119/0.06),transparent_50%)]" />
-        <div className="relative mx-auto grid max-w-6xl gap-6 px-4 py-16 md:grid-cols-3 md:gap-5">
+      <section className="border-t border-line bg-fog/40">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-3 md:gap-10">
           {[
             {
               step: "01",
@@ -33,15 +32,12 @@ export default async function HomePage() {
               title: "Hire in the open",
               copy: "Companies post, manage applicants, and promote roles without hiding paid placement.",
             },
-          ].map((item, index) => (
-            <div
-              key={item.step}
-              className={`surface surface-hover p-6 ${index === 1 ? "md:-translate-y-1" : ""}`}
-            >
-              <p className="font-display text-sm font-semibold tracking-[0.2em] text-primary">
+          ].map((item) => (
+            <div key={item.step}>
+              <p className="text-sm font-semibold tracking-[0.14em] text-primary">
                 {item.step}
               </p>
-              <h2 className="mt-3 font-display text-2xl tracking-[-0.04em]">
+              <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-ink">
                 {item.title}
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
@@ -52,11 +48,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="page-shell">
+      <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="eyebrow">Open roles</p>
-            <h2 className="mt-2 font-display text-3xl tracking-[-0.04em] sm:text-4xl">
+            <p className="text-sm font-medium tracking-[0.08em] text-primary uppercase">
+              Open roles
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.03em] text-ink sm:text-4xl">
               {allJobs.length > 0
                 ? `${allJobs.length} live on the board`
                 : "Fresh roles land here"}
@@ -64,14 +62,14 @@ export default async function HomePage() {
           </div>
           <Link
             href="/jobs"
-            className="text-sm font-medium text-primary underline-offset-4 transition-colors hover:underline"
+            className="text-sm font-medium text-primary underline-offset-4 hover:underline"
           >
             View all jobs
           </Link>
         </div>
         <div className="grid gap-3">
           {jobs.length === 0 ? (
-            <p className="surface px-6 py-10 text-sm text-muted-foreground">
+            <p className="rounded-2xl border border-line bg-white px-6 py-10 text-sm text-muted-foreground">
               No published roles yet. When employers post, they appear here.
             </p>
           ) : (
@@ -80,12 +78,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-y border-line/60 bg-navy text-white">
-        <div className="pointer-events-none absolute -top-24 right-0 size-72 rounded-full bg-primary/25 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 left-10 size-56 rounded-full bg-signal/20 blur-3xl" />
-        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <section className="border-y border-line bg-ink text-white">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 lg:grid-cols-2 lg:items-center">
           <div>
-            <h2 className="font-display text-3xl tracking-[-0.04em] sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
               Paid placement, labeled in plain sight.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-white/70">
@@ -95,15 +91,15 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/12 bg-white/8 px-5 py-5 backdrop-blur-sm">
-              <p className="font-display text-lg">For candidates</p>
+            <div className="rounded-2xl border border-white/15 px-5 py-5">
+              <p className="text-lg font-semibold">For candidates</p>
               <p className="mt-2 text-sm leading-relaxed text-white/65">
                 See every open role with clear labels. Apply when the fit is
                 right.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/12 bg-white/8 px-5 py-5 backdrop-blur-sm">
-              <p className="font-display text-lg">For employers</p>
+            <div className="rounded-2xl border border-white/15 px-5 py-5">
+              <p className="text-lg font-semibold">For employers</p>
               <p className="mt-2 text-sm leading-relaxed text-white/65">
                 Post roles, review applicants, and promote listings with
                 placement that stays clearly labeled.
@@ -113,35 +109,31 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="page-shell">
-        <div className="surface relative overflow-hidden px-6 py-12 sm:px-10 sm:py-14">
-          <div className="pointer-events-none absolute -right-8 top-0 size-48 rounded-full bg-primary/10 blur-2xl float-soft" />
-          <div className="pointer-events-none absolute bottom-0 left-1/3 size-40 rounded-full bg-signal/10 blur-2xl" />
-          <div className="relative max-w-xl">
-            <h2 className="font-display text-3xl tracking-[-0.04em] sm:text-4xl">
-              Ready when you are.
-            </h2>
-            <p className="mt-3 text-base text-muted-foreground">
-              Create an account to apply, or start hiring with a labeled listing
-              on RoleCall.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="h-12 rounded-xl px-6 text-base"
-              >
-                <Link href="/signup">Create an account</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 rounded-xl px-6 text-base"
-              >
-                <Link href="/pricing">See pricing</Link>
-              </Button>
-            </div>
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <div className="rounded-3xl border border-line bg-white px-6 py-12 sm:px-10">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
+            Ready when you are.
+          </h2>
+          <p className="mt-3 max-w-xl text-base text-muted-foreground">
+            Create an account to apply, or start hiring with a labeled listing
+            on RoleCall.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Button
+              asChild
+              size="lg"
+              className="h-11 rounded-full bg-ink px-6 text-white hover:bg-ink/90"
+            >
+              <Link href="/signup">Create an account</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-11 rounded-full border-line px-6"
+            >
+              <Link href="/pricing">See pricing</Link>
+            </Button>
           </div>
         </div>
       </section>

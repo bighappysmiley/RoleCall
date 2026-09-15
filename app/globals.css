@@ -59,21 +59,21 @@
 }
 
 :root {
-  /* Soft studio — cool paper, inviting teal, warm gold signal */
-  --ink: #122033;
-  --paper: #eef3f7;
-  --fog: #e2ebf0;
-  --line: #cfdce5;
-  --navy: #12353a;
-  --mist: #d4ece9;
-  --signal: #d4920a;
+  /* Clean board — white paper, original RoleCall blue */
+  --ink: #0f172a;
+  --paper: #ffffff;
+  --fog: #f3f4f6;
+  --line: #e5e7eb;
+  --navy: #0f172a;
+  --mist: #dbeafe;
+  --signal: #2563eb;
   --background: var(--paper);
   --foreground: var(--ink);
   --card: #ffffff;
   --card-foreground: var(--ink);
   --popover: #ffffff;
   --popover-foreground: var(--ink);
-  --primary: #0d7377;
+  --primary: #1d4ed8;
   --primary-foreground: #ffffff;
   --secondary: var(--fog);
   --secondary-foreground: var(--ink);
@@ -84,8 +84,8 @@
   --destructive: #c52727;
   --border: var(--line);
   --input: var(--line);
-  --ring: #0d7377;
-  --chart-1: #0d7377;
+  --ring: #1d4ed8;
+  --chart-1: #1d4ed8;
   --chart-2: #d4920a;
   --chart-3: #5c6b7a;
   --chart-4: #122033;
@@ -93,12 +93,12 @@
   --radius: 0.75rem;
   --sidebar: #ffffff;
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: #0d7377;
+  --sidebar-primary: #1d4ed8;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: var(--fog);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--line);
-  --sidebar-ring: #0d7377;
+  --sidebar-ring: #1d4ed8;
   --shadow-soft: 0 1px 2px rgb(18 32 51 / 0.04), 0 8px 24px rgb(18 32 51 / 0.06);
   --shadow-lift: 0 2px 4px rgb(18 32 51 / 0.04), 0 16px 40px rgb(18 32 51 / 0.1);
 }
@@ -117,7 +117,7 @@
   --card-foreground: var(--ink);
   --popover: #121f24;
   --popover-foreground: var(--ink);
-  --primary: #2dd4bf;
+  --primary: #60a5fa;
   --primary-foreground: #06201f;
   --secondary: var(--fog);
   --secondary-foreground: var(--ink);
@@ -128,15 +128,15 @@
   --destructive: #f97171;
   --border: var(--line);
   --input: var(--line);
-  --ring: #2dd4bf;
+  --ring: #60a5fa;
   --sidebar: #121f24;
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: #2dd4bf;
+  --sidebar-primary: #60a5fa;
   --sidebar-primary-foreground: #06201f;
   --sidebar-accent: var(--fog);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: var(--line);
-  --sidebar-ring: #2dd4bf;
+  --sidebar-ring: #60a5fa;
 }
 
 @layer base {
@@ -150,10 +150,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background-image:
-      radial-gradient(ellipse 90% 55% at 100% -8%, rgb(13 115 119 / 0.12), transparent 55%),
-      radial-gradient(ellipse 55% 45% at -8% 18%, rgb(212 146 10 / 0.07), transparent 50%),
-      radial-gradient(ellipse 50% 40% at 50% 100%, rgb(18 53 58 / 0.04), transparent 55%);
+    background-image: none;
     background-attachment: fixed;
   }
 
