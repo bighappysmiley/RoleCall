@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { JobCard } from "@/components/job-card";
+import { HomeHero } from "@/components/home-hero";
 import { Button } from "@/components/ui/button";
 import { listPublishedJobs } from "@/lib/queries";
 
@@ -12,50 +12,9 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative isolate min-h-[min(92vh,52rem)] overflow-hidden">
-        <Image
-          src="/hero-workspace.jpg"
-          alt="Colleagues collaborating around a laptop in a bright, welcoming workspace"
-          fill
-          priority
-          className="hero-drift object-cover object-[center_35%]"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgb(18_32_51/0.72)_0%,rgb(18_53_58/0.48)_48%,rgb(13_115_119/0.28)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgb(212_146_10/0.18),transparent_42%)]" />
+      <HomeHero />
 
-        <div className="relative mx-auto flex min-h-[min(92vh,52rem)] max-w-6xl flex-col justify-end px-4 pb-16 pt-28 sm:pb-20 sm:pt-32">
-          <p className="reveal font-display text-[clamp(3.5rem,12vw,8.5rem)] leading-[0.88] font-bold tracking-[-0.06em] text-white">
-            RoleCall
-          </p>
-          <h1 className="reveal reveal-delay-1 mt-5 max-w-2xl text-balance text-2xl font-medium tracking-[-0.03em] text-white/95 sm:text-3xl md:text-4xl">
-            The hiring board that stays clear about who paid for the spotlight.
-          </h1>
-          <p className="reveal reveal-delay-2 mt-4 max-w-lg text-base text-white/75 sm:text-lg">
-            Browse open roles, apply in minutes, or post a job with placement
-            that is always labeled.
-          </p>
-          <div className="reveal reveal-delay-3 mt-8 flex flex-wrap gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="h-12 rounded-xl px-6 text-base shadow-[0_8px_28px_rgb(13_115_119/0.35)]"
-            >
-              <Link href="/jobs">Browse jobs</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="h-12 rounded-xl border-white/40 bg-white/12 px-6 text-base text-white shadow-none backdrop-blur-md hover:bg-white/20 hover:text-white"
-            >
-              <Link href="/signup">Post a job</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden border-b border-line/70">
+      <section className="relative overflow-hidden border-b border-line/70 bg-paper">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgb(13_115_119/0.06),transparent_50%)]" />
         <div className="relative mx-auto grid max-w-6xl gap-6 px-4 py-16 md:grid-cols-3 md:gap-5">
           {[
